@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Site Web</title>
+    <title>Le Rocher Saint Pierre 1H</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Navigation Menu -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">Mon Site</div>
+            <div class="logo">🏠 Le Rocher Saint Pierre</div>
             <ul class="nav-menu">
                 <li><a href="#accueil" class="nav-link active" onclick="showPage('accueil')">Accueil</a></li>
-                <li><a href="#page2" class="nav-link" onclick="showPage('page2')">À Propos</a></li>
-                <li><a href="#page3" class="nav-link" onclick="showPage('page3')">Contact</a></li>
+                <li><a href="#galerie" class="nav-link" onclick="showPage('galerie')">Galerie</a></li>
+                <li><a href="#apropos" class="nav-link" onclick="showPage('apropos')">À Propos</a></li>
+                <li><a href="#reservation" class="nav-link" onclick="showPage('reservation')">Réservation</a></li>
             </ul>
         </div>
     </nav>
@@ -23,59 +24,254 @@
     <div class="pages-container">
         <!-- Page 1: Accueil -->
         <div id="accueil" class="page active">
-            <div class="page-content">
-                <h1>Bienvenue sur notre site</h1>
-                <p>Ceci est la page d'accueil de votre site web.</p>
-                <p>Utilisez le menu en haut pour naviguer entre les différentes pages.</p>
-                <div class="content-box">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <div class="hero-section">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <h1>Le Rocher Saint Pierre 1H</h1>
+                    <p class="hero-subtitle">Location 6 personnes • 40 m²</p>
                 </div>
             </div>
         </div>
 
-        <!-- Page 2: À Propos -->
-        <div id="page2" class="page">
+        <!-- Page 2: Galerie -->
+        <div id="galerie" class="page">
             <div class="page-content">
-                <h1>À Propos de nous</h1>
-                <p>En savoir plus sur notre projet et notre équipe.</p>
-                <div class="content-box">
-                    <h2>Notre Mission</h2>
-                    <p>Nous nous efforçons de créer des expériences web exceptionnelles pour nos utilisateurs.</p>
-                </div>
-                <div class="content-box">
-                    <h2>Notre Vision</h2>
-                    <p>Développer des solutions innovantes et accessibles pour tous.</p>
+                <h1>Galerie Photos</h1>
+                <p>Découvrez notre magnifique location en images</p>
+                
+                <div class="gallery-grid">
+                    <!-- Image 1 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1567521464027-f127ff144326?w=600&h=400&fit=crop" alt="Photo 1 - Vue générale">
+                        <div class="gallery-overlay">
+                            <p>Vue générale</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 2 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=400&fit=crop" alt="Photo 2 - Chambre">
+                        <div class="gallery-overlay">
+                            <p>Chambre principale</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 3 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop" alt="Photo 3 - Salon">
+                        <div class="gallery-overlay">
+                            <p>Salon confortable</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 4 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1556696238-97d3d754b13f?w=600&h=400&fit=crop" alt="Photo 4 - Cuisine">
+                        <div class="gallery-overlay">
+                            <p>Cuisine équipée</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 5 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&h=400&fit=crop" alt="Photo 5 - Salle de bain">
+                        <div class="gallery-overlay">
+                            <p>Salle de bain</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 6 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1571508601155-c2953f96cdab?w=600&h=400&fit=crop" alt="Photo 6 - Terrasse">
+                        <div class="gallery-overlay">
+                            <p>Terrasse avec vue</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 7 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1516455207990-7a41e1d4ffd5?w=600&h=400&fit=crop" alt="Photo 7 - Chambre 2">
+                        <div class="gallery-overlay">
+                            <p>Chambre 2</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 8 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1551632786-de41eced14ca?w=600&h=400&fit=crop" alt="Photo 8 - Détail décoration">
+                        <div class="gallery-overlay">
+                            <p>Décoration intérieure</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 9 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1583486394967-2d55d440e801?w=600&h=400&fit=crop" alt="Photo 9 - Lit confortable">
+                        <div class="gallery-overlay">
+                            <p>Lit douillet</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 10 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop" alt="Photo 10 - Fenêtres">
+                        <div class="gallery-overlay">
+                            <p>Lumière naturelle</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 11 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1514432324607-2e467f4af3e9?w=600&h=400&fit=crop" alt="Photo 11 - Espaces communs">
+                        <div class="gallery-overlay">
+                            <p>Espace commun</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 12 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1535591273668-583b6c33b24c?w=600&h=400&fit=crop" alt="Photo 12 - Détail moderne">
+                        <div class="gallery-overlay">
+                            <p>Design moderne</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 13 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da068326?w=600&h=400&fit=crop" alt="Photo 13 - Vue extérieure">
+                        <div class="gallery-overlay">
+                            <p>Extérieur</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 14 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1455706917875-d71579b36c6d?w=600&h=400&fit=crop" alt="Photo 14 - Aménagement">
+                        <div class="gallery-overlay">
+                            <p>Aménagement intérieur</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 15 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1552996881-daf9a75106d1?w=600&h=400&fit=crop" alt="Photo 15 - Confort">
+                        <div class="gallery-overlay">
+                            <p>Coin détente</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 16 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1507915661022-2f67f0b96e19?w=600&h=400&fit=crop" alt="Photo 16 - Ambiance">
+                        <div class="gallery-overlay">
+                            <p>Ambiance chaleureuse</p>
+                        </div>
+                    </div>
+
+                    <!-- Image 17 -->
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=400&fit=crop" alt="Photo 17 - Vue finale">
+                        <div class="gallery-overlay">
+                            <p>Une merveille</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Page 3: Contact -->
-        <div id="page3" class="page">
+        <!-- Page 3: À Propos -->
+        <div id="apropos" class="page">
             <div class="page-content">
-                <h1>Nous Contacter</h1>
-                <p>N'hésitez pas à nous envoyer un message.</p>
-                <form class="contact-form">
-                    <div class="form-group">
-                        <label for="name">Nom:</label>
-                        <input type="text" id="name" name="name" required>
+                <h1>À Propos de notre location</h1>
+                <p>Découvrez notre magnifique propriété avec vue panoramique.</p>
+                <div class="content-box">
+                    <h2>Caractéristiques</h2>
+                    <ul>
+                        <li>Surface: 40 m²</li>
+                        <li>Capacité: 6 personnes</li>
+                        <li>Vue exceptionnelle</li>
+                        <li>Confort et modernité</li>
+                    </ul>
+                </div>
+                <div class="content-box">
+                    <h2>Équipements</h2>
+                    <p>La propriété est entièrement équipée pour votre confort durant votre séjour.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4: Réservation/Contact -->
+        <div id="reservation" class="page">
+            <div class="page-content">
+                <h1>Réservation & Contact</h1>
+                <p>Remplissez le formulaire ci-dessous pour faire une réservation ou nous poser une question.</p>
+                
+                <form class="reservation-form" id="reservationForm" method="POST" action="https://formspree.io/f/YOUR_FORM_ID">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nom">Nom complet:</label>
+                            <input type="text" id="nom" name="nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" required>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telephone">Téléphone:</label>
+                            <input type="tel" id="telephone" name="telephone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombrePersonnes">Nombre de personnes:</label>
+                            <select id="nombrePersonnes" name="nombrePersonnes" required>
+                                <option value="">Sélectionnez...</option>
+                                <option value="1">1 personne</option>
+                                <option value="2">2 personnes</option>
+                                <option value="3">3 personnes</option>
+                                <option value="4">4 personnes</option>
+                                <option value="5">5 personnes</option>
+                                <option value="6">6 personnes</option>
+                            </select>
+                        </div>
                     </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dateArrivee">Date d'arrivée:</label>
+                            <input type="date" id="dateArrivee" name="dateArrivee" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateDepart">Date de départ:</label>
+                            <input type="date" id="dateDepart" name="dateDepart" required>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label for="message">Message:</label>
-                        <textarea id="message" name="message" rows="5" required></textarea>
+                        <textarea id="message" name="message" rows="6" placeholder="Laissez votre message, vos questions ou demandes spéciales..." required></textarea>
                     </div>
-                    <button type="submit" class="btn">Envoyer</button>
+
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="conditions" name="conditions" required>
+                        <label for="conditions">J'accepte les conditions de réservation</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-large">Envoyer ma réservation</button>
                 </form>
+
+                <div class="contact-info">
+                    <h3>Informations de contact</h3>
+                    <p><strong>Email:</strong> lerochersaintpierre1h@gmail.com</p>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2024 Mon Site Web. Tous droits réservés.</p>
+        <p>&copy; 2024 Le Rocher Saint Pierre 1H. Tous droits réservés.</p>
     </footer>
 
     <script src="script.js"></script>
