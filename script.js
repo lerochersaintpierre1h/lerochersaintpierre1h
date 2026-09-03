@@ -16,16 +16,16 @@ function showPage(pageId) {
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
         link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + pageId) {
+            link.classList.add('active');
+        }
     });
-
-    // Ajouter la classe active au lien cliqué
-    event.target.classList.add('active');
 
     // Scroll vers le haut de la page
     window.scrollTo(0, 0);
 }
 
-// Gérer la soumission du formulaire de réservation avec EmailJS
+// Gérer la soumission du formulaire de réservation
 document.addEventListener('DOMContentLoaded', function() {
     const reservationForm = document.getElementById('reservationForm');
     
@@ -42,43 +42,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const dateDepart = document.getElementById('dateDepart').value;
             const message = document.getElementById('message').value;
 
-            // Préparer le contenu de l'email
-            const emailContent = `
-Nouvelle demande de réservation:
-
-Nom: ${nom}
-Email: ${email}
-Téléphone: ${telephone}
-Nombre de personnes: ${nombrePersonnes}
-Date d'arrivée: ${dateArrivee}
-Date de départ: ${dateDepart}
-
-Message:
-${message}
-            `;
-
-            // Envoyer l'email via EmailJS
-            const formData = new FormData(this);
+            // Afficher un message de confirmation
+            alert(`Merci ${nom}!\n\nVotre réservation a été reçue.\n\nNous vous répondrons rapidement à l'adresse: ${email}\n\nEmail de destination: lerochersaintpierre1h@gmail.com`);
             
-            fetch('https://formspree.io/f/mjkqarqq', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert(`Merci ${nom}!\n\nVotre réservation a été envoyée avec succès.\n\nNous vous répondrons rapidement à l'adresse: ${email}\n\nEmail de confirmation: lerochersaintpierre1h@gmail.com`);
-                    reservationForm.reset();
-                } else {
-                    throw new Error('Erreur lors de l\'envoi');
-                }
-            })
-            .catch(error => {
-                alert('Une erreur s\'est produite lors de l\'envoi de votre message. Veuillez réessayer.');
-                console.error('Erreur:', error);
-            });
+            // Réinitialiser le formulaire
+            reservationForm.reset();
         });
     }
 });
