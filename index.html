@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" ccontent="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Le Rocher Saint Pierre 1H</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -14,16 +14,17 @@
                 <img src="images/logo valloire-2.png" alt="logo valloire" class="logo-img">
             </div>
             <ul class="nav-menu">
-                <li><a href="#accueil" class="nav-link active" onclick="showPage('accueil')">Accueil</a></li>
-                <li><a href="#galerie" class="nav-link" onclick="showPage('galerie')">Galerie</a></li>
-                <li><a href="#apropos" class="nav-link" onclick="showPage('apropos')">À Propos</a></li>
-                <li><a href="#reservation" class="nav-link" onclick="showPage('reservation')">Réservation</a></li>
+                <li><a href="#accueil" class="nav-link active">Accueil</a></li>
+                <li><a href="#galerie" class="nav-link">Galerie</a></li>
+                <li><a href="#apropos" class="nav-link">À Propos</a></li>
+                <li><a href="#reservation" class="nav-link">Réservation</a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Pages Container -->
     <div class="pages-container">
+        
         <!-- Page 1: Accueil -->
         <div id="accueil" class="page active">
             <div class="hero-section">
@@ -36,57 +37,49 @@
         </div>
 
         <!-- Page 2: Galerie -->
-       <!-- Section Galerie Photo -->
-<section class="gallery-section">
-    <!-- Les 5 Onglets de Navigation -->
-    <div class="gallery-tabs">
-        <button class="tab-btn active" onclick="filterGallery('Salon')">Salon</button>
-        <button class="tab-btn" onclick="filterGallery('Chambre')">Chambre</button>
-        <button class="tab-btn" onclick="filterGallery('Cuisine')">Cuisine</button>
-        <button class="tab-btn" onclick="filterGallery('Toilette')">Sub Toilette</button>
-        <button class="tab-btn" onclick="filterGallery('Exterieur')">Extérieur</button>
-    </div>
+        <div id="galerie" class="page">
+            <section class="gallery-section">
+                <!-- Les 5 Onglets de Navigation -->
+                <div class="gallery-tabs">
+                    <button class="tab-btn active" onclick="filterGallery('salon')">salon</button>
+                    <button class="tab-btn" onclick="filterGallery('chambre')">chambre</button>
+                    <button class="tab-btn" onclick="filterGallery('cuisine')">cuisine</button>
+                    <button class="tab-btn" onclick="filterGallery('toilette')">Sdb toilette</button>
+                    <button class="tab-btn" onclick="filterGallery('exterieur')">extérieur</button>
+                </div>
 
-    <!-- Conteneur de la Grille de Photos -->
-    <div class="gallery-grid">
-        
-        <!-- Categorie : Salon (5 photos) -->
-        <div class="gallery-item salon active"><img src="images/1.png" alt="Salon 1"></div>
-        <div class="gallery-item salon active"><img src="images/2.png" alt="Salon 2"></div>
-        <div class="gallery-item salon active"><img src="images/salon3.png" alt="Salon 3"></div>
-        <div class="gallery-item salon active"><img src="images/salon4.png" alt="Salon 4"></div>
-        <div class="gallery-item salon active"><img src="images/salon5.png" alt="Salon 5"></div>
+                <!-- Conteneur de la Grille de Photos -->
+                <div class="gallery-grid">
+                    <!-- Categorie : Salon (5 photos) -->
+                    <div class="gallery-item salon active"><img src="images/1.jpg" alt="Salon 1"></div>
+                    <div class="gallery-item salon active"><img src="images/2.jpg" alt="Salon 2"></div>
+                    <div class="gallery-item salon active"><img src="images/7.jpg" alt="Salon 3"></div>
+                    <div class="gallery-item salon active"><img src="images/16.jpg" alt="Salon 4"></div>
+                    <div class="gallery-item salon active"><img src="images/17.jpg" alt="Salon 5"></div>
 
-        <!-- Categorie : Chambre (5 photos) -->
-        <div class="gallery-item chambre"><img src="images/chambre1.png" alt="Chambre 1"></div>
-        <div class="gallery-item chambre"><img src="images/chambre2.png" alt="Chambre 2"></div>
-        <div class="gallery-item chambre"><img src="images/chambre3.png" alt="Chambre 3"></div>
-        <div class="gallery-item chambre"><img src="images/chambre4.png" alt="Chambre 4"></div>
-        <div class="gallery-item chambre"><img src="images/chambre5.png" alt="Chambre 5"></div>
+                    <!-- Categorie : Chambre (4 photos) -->
+                    <div class="gallery-item chambre"><img src="images/3.jpg" alt="Chambre 1"></div>
+                    <div class="gallery-item chambre"><img src="images/4.jpg" alt="Chambre 2"></div>
+                    <div class="gallery-item chambre"><img src="images/1.jpg" alt="Chambre 3"></div>
+                    <div class="gallery-item chambre"><img src="images/8.jpg" alt="Chambre 4"></div>
 
-        <!-- Categorie : Cuisine (5 photos) -->
-        <div class="gallery-item cuisine"><img src="images/cuisine1.png" alt="Cuisine 1"></div>
-        <div class="gallery-item cuisine"><img src="images/cuisine2.png" alt="Cuisine 2"></div>
-        <div class="gallery-item cuisine"><img src="images/cuisine3.png" alt="Cuisine 3"></div>
-        <div class="gallery-item cuisine"><img src="images/cuisine4.png" alt="Cuisine 4"></div>
-        <div class="gallery-item cuisine"><img src="images/cuisine5.png" alt="Cuisine 5"></div>
+                    <!-- Categorie : Cuisine (3 photos) -->
+                    <div class="gallery-item cuisine"><img src="images/10.jpg" alt="Cuisine 1"></div>
+                    <div class="gallery-item cuisine"><img src="images/11.jpg" alt="Cuisine 2"></div>
+                    <div class="gallery-item cuisine"><img src="images/12.jpg" alt="Cuisine 3"></div>
 
-        <!-- Categorie : Sub Toilette (5 photos) -->
-        <div class="gallery-item toilette"><img src="images/toilette1.png" alt="Toilette 1"></div>
-        <div class="gallery-item toilette"><img src="images/toilette2.png" alt="Toilette 2"></div>
-        <div class="gallery-item toilette"><img src="images/toilette3.png" alt="Toilette 3"></div>
-        <div class="gallery-item toilette"><img src="images/toilette4.png" alt="Toilette 4"></div>
-        <div class="gallery-item toilette"><img src="images/toilette5.png" alt="Toilette 5"></div>
-
-        <!-- Categorie : Extérieur (5 photos) -->
-        <div class="gallery-item exterieur"><img src="images/exterieur1.png" alt="Extérieur 1"></div>
-        <div class="gallery-item exterieur"><img src="images/exterieur2.png" alt="Extérieur 2"></div>
-        <div class="gallery-item exterieur"><img src="images/exterieur3.png" alt="Extérieur 3"></div>
-        <div class="gallery-item exterieur"><img src="images/exterieur4.png" alt="Extérieur 4"></div>
-        <div class="gallery-item exterieur"><img src="images/exterieur5.png" alt="Extérieur 5"></div>
-
-    </div>
-</section>
+                    <!-- Categorie : Sub Toilette (3 photos) -->
+                    <div class="gallery-item toilette"><img src="images/5.jpg" alt="Toilette 1"></div>
+                    <div class="gallery-item toilette"><img src="images/6.jpg" alt="Toilette 2"></div>
+                    <div class="gallery-item toilette"><img src="images/14.jpg" alt="Toilette 3"></div>
+                    
+                    <!-- Categorie : Extérieur (3 photos) -->
+                    <div class="gallery-item exterieur"><img src="images/9.jpg" alt="Extérieur 1"></div>
+                    <div class="gallery-item exterieur"><img src="images/13.jpg" alt="Extérieur 2"></div>
+                    <div class="gallery-item exterieur"><img src="images/18.jpg" alt="Extérieur 3"></div>
+                </div> <!-- /!\ LA CORRECTION EST ICI : Fermeture obligatoire de la grille de la galerie -->
+            </section>
+        </div>
 
         <!-- Page 3: À Propos -->
         <div id="apropos" class="page">
@@ -115,7 +108,7 @@
                 <h1>Réservation & Contact</h1>
                 <p>Remplissez le formulaire ci-dessous pour faire une réservation ou nous poser une question.</p>
                 
-                <form class="reservation-form" id="reservationForm" method="POST" action="https://formspree.io/f/YOUR_FORM_ID">
+                <form class="reservation-form" id="reservationForm" method="POST" action="https://formspree.io">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nom">Nom complet:</label>
@@ -176,31 +169,23 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> <!-- Fermeture finale du conteneur des pages -->
 
     <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2024 Le Rocher Saint Pierre 1H. Tous droits réservés.</p>
     </footer>
 
-    <script src="script.js"></script>
-    <script>
-function filterGallery(category) {
-    // 1. Mettre à jour l'état actif des boutons d'onglets
-    const buttons = document.querySelectorAll('.tab-btn');
-    buttons.forEach(btn => btn.classList.remove('active'));
-    event.currentTarget.classList.add('active');
+    <!-- La Lightbox (Boîte de zoom) vue précédemment -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <button class="lightbox-arrow lightbox-prev">&#10094;</button>
+        <div class="lightbox-content-wrapper">
+            <img id="lightbox-img" src="" alt="Zoom">
+        </div>
+        <button class="lightbox-arrow lightbox-next">&#10095;</button>
+    </div>
 
-    // 2. Filtrer et afficher uniquement les images de l'onglet sélectionné
-    const items = document.querySelectorAll('.gallery-item');
-    items.forEach(item => {
-        if (item.classList.contains(category)) {
-            item.classList.add('active');
-        } else {
-            item.classList.remove('active');
-        }
-    });
-}
-</script>
+    <script src="script.js"></script>
 </body>
 </html>

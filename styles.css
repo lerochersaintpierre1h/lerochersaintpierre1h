@@ -481,9 +481,9 @@ nav img,
 
 .tab-btn {
     padding: 10px 20px;
-    border: 2px solid #333;
+    border: 2px solid #075192df;
     background-color: transparent;
-    color: #333;
+    color: #075192df;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
@@ -492,7 +492,7 @@ nav img,
 }
 
 .tab-btn:hover, .tab-btn.active {
-    background-color: #333;
+    background-color: #075192df;
     color: #fff;
 }
 
@@ -534,4 +534,98 @@ nav img,
 /* Petit effet de zoom élégant au survol */
 .gallery-item:hover img {
     transform: scale(1.05);
+}
+/* Force uniquement la première lettre des boutons à être en majuscule */
+.tab-btn {
+    text-transform: capitalize;
+}
+/* Style de la Lightbox */
+.lightbox {
+    display: none; /* Caché par défaut */
+    position: fixed;
+    z-index: 9999; /* Toujours au premier plan */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Fond noir transparent */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Devient visible quand on ajoute la classe 'active' en JS */
+.lightbox.active {
+    display: flex;
+}
+
+/* Conteneur de l'image pour la centrer */
+.lightbox-content-wrapper {
+    max-width: 80%;
+    max-height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox-content-wrapper img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+}
+/* ==========================================================================
+   STYLE COMPLET DES BOUTONS DE LA LIGHTBOX (RONDS BLEUS TRANSPARENTS)
+   ========================================================================== */
+
+/* 1. Base commune pour tous les boutons (Forme de rond bleu à 50% d'opacité) */
+.lightbox-close, .lightbox-arrow {
+    position: absolute;
+    color: white !important; /* Les flèches et la croix restent bien blanches */
+    background-color: rgba(0, 123, 255, 0.5) !important; /* Bleu avec 50% d'opacité */
+    border: none !important;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    user-select: none;
+    z-index: 10000; /* Force l'affichage au-dessus de l'image */
+    
+    /* Crée le petit rond parfait */
+    width: 45px !important;
+    height: 45px !important;
+    border-radius: 50% !important;
+    
+    /* Active le centrage automatique */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+/* 2. Effet au survol de la souris */
+.lightbox-close:hover, .lightbox-arrow:hover {
+    background-color: rgba(0, 86, 179, 0.75) !important; /* Devient plus opaque */
+    transform: scale(1.05); /* Grossit légèrement */
+}
+
+/* 3. Position et ajustement de la CROIX (En haut à droite) */
+.lightbox-close {
+    top: 20px;
+    right: 20px;
+    font-size: 2.2rem !important;
+    font-weight: 300 !important;
+    line-height: 0 !important;
+    padding: 0 0 6px 0 !important; /* Ajustement précis pour la descendre au centre */
+}
+
+/* 4. Position et ajustement de la FLÈCHE GAUCHE */
+.lightbox-prev {
+    left: 20px;
+    font-size: 1.2rem !important;
+    padding: 0 3px 0 0 !important; /* Ajustement pour la centrer visuellement */
+}
+
+/* 5. Position et ajustement de la FLÈCHE DROITE */
+.lightbox-next {
+    right: 20px;
+    font-size: 1.2rem !important;
+    padding: 0 0 0 3px !important; /* Ajustement pour la centrer visuellement */
 }
