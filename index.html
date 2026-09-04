@@ -36,150 +36,57 @@
         </div>
 
         <!-- Page 2: Galerie -->
-        <div id="galerie" class="page">
-            <div class="page-content">
-                <h1>Galerie Photos</h1>
-                <p>Découvrez notre magnifique location en images</p>
-                
-                <div class="gallery-grid">
-                    <!-- Image 1 -->
-                    <div class="gallery-item">
-                        <img src="images/1.jpg" alt="Photo 1">
-                        <div class="gallery-overlay">
-                            <p>Photo 1</p>
-                        </div>
-                    </div>
+       <!-- Section Galerie Photo -->
+<section class="gallery-section">
+    <!-- Les 5 Onglets de Navigation -->
+    <div class="gallery-tabs">
+        <button class="tab-btn active" onclick="filterGallery('Salon')">Salon</button>
+        <button class="tab-btn" onclick="filterGallery('Chambre')">Chambre</button>
+        <button class="tab-btn" onclick="filterGallery('Cuisine')">Cuisine</button>
+        <button class="tab-btn" onclick="filterGallery('Toilette')">Sub Toilette</button>
+        <button class="tab-btn" onclick="filterGallery('Exterieur')">Extérieur</button>
+    </div>
 
-                    <!-- Image 2 -->
-                    <div class="gallery-item">
-                        <img src="images/2.jpg" alt="Photo 2">
-                        <div class="gallery-overlay">
-                            <p>Photo 2</p>
-                        </div>
-                    </div>
+    <!-- Conteneur de la Grille de Photos -->
+    <div class="gallery-grid">
+        
+        <!-- Categorie : Salon (5 photos) -->
+        <div class="gallery-item salon active"><img src="images/1.png" alt="Salon 1"></div>
+        <div class="gallery-item salon active"><img src="images/2.png" alt="Salon 2"></div>
+        <div class="gallery-item salon active"><img src="images/salon3.png" alt="Salon 3"></div>
+        <div class="gallery-item salon active"><img src="images/salon4.png" alt="Salon 4"></div>
+        <div class="gallery-item salon active"><img src="images/salon5.png" alt="Salon 5"></div>
 
-                    <!-- Image 3 -->
-                    <div class="gallery-item">
-                        <img src="images/3" alt="Photo 3">
-                        <div class="gallery-overlay">
-                            <p>Photo 3</p>
-                        </div>
-                    </div>
+        <!-- Categorie : Chambre (5 photos) -->
+        <div class="gallery-item chambre"><img src="images/chambre1.png" alt="Chambre 1"></div>
+        <div class="gallery-item chambre"><img src="images/chambre2.png" alt="Chambre 2"></div>
+        <div class="gallery-item chambre"><img src="images/chambre3.png" alt="Chambre 3"></div>
+        <div class="gallery-item chambre"><img src="images/chambre4.png" alt="Chambre 4"></div>
+        <div class="gallery-item chambre"><img src="images/chambre5.png" alt="Chambre 5"></div>
 
-                    <!-- Image 4 -->
-                    <div class="gallery-item">
-                        <img src="images/4" alt="Photo 4">
-                        <div class="gallery-overlay">
-                            <p>Photo 4</p>
-                        </div>
-                    </div>
+        <!-- Categorie : Cuisine (5 photos) -->
+        <div class="gallery-item cuisine"><img src="images/cuisine1.png" alt="Cuisine 1"></div>
+        <div class="gallery-item cuisine"><img src="images/cuisine2.png" alt="Cuisine 2"></div>
+        <div class="gallery-item cuisine"><img src="images/cuisine3.png" alt="Cuisine 3"></div>
+        <div class="gallery-item cuisine"><img src="images/cuisine4.png" alt="Cuisine 4"></div>
+        <div class="gallery-item cuisine"><img src="images/cuisine5.png" alt="Cuisine 5"></div>
 
-                    <!-- Image 5 -->
-                    <div class="gallery-item">
-                        <img src="images/5" alt="Photo 5">
-                        <div class="gallery-overlay">
-                            <p>Photo 5</p>
-                        </div>
-                    </div>
+        <!-- Categorie : Sub Toilette (5 photos) -->
+        <div class="gallery-item toilette"><img src="images/toilette1.png" alt="Toilette 1"></div>
+        <div class="gallery-item toilette"><img src="images/toilette2.png" alt="Toilette 2"></div>
+        <div class="gallery-item toilette"><img src="images/toilette3.png" alt="Toilette 3"></div>
+        <div class="gallery-item toilette"><img src="images/toilette4.png" alt="Toilette 4"></div>
+        <div class="gallery-item toilette"><img src="images/toilette5.png" alt="Toilette 5"></div>
 
-                    <!-- Image 6 -->
-                    <div class="gallery-item">
-                        <img src="images/6" alt="Photo 6">
-                        <div class="gallery-overlay">
-                            <p>Photo 6</p>
-                        </div>
-                    </div>
+        <!-- Categorie : Extérieur (5 photos) -->
+        <div class="gallery-item exterieur"><img src="images/exterieur1.png" alt="Extérieur 1"></div>
+        <div class="gallery-item exterieur"><img src="images/exterieur2.png" alt="Extérieur 2"></div>
+        <div class="gallery-item exterieur"><img src="images/exterieur3.png" alt="Extérieur 3"></div>
+        <div class="gallery-item exterieur"><img src="images/exterieur4.png" alt="Extérieur 4"></div>
+        <div class="gallery-item exterieur"><img src="images/exterieur5.png" alt="Extérieur 5"></div>
 
-                    <!-- Image 7 -->
-                    <div class="gallery-item">
-                        <img src="images/7" alt="Photo 7">
-                        <div class="gallery-overlay">
-                            <p>Photo 7</p>
-                        </div>
-                    </div>
-
-                    <!-- Image 8 -->
-                    <div class="gallery-item">
-                        <img src="images/8" alt="Photo 8">
-                        <div class="gallery-overlay">
-                            <p>Photo 8</p>
-                        </div>
-                    </div>
-
-                    <!-- Image 9 -->
-                    <div class="gallery-item">
-                        <img src="images/9" alt="Photo 9">
-                        <div class="gallery-overlay">
-                            <p>Photo 9</p>
-                        </div>
-                    </div>
-
-                    <!-- Image 10 -->
-                    <div class="gallery-item">
-                        <img src="images/10" alt="Photo 10">
-                        <div class="gallery-overlay">
-                            <p>Photo 10</p>
-                        </div>
-                    </div>
-
-                    <!-- Image 11 -->
-                    <div class="gallery-item">
-                        <img src="images/11" alt="Photo 11">
-                        <div class="gallery-overlay">
-                            <p>Photo 11</p>
-                        </div>
-                    </div>
-
-                    <!-- Image 12 -->
-                    <div class="gallery-item">
-                        <img src="images/12" alt="Photo 12">
-                        <div class="gallery-overlay">
-                            <p>Photo 12</p>
-                        </div>
-                    </div>
-
-                    <!-- Image 13 -->
-                    <div class="gallery-item">
-                        <img src="images/13" alt="Photo 13">
-                        <div class="gallery-overlay">
-                            <p>Photo 13</p>
-                        </div>
-                    </div>
-
-                    <!-- Image 14 -->
-                    <div class="gallery-item">
-                        <img src="images/14" alt="Photo 14">
-                        <div class="gallery-overlay">
-                            <p>Photo 14</p>
-                        </div>
-                    </div>
-
-                    <!-- Image 15 -->
-                    <div class="gallery-item">
-                        <img src="images/15" alt="Photo 15">
-                        <div class="gallery-overlay">
-                            <p>Photo 15</p>
-                        </div>
-                    </div>
-
-                    <!-- Image 16 -->
-                    <div class="gallery-item">
-                        <img src="images/16" alt="Photo 16">
-                        <div class="gallery-overlay">
-                            <p>Photo 16</p>
-                        </div>
-                    </div>
-
-                    <!-- Image 17 -->
-                    <div class="gallery-item">
-                        <img src="images/17" alt="Photo 17">
-                        <div class="gallery-overlay">
-                            <p>Photo 17</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    </div>
+</section>
 
         <!-- Page 3: À Propos -->
         <div id="apropos" class="page">
@@ -277,5 +184,23 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+function filterGallery(category) {
+    // 1. Mettre à jour l'état actif des boutons d'onglets
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+
+    // 2. Filtrer et afficher uniquement les images de l'onglet sélectionné
+    const items = document.querySelectorAll('.gallery-item');
+    items.forEach(item => {
+        if (item.classList.contains(category)) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
+    });
+}
+</script>
 </body>
 </html>

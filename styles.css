@@ -6,7 +6,7 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'verdana', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: #333;
     background-color: #f4f4f4;
@@ -36,10 +36,14 @@ body {
     font-weight: bold;
     color: white;
 }
-.logo img {
-    height: 40px;      /* Ajustez cette valeur (ex: 30px, 50px) selon vos besoins */
-    width: auto;       /* Conserve les proportions de l'image */
-    display: block;    /* Évite les espaces vides indésirables en bas */
+/* Réduire la taille du logo PNG */
+.logo img, 
+.navbar-brand img, 
+nav img {
+    height: 45px;       /* 👈 Ajustez cette valeur (ex: 40px, 50px) pour changer la taille */
+    width: auto;        /* 👈 Conserve les proportions de l'image pour éviter de la déformer */
+    max-height: 100%;   /* 👈 Empêche le logo de dépasser de son conteneur parent */
+    object-fit: contain;
 }
 
 .nav-menu {
@@ -51,7 +55,7 @@ body {
 .nav-link {
     color: white;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 700;
     padding: 0.5rem 1rem;
     border-radius: 4px;
     transition: all 0.3s ease;
@@ -70,7 +74,7 @@ body {
 
 /* Pages Container */
 .pages-container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
     min-height: calc(100vh - 200px);
 }
@@ -93,17 +97,19 @@ body {
     }
 }
 
-/* Hero Section - Page d'accueil */
+/* ==========================================================================
+   HERO SECTION - TEXTE ET IMAGE DE FOND
+   ========================================================================== */
 .hero-section {
     position: relative;
     height: 100vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
-                url('https://images.unsplash.com/photo-1567521464027-f127ff144326?w=1200&h=1200&fit=crop') center/cover no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                url('images/couverture.png') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    color: white;
+    text-align: center; /* 👈 Force tout le texte à se centrer horizontalement */
+    color: #ffffff !important; /* 👈 Force la couleur blanche pour tout le bloc */
     margin-top: 0;
 }
 
@@ -113,28 +119,37 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(107, 107, 107, 0.4);
     z-index: 1;
 }
 
 .hero-content {
     position: relative;
     z-index: 2;
+    width: 100%; /* Permet au centrage de s'appliquer sur toute la largeur */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre les éléments enfants verticalement */
+    justify-content: center;
     animation: slideUp 0.8s ease-out;
 }
 
 .hero-content h1 {
     font-size: 4rem;
     margin-bottom: 1rem;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    color: #ffffff !important; /* 👈 Assure que le titre principal reste blanc */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
     font-weight: bold;
+    text-align: center;
 }
 
 .hero-subtitle {
     font-size: 2rem;
     margin-bottom: 2rem;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+    color: #ffffff !important; /* 👈 Assure que le sous-titre reste blanc */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
     letter-spacing: 2px;
+    text-align: center;
 }
 
 @keyframes slideUp {
@@ -146,6 +161,19 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* ==========================================================================
+   BARRE DE NAVIGATION / LOGO (Isolé pour ne pas casser le Hero)
+   ========================================================================== */
+.logo img, 
+.navbar-brand img, 
+nav img,
+.site-logo {
+    height: 45px !important;       
+    width: auto !important;        
+    max-height: 100%;   
+    object-fit: contain;
 }
 
 /* Gallery Styles */
@@ -433,4 +461,77 @@ body {
     .reservation-form {
         padding: 1rem;
     }
+}
+/* --- SECTION GALERIE --- */
+.gallery-section {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: sans-serif;
+}
+
+/* --- NAVIGATION DES ONGLETS --- */
+.gallery-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap; /* Évite de casser la mise en page sur mobile */
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: 2px solid #333;
+    background-color: transparent;
+    color: #333;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 25px; /* Onglets arrondis style pilule */
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover, .tab-btn.active {
+    background-color: #333;
+    color: #fff;
+}
+
+/* --- GRILLE DE PHOTOS (3 PAR RANG) --- */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 👈 Exactement 3 colonnes de taille égale */
+    gap: 20px; /* Espace entre les photos */
+}
+
+/* --- ADAPTATION MOBILE (1 seule colonne sur petit écran) --- */
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(1, 1fr); 
+    }
+}
+
+/* --- STYLE DES IMAGES ET DES BORDS --- */
+.gallery-item {
+    display: none; /* Caché par défaut, géré par le script */
+    overflow: hidden;
+    border-radius: 15px; /* 👈 Bords arrondis sur le conteneur */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    aspect-ratio: 4 / 3; /* Force toutes les photos à garder les mêmes proportions */
+}
+
+.gallery-item.active {
+    display: block; /* Affiche uniquement la catégorie active */
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Recadre proprement les images de tailles différentes */
+    border-radius: 15px; /* 👈 Bords arrondis sur l'image elle-même */
+    transition: transform 0.4s ease;
+}
+
+/* Petit effet de zoom élégant au survol */
+.gallery-item:hover img {
+    transform: scale(1.05);
 }
