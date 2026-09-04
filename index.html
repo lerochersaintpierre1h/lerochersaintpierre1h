@@ -17,7 +17,7 @@
                 <li><a href="#accueil" class="nav-link active">Accueil</a></li>
                 <li><a href="#galerie" class="nav-link">Galerie</a></li>
                 <li><a href="#apropos" class="nav-link">À Propos</a></li>
-                <li><a href="#reservation" class="nav-link">Réservation</a></li>
+                <li><a href="#reservation" class="nav-link">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -158,67 +158,106 @@
                 <h1>Réservation & Contact</h1>
                 <p>Remplissez le formulaire ci-dessous pour faire une réservation ou nous poser une question.</p>
                 
+                <!-- ATTENTION : Remplacez VOTRE_ID_FORMSPREE par l'identifiant fourni par Formspree pour recevoir les mails -->
                 <form class="reservation-form" id="reservationForm" method="POST" action="https://formspree.io">
+                    
+                    <!-- Ligne 1 : Nom et Email -->
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="nom">Nom complet:</label>
+                            <label for="nom">Nom complet :</label>
                             <input type="text" id="nom" name="nom" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email:</label>
+                            <label for="email">Email :</label>
                             <input type="email" id="email" name="email" required>
                         </div>
                     </div>
 
+                    <!-- Ligne 2 : Les Voyageurs (Adultes et Enfants côte à côte, présentation identique au reste) -->
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="telephone">Téléphone:</label>
-                            <input type="tel" id="telephone" name="telephone" required>
+                            <label for="nombreAdultes">Nombre d'adultes :</label>
+                            <select id="nombreAdultes" name="nombreAdultes" required>
+                                <option value="">Sélectionnez...</option>
+                                <option value="1">1 adulte</option>
+                                <option value="2">2 adultes</option>
+                                <option value="3">3 adultes</option>
+                                <option value="4">4 adultes</option>
+                                <option value="5">5 adultes</option>
+                                <option value="6">6 adultes</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="nombrePersonnes">Nombre de personnes:</label>
-                            <select id="nombrePersonnes" name="nombrePersonnes" required>
-                                <option value="">Sélectionnez...</option>
-                                <option value="1">1 personne</option>
-                                <option value="2">2 personnes</option>
-                                <option value="3">3 personnes</option>
-                                <option value="4">4 personnes</option>
-                                <option value="5">5 personnes</option>
-                                <option value="6">6 personnes</option>
+                            <label for="nombreEnfants">Nombre d'enfants :</label>
+                            <select id="nombreEnfants" name="nombreEnfants" required>
+                                <option value="0">0 enfant</option>
+                                <option value="1">1 enfant</option>
+                                <option value="2">2 enfants</option>
+                                <option value="3">3 enfants</option>
+                                <option value="4">4 enfants</option>
+                                <option value="5">5 enfants</option>
                             </select>
                         </div>
                     </div>
 
+                    <!-- Ligne 3 : Le Téléphone en dessous -->
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="dateArrivee">Date d'arrivée:</label>
+                            <label for="telephone">Téléphone :</label>
+                            <input type="tel" id="telephone" name="telephone" required>
+                        </div>
+                        <!-- Case vide invisible pour garder l'alignement propre sur les grands écrans -->
+                        <div class="form-group" style="visibility: hidden; opacity: 0; pointer-events: none;"></div>
+                    </div>
+
+                    <!-- Ligne 4 : Dates -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dateArrivee">Date d'arrivée :</label>
                             <input type="date" id="dateArrivee" name="dateArrivee" required>
                         </div>
                         <div class="form-group">
-                            <label for="dateDepart">Date de départ:</label>
+                            <label for="dateDepart">Date de départ :</label>
                             <input type="date" id="dateDepart" name="dateDepart" required>
                         </div>
                     </div>
 
+                    <!-- Message -->
                     <div class="form-group">
-                        <label for="message">Message:</label>
+                        <label for="message">Message :</label>
                         <textarea id="message" name="message" rows="6" placeholder="Laissez votre message, vos questions ou demandes spéciales..." required></textarea>
                     </div>
 
-                    <div class="form-group checkbox">
-                        <input type="checkbox" id="conditions" name="conditions" required>
-                        <label for="conditions">J'accepte les conditions de réservation</label>
+                    <!-- Les deux boutons 100% identiques côte à côte -->
+                    <div class="form-buttons-row" style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; align-items: flex-start;">
+                        
+                        <!-- Bloc Bouton 1 : Formulaire classique -->
+                        <div style="flex: 1; min-width: 200px;">
+                            <button type="submit" class="btn btn-large" style="width: 100%;">Envoyer ma réservation</button>
+                        </div>
+                        
+                        <!-- Bloc Bouton 2 : VRAI bouton avec redirection Booking -->
+                        <div style="flex: 1; min-width: 200px; text-align: center;">
+                            <button type="button" class="btn btn-large" style="width: 100%;" 
+                                    onclick="window.open('https://www.booking.com/hotel/fr/le-rocher-saint-pierre-1h.fr.html?label=gen173nr-10CAEoggI46AdIM1gEaE2IAQGYATO4AQfIAQ3YAQPoAQH4AQGIAgGoAgG4AuK_59QGwAIB0gIkYjUyOGEwMjEtYzM0MS00ZWE2LWJjN2ItNGUxNjA1NWY2ZjA12AIB4AIB&aid=304142&ucfs=1&arphpl=1&checkin=2026-09-04&checkout=2026-09-05&adplat=www-homescreen-recently_viewed_carousel-stays-n_a-n_a', '_blank')">
+                                Réserver par Booking
+                            </button>
+                            <!-- Petit texte sous le bouton -->
+                            <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: #666; font-style: italic;">
+                                (frais supplémentaires via Booking)
+                            </p>
+                        </div>
+
+                    
+                        </div>
+
                     </div>
 
-                    <button type="submit" class="btn btn-large">Envoyer ma réservation</button>
-                </form>
 
                 <div class="contact-info">
                     <h3>Informations de contact</h3>
-                    <p><strong>Email:</strong> lerochersaintpierre1h@gmail.com</p>
+                    <p><strong>Email :</strong> lerochersaintpierre1h@gmail.com</p>
                 </div>
-            </div>
-        </div>
     </div> <!-- Fermeture finale du conteneur des pages -->
 
     <!-- Footer -->
@@ -226,7 +265,7 @@
         <p>&copy; 2024 Le Rocher Saint Pierre 1H. Tous droits réservés.</p>
     </footer>
 
-    <!-- La Lightbox (Boîte de zoom) vue précédemment -->
+    <!-- La Lightbox (Boîte de zoom pour la galerie) -->
     <div id="lightbox" class="lightbox">
         <span class="lightbox-close">&times;</span>
         <button class="lightbox-arrow lightbox-prev">&#10094;</button>
@@ -239,3 +278,8 @@
     <script src="script.js"></script>
 </body>
 </html>
+
+
+
+"https://www.booking.com/hotel/fr/le-rocher-saint-pierre-1h.fr.html?label=gen173nr-10CAEoggI46AdIM1gEaE2IAQGYATO4AQfIAQ3YAQPoAQH4AQGIAgGoAgG4AuK_59QGwAIB0gIkYjUyOGEwMjEtYzM0MS00ZWE2LWJjN2ItNGUxNjA1NWY2ZjA12AIB4AIB&aid=304142&ucfs=1&arphpl=1&checkin=2026-09-04&checkout=2026-09-05&adplat=www-homescreen-recently_viewed_carousel-stays-n_a-n_a"
+                           target="_blank" 
