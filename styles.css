@@ -36,6 +36,11 @@ body {
     font-weight: bold;
     color: white;
 }
+.logo img {
+    height: 40px;      /* Ajustez cette valeur (ex: 30px, 50px) selon vos besoins */
+    width: auto;       /* Conserve les proportions de l'image */
+    display: block;    /* Évite les espaces vides indésirables en bas */
+}
 
 .nav-menu {
     display: flex;
