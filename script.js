@@ -161,60 +161,68 @@ document.addEventListener('DOMContentLoaded', function() {
 // CONFIGURATION DU CALENDRIER & LIEN ICS
 // ==========================================================================
 
-// 1. Définissez ici votre lien de calendrier Airbnb ou Booking (.ics)
-const URL_ICS_BRUT = "REMPLACEZ_PAR_VOTRE_LIEN_ICS_ICI";
+// 1. Définissez ici votre lien de calendrier (.ics)
+const URL_ICS_BRUT = "https://ical.booking.com/v1/export?t=c2e693d7-90d5-4cb8-a2ee-4ee8f2536e2b";
 
-// Utilisation d'un proxy public gratuit pour contourner le blocage de sécurité (CORS) du navigateur
+// Utilisation du proxy AllOrigins pour contourner le blocage CORS du navigateur
 const URL_ICS_PROXIFIEE = "https://allorigins.win" + encodeURIComponent(URL_ICS_BRUT);
 
-// Noms des mois pour l'affichage en français
 const NOMS_MOIS = [
     "janvier", "février", "mars", "avril", "mai", "juin", 
     "juillet", "août", "septembre", "octobre", "novembre", "décembre"
 ];
 
-// Initialisation au chargement de la page
 document.addEventListener("DOMContentLoaded", initCalendrier);
 
 async function initCalendrier() {
     let datesOccupees = [];
+    console.log("Tentative de chargement du calendrier...");
 
-    // Tenter de charger les vraies dates depuis Airbnb/Booking
     try {
         const response = await fetch(URL_ICS_PROXIFIEE);
-        if (!response.ok) throw new Error("Erreur réseau");
+        if (!response.ok) throw new Error("Erreur réseau ou proxy indisponible");
         
         const texteICS = await response.text();
+        console.log("Fichier ICS récupéré avec succès. Analyse en cours...");
         datesOccupees = extraireDatesDepuisICS(texteICS);
+        console.log("Dates occupées trouvées :", datesOccupees);
     } catch (error) {
-        console.warn("Impossible de charger le lien ICS (Affichage d'un calendrier vide) :", error);
+        console.error("Erreur lors du chargement du fichier ICS :", error);
     }
 
-    // Lancer la génération visuelle des 12 mois
+    // On génère le calendrier (même s'il est vide suite à une erreur, pour afficher les mois)
     generer12MoisGlissants(datesOccupees);
 }
 
 // ==========================================================================
-// DECODAGE ANALYSE DU FICHIER ICS (SANS BIBLIOTHÈQUE LOURDE)
+// DECODAGE ET ANALYSE ROBUSTE DU FICHIER ICS
 // ==========================================================================
 function extraireDatesDepuisICS(texte) {
     const dates = [];
-    const lignes = texte.split(/\r?\n/);
+    // Découpage propre des lignes pour éviter les retours chariots Windows/Mac
+    const lignes = texte.replace(/\r/g, "").split("\n");
+    
     let dateDebut = null;
     let dateFin = null;
 
     for (let i = 0; i < lignes.length; i++) {
         const ligne = lignes[i].trim();
         
+        // Détection du début de réservation (DTSTART)
         if (ligne.startsWith("DTSTART")) {
-            dateDebut = interpreterDateICS(ligne.split(":")[1]);
-        } else if (ligne.startsWith("DTEND")) {
-            dateFin = interpreterDateICS(ligne.split(":")[1]);
-        } else if (ligne.startsWith("END:VEVENT")) {
-            // Quand un événement se termine, on calcule tous les jours occupés
+            const parties = ligne.split(":");
+            if (parties.length > 1) dateDebut = interpreterDateICS(parties[1]);
+        } 
+        // Détection de la fin de réservation (DTEND)
+        else if (ligne.startsWith("DTEND")) {
+            const parties = ligne.split(":");
+            if (parties.length > 1) dateFin = interpreterDateICS(parties[1]);
+        } 
+        // Fin de l'événement : on enregistre les jours
+        else if (ligne.startsWith("END:VEVENT")) {
             if (dateDebut && dateFin) {
                 let courant = new Date(dateDebut);
-                // On boucle jour par jour jusqu'à la veille du départ
+                // Boucle du jour d'arrivée jusqu'à la veille du départ
                 while (courant < dateFin) {
                     dates.push(formaterDateCle(courant));
                     courant.setDate(courant.getDate() + 1);
@@ -227,16 +235,19 @@ function extraireDatesDepuisICS(texte) {
     return dates;
 }
 
-// Convertit une chaîne ICS (Ex: 20261225T120000Z ou 20261225) en objet Date JavaScript
-function interpreterDateICS(chaine) {
-    if (!chaine) return null;
-    const a = chaine.substring(0, 4);
-    const m = chaine.substring(4, 6) - 1;
-    const j = chaine.substring(6, 8);
-    return new Date(a, m, j, 12, 0, 0); // calé à midi pour éviter les sauts d'heures d'été/hiver
+// Convertisseur ICS -> Date JavaScript (Prend en compte les formats AAAAMMJJ et AAAAMMJJTHHMMSSZ)
+function interpreterDateICS(valeur) {
+    if (!valeur || valeur.length < 8) return null;
+    
+    // On extrait l'année, le mois (0-11 en JS) et le jour depuis la chaîne
+    const annee = parseInt(valeur.substring(0, 4), 10);
+    const mois = parseInt(valeur.substring(4, 6), 10) - 1;
+    const jour = parseInt(valeur.substring(6, 8), 10);
+    
+    // On crée la date calée à midi pour éviter les bugs de fuseaux horaires
+    return new Date(annee, mois, jour, 12, 0, 0);
 }
 
-// Crée une clé universelle au format "AAAA-MM-JJ"
 function formaterDateCle(date) {
     const a = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, '0');
@@ -249,27 +260,26 @@ function formaterDateCle(date) {
 // ==========================================================================
 function generer12MoisGlissants(datesOccupees) {
     const grillePrincipale = document.getElementById("annualCalendarGrid");
-    if (!grillePrincipale) return;
+    if (!grillePrincipale) {
+        console.error("Élément #annualCalendarGrid introuvable dans le HTML !");
+        return;
+    }
     
-    grillePrincipale.innerHTML = ""; // Vider le conteneur
+    grillePrincipale.innerHTML = ""; 
 
     const aujourdhui = new Date();
     let anneeCourante = aujourdhui.getFullYear();
     let moisCourant = aujourdhui.getMonth();
 
-    // Boucle pour générer exactement 12 mois à partir de ce mois-ci
     for (let m = 0; m < 12; m++) {
-        // Créer la boîte du mois
         const boiteMois = document.createElement("div");
         boiteMois.className = "month-box";
 
-        // Titre du mois (Ex: "décembre 2026")
         const titre = document.createElement("div");
         titre.className = "month-title";
         titre.textContent = `${NOMS_MOIS[moisCourant]} ${anneeCourante}`;
         boiteMois.appendChild(titre);
 
-        // Labels des jours de la semaine (L M M J V S D)
         const labelsSemaine = document.createElement("div");
         labelsSemaine.className = "week-days-labels";
         ["L", "M", "M", "J", "V", "S", "D"].forEach(lettre => {
@@ -279,26 +289,23 @@ function generer12MoisGlissants(datesOccupees) {
         });
         boiteMois.appendChild(labelsSemaine);
 
-        // Grille des jours
         const grilleJours = document.createElement("div");
         grilleJours.className = "days-grid";
 
-        // Déterminer le premier jour du mois (0 = Dimanche, 1 = Lundi...)
         let premierJourIndex = new Date(anneeCourante, moisCourant, 1).getDay();
-        // Convertir le format pour commencer par Lundi (0 = Lundi ... 6 = Dimanche)
+        // Ajustement pour commencer la semaine le Lundi en France
         premierJourIndex = premierJourIndex === 0 ? 6 : premierJourIndex - 1;
 
-        // Nombre de jours total dans ce mois
         const totalJoursMois = new Date(anneeCourante, moisCourant + 1, 0).getDate();
 
-        // 1. Ajouter les cases vides du début de mois (alignement du calendrier)
+        // 1. Cases vides
         for (let vide = 0; vide < premierJourIndex; vide++) {
             const caseVide = document.createElement("div");
             caseVide.className = "day-cell empty";
             grilleJours.appendChild(caseVide);
         }
 
-        // 2. Ajouter les vrais jours du mois
+        // 2. Vrais jours
         for (let jour = 1; jour <= totalJoursMois; jour++) {
             const dateActuelle = new Date(anneeCourante, moisCourant, jour);
             const dateCle = formaterDateCle(dateActuelle);
@@ -307,11 +314,10 @@ function generer12MoisGlissants(datesOccupees) {
             caseJour.className = "day-cell";
             caseJour.textContent = jour;
 
-            // Comparer avec la liste des réservations extraites du fichier ICS
             if (datesOccupees.includes(dateCle)) {
-                caseJour.classList.add("occupe");
+                caseJour.classList.add("occupe"); // Applique le rouge transparent du CSS
             } else {
-                caseJour.classList.add("libre");
+                caseJour.classList.add("libre");  // Applique le vert transparent du CSS
             }
 
             grilleJours.appendChild(caseJour);
@@ -320,7 +326,6 @@ function generer12MoisGlissants(datesOccupees) {
         boiteMois.appendChild(grilleJours);
         grillePrincipale.appendChild(boiteMois);
 
-        // Passer au mois suivant dans la boucle
         moisCourant++;
         if (moisCourant > 11) {
             moisCourant = 0;
