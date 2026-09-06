@@ -101,7 +101,7 @@ nav img {
     position: relative;
     height: 100vh;
     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
-                url('images/couverture.png') center/cover no-repeat;
+                url('images/couverture.jpg') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
