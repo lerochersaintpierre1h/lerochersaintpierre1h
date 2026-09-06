@@ -291,252 +291,106 @@
         </div>
         <button class="lightbox-arrow lightbox-next">❯</button>
     </div>
-
-    <!-- Script de gestion de la galerie et des pages -->
-    <script src="script.js"></script>
-
-        <!-- SCRIPT DU FORMULAIRE : GESTION DU MAILTO PRÉ-REMPLI -->
-    <script>
-    function genererMailto(event) {
-        // 1. Bloque le rechargement immédiat de la page
-        event.preventDefault();
-
-        // 2. Extraction des valeurs saisies par le client
-        const nom = document.getElementById('nom').value;
-        const emailClient = document.getElementById('email').value;
-        const adulte = document.getElementById('nombreAdultes').value;
-        const enfant = document.getElementById('nombreEnfants').value;
-        const telephone = document.getElementById('telephone').value;
-        const arrivee = document.getElementById('dateArrivee').value;
-        const depart = document.getElementById('dateDepart').value;
-        const message = document.getElementById('message').value;
-
-        // 3. Configuration de l'adresse et de l'objet
-        const emailDestinataire = "lerochersaintpierre1h@gmail.com";
-        const sujet = encodeURIComponent(`Demande de réservation - ${nom}`);
-
-        // 4. Structuration textuelle propre du mail (Remplacement du & par "et")
-        let corps = `Bonjour,%0D%0A%0D%0A`;
-        corps += `Vous avez reçu une nouvelle demande de réservation pour le Rocher Saint Pierre :%0D%0A`;
-        corps += `==================================================%0D%0A`;
-        corps += `RECAPITULATIF DE LA DEMANDE%0D%0A`;
-        corps += `==================================================%0D%0A`;
-        corps += `• Nom complet        : ${nom}%0D%0A`;
-        corps += `• Email du client    : ${emailClient}%0D%0A`;
-        corps += `• Téléphone          : ${telephone}%0D%0A`;
-        corps += `• Voyageurs          : ${adulte} adulte(s) et ${enfant} enfant(s)%0D%0A`;
-        corps += `• Période du séjour  : du ${arrivee} au ${depart}%0D%0A`;
-        corps += `==================================================%0D%0A%0D%0A`;
-        corps += `MESSAGE :%0D%0A`; // 👈 Le "&" a été remplacé par "ET" ici
-        corps += `${message}%0D%0A`;
-
-        // 5. Déclenche l'outil de messagerie de l'appareil
-        window.location.href = `mailto:${emailDestinataire}?subject=${sujet}&body=${corps}`;
-    }
-    </script>
-
-    <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const calendarContainer = document.getElementById("annualCalendarGrid");
-    
-    // Noms des mois et étiquettes des jours
-    const nomsMois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
-    const joursSemaine = ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"];
-    
-    // Date de consultation actuelle
-    const dateActuelle = new Date();
-    let anneeCourante = dateActuelle.getFullYear();
-    let moisCourant = dateActuelle.getMonth(); // 0 = Janvier, 11 = Décembre
-
-    // Boucle pour générer les 12 prochains mois glissants
-    for (let i = 0; i < 12; i++) {
-        let indexMois = (moisCourant + i) % 12;
-        let anneeCible = anneeCourante + Math.floor((moisCourant + i) / 12);
-        
-        // Création du bloc conteneur du mois
-        const monthBox = document.createElement("div");
-        monthBox.className = "month-box";
-        
-        // Titre du mois (ex: "Septembre 2026")
-        const title = document.createElement("div");
-        title.className = "month-title";
-        title.innerText = `${nomsMois[indexMois]} ${anneeCible}`;
-        monthBox.appendChild(title);
-        
-        // Ajout des en-têtes de jours (Lu, Ma, Me...)
-        const labelsGrid = document.createElement("div");
-        labelsGrid.className = "week-days-labels";
-        joursSemaine.forEach(jour => {
-            const dayLabel = document.createElement("div");
-            dayLabel.innerText = jour;
-            labelsGrid.appendChild(dayLabel);
-        });
-        monthBox.appendChild(labelsGrid);
-        
-        // Grille pour les chiffres des jours
-        const daysGrid = document.createElement("div");
-        daysGrid.className = "days-grid";
-        
-        // Calcul du premier jour du mois (0 = Dimanche, 1 = Lundi...)
-        let premierJourIndex = new Date(anneeCible, indexMois, 1).getDay();
-        // Convertir pour que le Lundi soit le premier index (0) au lieu du Dimanche
-        let decalageJours = premierJourIndex === 0 ? 6 : premierJourIndex - 1;
-        
-        // Insérer des cases vides pour les jours du mois précédent
-        for (let d = 0; d < decalageJours; d++) {
-            const emptyCell = document.createElement("div");
-            emptyCell.className = "day-cell empty";
-            daysGrid.appendChild(emptyCell);
-        }
-        
-        // Nombre total de jours dans ce mois
-        let nombreJoursMois = new Date(anneeCible, indexMois + 1, 0).getDate();
-        
-        // Génération des jours du mois
-        for (let jour = 1; jour <= nombreJoursMois; jour++) {
-            const dayCell = document.createElement("div");
-            dayCell.className = "day-cell libre"; // Par défaut mis en LIBRE
-            dayCell.innerText = jour;
-            
-            // 💡 Zone de personnalisation future pour votre iCal :
-            // Si le jour actuel correspond à une date occupée dans le iCal,
-            // on changera sa classe en : dayCell.className = "day-cell occupe";
-            
-            daysGrid.appendChild(dayCell);
-        }
-        
-        monthBox.appendChild(daysGrid);
-        calendarContainer.appendChild(monthBox);
-    }
-});
-</script>
-           <!-- SCRIPT DE SYNCHRONISATION MULTI-ANNÉES ET GÉNÉRATION DU CALENDRIER ANNUEL VIA GOOGLE SHEETS -->
+        <!-- SCRIPT DE SYNCHRONISATION ICAL GENS DE CONFIANCE ET GÉNÉRATION IMMÉDIATE -->
     <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Liens d'export CSV propres et stables pour vos deux fichiers Google Sheets
-        const URL_SHEETS_2026 = "https://google.com";
-        const URL_SHEETS_2027 = "https://google.com";
+        const calendarContainer = document.getElementById("annualCalendarGrid");
+        
+        // Votre lien de calendrier Gens de Confiance officiel
+        const URL_ICAL_GDC = "https://gensdeconfiance.com";
+        const occupiedDates = new Set();
 
-        console.log("Connexion aux tableaux Google Sheets (2026 et 2027)...");
+        // 1. ACTION IMMÉDIATE : Affichage initial du calendrier en vert
+        genererCalendrierAnnuel();
 
-        // Jeton anti-cache en temps réel (millisecondes)
+        console.log("Connexion au service de synchronisation Gens de Confiance...");
+
+        // Jeton de sécurité anti-cache (timestamp)
         const jetonAntiCache = "&nocache=" + new Date().getTime();
         
-        const urlProxy2026 = "https://corsproxy.io?" + encodeURIComponent(URL_SHEETS_2026 + jetonAntiCache);
-        const urlProxy2027 = "https://corsproxy.io?" + encodeURIComponent(URL_SHEETS_2027 + jetonAntiCache);
+        // Utilisation du format d'appel brut AllOrigins pour contourner à 100% la sécurité CORS
+        const urlAvecProxy = "https://allorigins.win" + encodeURIComponent(URL_ICAL_GDC + jetonAntiCache);
 
-        // Chargement simultané des deux fichiers de réservation
-        Promise.all([
-            fetch(urlProxy2026).then(res => { if (!res.ok) throw new Error("Erreur 2026"); return res.text(); }),
-            fetch(urlProxy2027).then(res => { if (!res.ok) throw new Error("Erreur 2027"); return res.text(); })
-        ])
-        .then(([data2026, data2027]) => {
-            console.log("Fichiers récupérés. Extraction des dates occupées...");
-            
-            const datesOccupees2026 = extraireDatesDepuisCSV(data2026);
-            const datesOccupees2027 = extraireDatesDepuisCSV(data2027);
-            
-            // Fusion des sets de dates des deux années
-            const toutesLesDatesOccupees = new Set([...datesOccupees2026, ...datesOccupees2027]);
-            console.log("Total des dates converties en rouge :", toutesLesDatesOccupees.size);
-            
-            // Rendu visuel du calendrier
-            genererCalendrierAnnuel(toutesLesDatesOccupees);
-        })
-        .catch(err => {
-            console.error("Échec de la synchronisation, affichage par défaut disponible :", err);
-            genererCalendrierAnnuel(new Set());
-        });
+        // 2. REQUÊTE RÉSEAU : Téléchargement des réservations en arrière-plan
+        fetch(urlAvecProxy)
+            .then(response => {
+                if (!response.ok) throw new Error("Le serveur proxy n'a pas répondu");
+                return response.text();
+            })
+            .then(data => {
+                console.log("Fichier iCal reçu avec succès. Extraction des plages de dates...");
+                extraireDatesIcal(data);
+                console.log("Synchronisation terminée ! Nombre de jours bloqués en rouge :", occupiedDates.size);
+                
+                // 3. ACTUALISATION GRAPHIQUE : Redessine les cases en rouge
+                genererCalendrierAnnuel();
+            })
+            .catch(err => {
+                console.error("Échec du chargement distant, maintien du calendrier local :", err);
+            });
 
-        // Décodage des lignes du fichier CSV
-        function extraireDatesDepuisCSV(texteCSV) {
-            const dates = new Set();
-            const lignes = texteCSV.split(/\r?\n/);
+        // Décodeur chirurgical de lignes de fichier .ics
+        function extraireDatesIcal(icalText) {
+            const lignes = icalText.replace(/\r/g, "").split("\n");
+            let dateDebut = null;
+            let dateFin = null;
 
-            // Début à la ligne 5 (index 4) pour sauter les en-têtes de colonnes
-            for (let i = 4; i < lignes.length; i++) {
+            for (let i = 0; i < lignes.length; i++) {
                 const ligne = lignes[i].trim();
                 if (!ligne) continue;
 
-                // Gestion du séparateur de colonnes européen (point-virgule) ou standard (virgule)
-                const separateur = ligne.includes(";") ? ";" : ",";
-                const colonnes = ligne.split(separateur);
-                
-                if (colonnes.length < 4) continue;
-
-                // Nettoyage des guillemets éventuels appliqués par l'export CSV
-                const dateDebutBrute = colonnes[1] ? colonnes[1].replace(/"/g, "").trim() : "";
-                const dateFinBrute = colonnes[2] ? colonnes[2].replace(/"/g, "").trim() : "";
-                const client = colonnes[3] ? colonnes[3].replace(/"/g, "").trim() : "";
-
-                // CONDITION : Si la colonne client contient un nom ou un blocage valide
-                if (client && client !== "" && client !== "#N/A" && client !== "CLIENTS") {
-                    let dateDebut = interpreterDateExcel(dateDebutBrute);
-                    let dateFin = interpreterDateExcel(dateFinBrute);
-
+                // Extraction textuelle directe de la date de début (DTSTART)
+                if (ligne.startsWith("DTSTART")) {
+                    const indexDeuxPoints = ligne.indexOf(":");
+                    if (indexDeuxPoints !== -1) {
+                        const valeurDate = ligne.substring(indexDeuxPoints + 1).replace(/[^0-9]/g, "");
+                        if (valeurDate.length >= 8) {
+                            dateDebut = stringToDate(valeurDate);
+                        }
+                    }
+                }
+                // Extraction textuelle directe de la date de fin (DTEND)
+                else if (ligne.startsWith("DTEND")) {
+                    const indexDeuxPoints = ligne.indexOf(":");
+                    if (indexDeuxPoints !== -1) {
+                        const valeurDate = ligne.substring(indexDeuxPoints + 1).replace(/[^0-9]/g, "");
+                        if (valeurDate.length >= 8) {
+                            dateFin = stringToDate(valeurDate);
+                        }
+                    }
+                }
+                // Si l'événement se termine, on enregistre la plage dans le Set global
+                else if (ligne.startsWith("END:VEVENT")) {
                     if (dateDebut && dateFin) {
                         let d = new Date(dateDebut);
                         let fin = new Date(dateFin);
                         
-                        // Ajout de chaque jour de la plage au tableau des dates occupées (jusqu'à la veille du départ)
+                        // Enregistrement jour par jour de l'arrivée à la veille du départ inclus
                         while (d < fin) {
                             const annee = d.getFullYear();
                             const mois = String(d.getMonth() + 1).padStart(2, '0');
                             const jour = String(d.getDate()).padStart(2, '0');
-                            dates.add(`${annee}-${mois}-${jour}`);
+                            occupiedDates.add(`${annee}-${mois}-${jour}`);
                             d.setDate(d.getDate() + 1);
                         }
                     }
+                    dateDebut = null;
+                    dateFin = null;
                 }
             }
-            return dates;
         }
 
-        // Convertisseur textuel de dates avec indexation [0], [1], [2] corrigée !
-        function interpreterDateExcel(chaine) {
-            if (!chaine) return null;
-
-            const moisFr = {
-                "janv": 0, "janvier": 0, "févr": 1, "fevr": 1, "février": 1, "mars": 2,
-                "avr": 3, "avril": 3, "mai": 4, "juin": 5, "juil": 6, "juillet": 6,
-                "août": 7, "aout": 7, "sept": 8, "septembre": 8, "oct": 9, "octobre": 9,
-                "nov": 10, "novembre": 10, "déc": 11, "dec": 11, "décembre": 11
-            };
-
-            let jour, mois, annee;
-            let nettoyee = chaine.replace(/\./g, "").toLowerCase().trim();
-
-            // Format texte à tirets : "16-janv-2027"
-            if (nettoyee.includes("-")) {
-                const morceaux = nettoyee.split("-");
-                if (morceaux.length >= 3) {
-                    jour = parseInt(morceaux[0], 10);
-                    let moisTexte = morceaux[1].trim();
-                    mois = moisFr[moisTexte] !== undefined ? moisFr[moisTexte] : -1;
-                    annee = parseInt(morceaux[2], 10);
-                }
-            } 
-            // Format numérique classique : "16/01/2027"
-            else if (nettoyee.includes("/")) {
-                const morceaux = nettoyee.split("/");
-                if (morceaux.length >= 3) {
-                    jour = parseInt(morceaux[0], 10);
-                    mois = parseInt(morceaux[1], 10) - 1;
-                    annee = parseInt(morceaux[2], 10);
-                }
-            }
-
-            if (!isNaN(jour) && mois !== -1 && !isNaN(annee)) {
-                return new Date(annee, mois, jour, 12, 0, 0); // Calage fixe à midi anti-fuseau horaire
-            }
-            return null;
+        // Convertit une chaîne de chiffres "20261220" en objet Date JavaScript valide calé à midi
+        function stringToDate(dateStr) {
+            const annee = parseInt(dateStr.substring(0, 4), 10);
+            const mois = parseInt(dateStr.substring(4, 6), 10) - 1;
+            const jour = parseInt(dateStr.substring(6, 8), 10);
+            return new Date(annee, mois, jour, 12, 0, 0);
         }
 
-        // Moteur graphique d'affichage original (Préservé)
-        function genererCalendrierAnnuel(datesOccupees) {
-            const calendarContainer = document.getElementById("annualCalendarGrid");
+        // Moteur de rendu graphique original (S'injecte dans annualCalendarGrid)
+        function genererCalendrierAnnuel() {
             if (!calendarContainer) return;
-
             calendarContainer.innerHTML = ""; 
 
             const nomsMois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
@@ -589,10 +443,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     const jourFormatte = String(jour).padStart(2, '0');
                     const cleDate = `${anneeCible}-${moisFormatte}-${jourFormatte}`;
                     
-                    if (datesOccupees.has(cleDate)) {
-                        dayCell.className = "day-cell occupe"; // ROUGE
+                    if (occupiedDates.has(cleDate)) {
+                        dayCell.className = "day-cell occupe"; // Devient ROUGE
                     } else {
-                        dayCell.className = "day-cell libre";  // VERT
+                        dayCell.className = "day-cell libre";  // Devient VERT
                     }
                     
                     daysGrid.appendChild(dayCell);
@@ -603,7 +457,3 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     </script>
-
-
-</body>
-</html>

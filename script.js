@@ -1,51 +1,32 @@
+// ==========================================================================
+// 1. NAVIGATION, GALERIE ET FORMULAIRES GENERAL
+// ==========================================================================
+
 // Fonction pour afficher une page spécifique
 function showPage(pageId) {
-    // Masquer toutes les pages
     const pages = document.querySelectorAll('.page');
-    pages.forEach(page => {
-        page.classList.remove('active');
-    });
+    pages.forEach(page => page.classList.remove('active'));
 
-    // Afficher la page sélectionnée
     const selectedPage = document.getElementById(pageId);
-    if (selectedPage) {
-        selectedPage.classList.add('active');
-    }
+    if (selectedPage) selectedPage.classList.add('active');
 
-    // Mettre à jour le menu actif
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('href') === '#' + pageId) {
-            link.classList.add('active');
-        }
+        if (link.getAttribute('href') === '#' + pageId) link.classList.add('active');
     });
-
-    // Scroll vers le haut de la page
     window.scrollTo(0, 0);
 }
 
 // Gérer la soumission du formulaire de réservation
 document.addEventListener('DOMContentLoaded', function() {
     const reservationForm = document.getElementById('reservationForm');
-    
     if (reservationForm) {
         reservationForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Récupérer les valeurs du formulaire
             const nom = document.getElementById('nom').value;
             const email = document.getElementById('email').value;
-            const telephone = document.getElementById('telephone').value;
-            const nombrePersonnes = document.getElementById('nombrePersonnes').value;
-            const dateArrivee = document.getElementById('dateArrivee').value;
-            const dateDepart = document.getElementById('dateDepart').value;
-            const message = document.getElementById('message').value;
-
-            // Afficher un message de confirmation
             alert(`Merci ${nom}!\n\nVotre réservation a été reçue.\n\nNous vous répondrons rapidement à l'adresse: ${email}\n\nEmail de destination: lerochersaintpierre1h@gmail.com`);
-            
-            // Réinitialiser le formulaire
             reservationForm.reset();
         });
     }
@@ -54,37 +35,30 @@ document.addEventListener('DOMContentLoaded', function() {
 // Activer les liens de navigation
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
-    
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            
-            // Récupérer l'ID de la page depuis l'attribut href
             const pageId = this.getAttribute('href').substring(1);
             showPage(pageId);
         });
     });
 });
+
+// Filtrer la galerie d'images
 function filterGallery(category) {
-    // 1. Mettre à jour l'état actif des boutons d'onglets
     const buttons = document.querySelectorAll('.tab-btn');
     buttons.forEach(btn => btn.classList.remove('active'));
-    if (window.event && window.event.currentTarget) {
-        window.event.currentTarget.classList.add('active');
-    }
+    if (window.event && window.event.currentTarget) window.event.currentTarget.classList.add('active');
 
-    // 2. Filtrer et afficher uniquement les images de l'onglet sélectionné
     const items = document.querySelectorAll('.gallery-item');
-    const lowerCategory = category.toLowerCase(); // Force la catégorie en minuscules
-
+    const lowerCategory = category.toLowerCase();
     items.forEach(item => {
-        if (item.classList.contains(lowerCategory)) {
-            item.classList.add('active');
-        } else {
-            item.classList.remove('active');
-        }
+        if (item.classList.contains(lowerCategory)) item.classList.add('active');
+        else item.classList.remove('active');
     });
 }
+
+// Lightbox pour visionner les photos
 document.addEventListener('DOMContentLoaded', function() {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
@@ -92,27 +66,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevBtn = document.querySelector('.lightbox-prev');
     const nextBtn = document.querySelector('.lightbox-next');
     
-    let currentActiveItems = []; // Stocke les images de l'onglet actif
-    let currentIndex = 0;        // Index de l'image ouverte
+    let currentActiveItems = [];
+    let currentIndex = 0;
 
-    // Événement : Clic sur une image de la galerie
-    document.querySelector('.gallery-section').addEventListener('click', function(e) {
-        // On vérifie qu'on a cliqué sur une image dans un item de galerie
-        const clickedItem = e.target.closest('.gallery-item');
-        if (!clickedItem) return;
+    const gallerySection = document.querySelector('.gallery-section');
+    if (gallerySection) {
+        gallerySection.addEventListener('click', function(e) {
+            const clickedItem = e.target.closest('.gallery-item');
+            if (!clickedItem) return;
+            currentActiveItems = Array.from(document.querySelectorAll('.gallery-item.active'));
+            currentIndex = currentActiveItems.indexOf(clickedItem);
+            if (currentIndex !== -1) openLightbox();
+        });
+    }
 
-        // On récupère TOUTES les images actuellement visibles dans l'onglet actif
-        currentActiveItems = Array.from(document.querySelectorAll('.gallery-item.active'));
-        
-        // On cherche la position de l'image cliquée dans cette liste
-        currentIndex = currentActiveItems.indexOf(clickedItem);
-
-        if (currentIndex !== -1) {
-            openLightbox();
-        }
-    });
-
-    // Fonction pour ouvrir et afficher l'image
     function openLightbox() {
         const targetImg = currentActiveItems[currentIndex].querySelector('img');
         lightboxImg.src = targetImg.src;
@@ -120,168 +87,200 @@ document.addEventListener('DOMContentLoaded', function() {
         lightbox.classList.add('active');
     }
 
-    // Image suivante
     function nextImage() {
         currentIndex = (currentIndex + 1) % currentActiveItems.length;
         openLightbox();
     }
 
-    // Image précédente
     function prevImage() {
         currentIndex = (currentIndex - 1 + currentActiveItems.length) % currentActiveItems.length;
         openLightbox();
     }
 
-    // Fermer la lightbox
-    function closeLightbox() {
-        lightbox.classList.remove('active');
+    if (nextBtn) nextBtn.addEventListener('click', nextImage);
+    if (prevBtn) prevBtn.addEventListener('click', prevImage);
+    if (closeBtn) closeBtn.addEventListener('click', () => lightbox.classList.remove('active'));
+
+    if (lightbox) {
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox || e.target.classList.contains('lightbox-content-wrapper')) lightbox.classList.remove('active');
+        });
     }
 
-    // Liens vers les boutons
-    nextBtn.addEventListener('click', nextImage);
-    prevBtn.addEventListener('click', prevImage);
-    closeBtn.addEventListener('click', closeLightbox);
-
-    // Fermer si on clique sur le fond noir en dehors de l'image
-    lightbox.addEventListener('click', function(e) {
-        if (e.target === lightbox || e.target.classList.contains('lightbox-content-wrapper')) {
-            closeLightbox();
-        }
-    });
-
-    // Optionnel : Permettre de naviguer avec le clavier (flèches gauche/droite et Échap)
     document.addEventListener('keydown', function(e) {
-        if (!lightbox.classList.contains('active')) return;
+        if (!lightbox || !lightbox.classList.contains('active')) return;
         if (e.key === 'ArrowRight') nextImage();
         if (e.key === 'ArrowLeft') prevImage();
-        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'Escape') lightbox.classList.remove('active');
     });
 });
 // ==========================================================================
-// CONFIGURATION DU CALENDRIER VIA GOOGLE SHEETS
+// CONFIGURATION DU CALENDRIER VIA GENS DE CONFIANCE (ICAL)
 // ==========================================================================
 
-// Lien d'export CSV direct de votre Google Sheets "RESA VALLOIRE 2027"
-const URL_SHEETS_CSV = "https://google.com";
+// Votre lien de calendrier Gens de Confiance officiel
+const URL_ICAL_GDC = "https://static.gensdeconfiance.com/calendars/91f96a3d-cf71-4903-bc29-161a9b58e509.calendar.ics";
 
-const NOMS_MOIS = [
-    "janvier", "février", "mars", "avril", "mai", "juin", 
-    "juillet", "août", "septembre", "octobre", "novembre", "décembre"
-];
+const occupiedDates = new Set();
+const monthNames = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+const weekDays = ["L", "M", "M", "J", "V", "S", "D"];
 
 document.addEventListener("DOMContentLoaded", initCalendrier);
 
 async function initCalendrier() {
-    let datesOccupees = [];
-    console.log("Connexion au tableau Google Sheets de réservation...");
+    console.log("Connexion au calendrier Gens de Confiance...");
+
+    // Jeton anti-cache en temps réel pour forcer la mise à jour à chaque seconde
+    const jetonAntiCache = "&nocache=" + new Date().getTime();
+    const urlProxy = "https://allorigins.win" + encodeURIComponent(URL_ICAL_GDC + jetonAntiCache);
 
     try {
-        // Ajout d'une clé unique (timestamp) mise à jour instantanément pour forcer le rafraîchissement des données (anti-cache)
-        const urlAvecAntiCache = URL_SHEETS_CSV + "&nocache=" + new Date().getTime();
+        const response = await fetch(urlProxy);
+        if (!response.ok) throw new Error("Le serveur proxy n'a pas répondu");
         
-        // Utilisation d'un proxy pour éviter les blocages de sécurité CORS sur certains navigateurs
-        const urlProxifiee = "https://corsproxy.io?" + encodeURIComponent(urlAvecAntiCache);
+        const texteICS = await response.text();
+        console.log("Fichier iCal GdC récupéré. Extraction des dates occupées...");
+        
+        extraireDatesDepuisICS(texteICS);
+        console.log("Synchronisation réussie. Nombre de jours bloqués en rouge :", occupiedDates.size);
 
-        const response = await fetch(urlProxifiee);
-        if (!response.ok) throw new Error("Impossible de joindre le serveur du tableau Excel");
-        
-        const texteCSV = await response.text();
-        console.log("Données du tableau récupérées. Analyse des lignes occupées...");
-        datesOccupees = extraireDatesDepuisCSV(texteCSV);
-        console.log("Total des jours bloqués trouvés :", datesOccupees.length);
     } catch (error) {
-        console.error("Erreur lors de la synchronisation avec le fichier Excel :", error);
+        console.error("Erreur lors de la synchronisation iCal :", error);
     }
 
-    // Génération du calendrier visuel (les cases passent au rouge ou vert)
-    generer12MoisGlissants(datesOccupees);
+    // Lance le tracé du calendrier (on utilise l'année en cours : 2026)
+    renderCalendar(2026);
 }
 
 // ==========================================================================
-// DECODAGE DU TABLEAU EXCEL (CSV) & RECHERCHE DES PERIODES OCCUPEES
+// DECODER ULTRA-ROBUSTE POUR FICHIER .ICS
 // ==========================================================================
-function extraireDatesDepuisCSV(texte) {
-    const datesBloquees = [];
-    // Découpage du fichier par lignes
-    const lignes = texte.split(/\r?\n/);
+function extraireDatesDepuisCSV(texteICS) { // Nom conservé pour éviter tout conflit interne
+    extraireDatesDepuisICS(texteICS);
+}
+
+function extraireDatesDepuisICS(texteICS) {
+    const lignes = texteICS.replace(/\r/g, "").split("\n");
+    let dateDebut = null;
+    let dateFin = null;
 
     for (let i = 0; i < lignes.length; i++) {
-        const ligne = lignes[i];
+        const ligne = lignes[i].trim();
         if (!ligne) continue;
 
-        // Découpage des colonnes (séparateur virgule standard des exports Google Sheets)
-        const colonnes = ligne.split(",");
-
-        // Sécurité : On s'assure d'avoir au moins les colonnes de dates (A et B) et la colonne Client (C)
-        if (colonnes.length < 3) continue;
-
-        const dateDebutBrute = colonnes[1] ? colonnes[1].trim() : ""; // Colonne B (DATE DEBUT)
-        const dateFinBrute = colonnes[2] ? colonnes[2].trim() : "";   // Colonne C (DATE DE FIN)
-        const client = colonnes[3] ? colonnes[3].trim() : "";         // Colonne D (CLIENTS)
-
-        // Si la colonne Client contient un vrai nom ou "INDISPO PERSO" (et pas du vide ou #N/A)
-        if (client && client !== "" && client !== "#N/A" && !client.includes("CLIENTS")) {
-            
-            let dateDebut = interpreterDateExcel(dateDebutBrute);
-            let dateFin = interpreterDateExcel(dateFinBrute);
-
+        // Détection de DTSTART (gère aussi DTSTART;VALUE=DATE:...)
+        if (ligne.startsWith("DTSTART")) {
+            const indexDeuxPoints = ligne.indexOf(":");
+            if (indexDeuxPoints !== -1) {
+                dateDebut = interpreterDateICS(ligne.substring(indexDeuxPoints + 1));
+            }
+        } 
+        // Détection de DTEND
+        else if (ligne.startsWith("DTEND")) {
+            const indexDeuxPoints = ligne.indexOf(":");
+            if (indexDeuxPoints !== -1) {
+                dateFin = interpreterDateICS(ligne.substring(indexDeuxPoints + 1));
+            }
+        } 
+        // Fin de l'événement de réservation : on marque les jours en rouge
+        else if (ligne.startsWith("END:VEVENT")) {
             if (dateDebut && dateFin) {
                 let courant = new Date(dateDebut);
-                // On remplit le calendrier du jour du début à la veille du départ
+                // On remplit le Set du jour de l'arrivée jusqu'à la veille du départ
                 while (courant < dateFin) {
-                    datesBloquees.push(formaterDateCle(courant));
+                    const annee = courant.getFullYear();
+                    const mois = String(courant.getMonth() + 1).padStart(2, '0');
+                    const jour = String(courant.getDate()).padStart(2, '0');
+                    
+                    occupiedDates.add(`${annee}-${mois}-${jour}`);
                     courant.setDate(courant.getDate() + 1);
                 }
             }
+            dateDebut = null;
+            dateFin = null;
         }
     }
-    return datesBloquees;
 }
 
-// Convertisseur de texte Excel vers Date JavaScript standard (Gère les formats JJ-mm-AAAA et JJ/mm/AAAA)
-function interpreterDateExcel(chaine) {
-    if (!chaine) return null;
+// Convertit les formats iCal (ex: "20260906" ou "20260906T120000Z") en objet Date
+function interpreterDateICS(valeur) {
+    if (!valeur || valeur.length < 8) return null;
+    const propre = valeur.replace(/[^0-9]/g, ""); // Ne garde que les chiffres
+    
+    const annee = parseInt(propre.substring(0, 4), 10);
+    const mois = parseInt(propre.substring(4, 6), 10) - 1;
+    const jour = parseInt(propre.substring(6, 8), 10);
+    
+    return new Date(annee, mois, jour, 12, 0, 0); // Calage fixe à midi anti-décalage horaire
+}
 
-    // Table de correspondance pour traduire les mois textuels générés par Google Sheets en Français (ex: "janv.")
-    const moisFr = {
-        "janv": 0, "févr": 1, "mars": 2, "avr": 3, "mai": 4, "juin": 5,
-        "juil": 6, "août": 7, "sept": 8, "oct": 9, "nov": 10, "déc": 11
-    };
+// ==========================================================================
+// MOTEUR GRAPHIQUE DU CALENDRIER (S'INJECTE DANS annualCalendarGrid)
+// ==========================================================================
+function renderCalendar(year) {
+    const container = document.getElementById("annualCalendarGrid");
+    if (!container) return;
 
-    let jour, mois, annee;
+    container.innerHTML = "";
 
-    // Format 1 : "02-janv.-2027" ou "06-févr.-2027"
-    if (chaine.includes("-")) {
-        const morceaux = chaine.split("-");
-        if (morceaux.length >= 3) {
-            jour = parseInt(morceaux[0], 10);
-            annee = parseInt(morceaux[2], 10);
+    const dateActuelle = new Date();
+    let anneeCourante = dateActuelle.getFullYear();
+    let moisCourant = dateActuelle.getMonth();
+
+    // Génération dynamique de votre calendrier sur 12 mois glissants
+    for (let i = 0; i < 12; i++) {
+        let indexMois = (moisCourant + i) % 12;
+        let anneeCible = anneeCourante + Math.floor((moisCourant + i) / 12);
+
+        const monthBox = document.createElement("div");
+        monthBox.className = "month-box";
+
+        const title = document.createElement("div");
+        title.className = "month-title";
+        title.textContent = `${monthNames[indexMois]} ${anneeCible}`;
+        monthBox.appendChild(title);
+
+        const labels = document.createElement("div");
+        labels.className = "week-days-labels";
+        weekDays.forEach(day => {
+            const cell = document.createElement("div");
+            cell.textContent = day;
+            labels.appendChild(cell);
+        });
+        monthBox.appendChild(labels);
+
+        const daysGrid = document.createElement("div");
+        daysGrid.className = "days-grid";
+
+        let firstDay = new Date(anneeCible, indexMois, 1).getDay();
+        let offset = firstDay === 0 ? 6 : firstDay - 1; // Alignement semaine française (Lundi)
+
+        for (let j = 0; j < offset; j++) {
+            const emptyCell = document.createElement("div");
+            emptyCell.className = "day-cell empty";
+            daysGrid.appendChild(emptyCell);
+        }
+
+        const daysInMonth = new Date(anneeCible, indexMois + 1, 0).getDate();
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(anneeCible, indexMois, day);
             
-            // Nettoyage du texte du mois (ex: "janv." -> "janv")
-            let moisTexte = morceaux[1].toLowerCase().replace(".", "").trim();
-            mois = moisFr[moisTexte] !== undefined ? moisFr[moisTexte] : 0;
-        }
-    } 
-    // Format 2 classique numérique : "02/01/2027"
-    else if (chaine.includes("/")) {
-        const morceaux = chaine.split("/");
-        if (morceaux.length >= 3) {
-            jour = parseInt(morceaux[0], 10);
-            mois = parseInt(morceaux[1], 10) - 1;
-            annee = parseInt(morceaux[2], 10);
-        }
-    }
+            const anneeF = date.getFullYear();
+            const moisF = String(date.getMonth() + 1).padStart(2, '0');
+            const jourF = String(date.getDate()).padStart(2, '0');
+            const cleDate = `${anneeF}-${moisF}-${jourF}`;
 
-    if (!isNaN(jour) && !isNaN(mois) && !isNaN(annee)) {
-        // Calage à midi fixe pour neutraliser les décalages horaires
-        return new Date(annee, mois, jour, 12, 0, 0);
-    }
-    return null;
-}
+            const cell = document.createElement("div");
+            cell.textContent = day;
 
-function formaterDateCle(date) {
-    const a = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const j = String(date.getDate()).padStart(2, '0');
-    return `${a}-${m}-${j}`;
+            if (occupiedDates.has(cleDate)) {
+                cell.className = "day-cell occupe"; // Applique votre classe rouge CSS
+            } else {
+                cell.className = "day-cell libre";  // Applique votre classe verte CSS
+            }
+            daysGrid.appendChild(cell);
+        }
+        monthBox.appendChild(daysGrid);
+        container.appendChild(monthBox);
+    }
 }
