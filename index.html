@@ -4,33 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Titre optimisé pour Google -->
+    <!-- Titre optimisé (Mot-clé + Capacité + Lieu) -->
     <title>Le Rocher Saint Pierre 1H | Location Appartement 6 pers. à Valloire</title>
     
-    <!-- Description lue par Google et les moteurs de recherche -->
-    <meta name="description" content="Location d'un appartement 2 pièces de 40 m² pour 6 personnes au cœur de la station de Valloire (Savoie). Proche pistes, parking privé sous-sol et Wi-Fi inclus.">
-    <meta name="keywords" content="location valloire, appartement valloire 6 personnes, rocher saint pierre valloire, location vacances savoie, appartement pied des pistes valloire">
+    <!-- Description lue par Google et les IA -->
+    <meta name="description" content="Location d'un appartement 2 pièces de 40 m² pour 6 personnes au cœur de la station de Valloire (Savoie). Proche des pistes, avec parking fermé en sous-sol et Wi-Fi.">
+    <meta name="keywords" content="location valloire, appartement valloire 6 personnes, rocher saint pierre valloire, valloire centre station, location pied des pistes valloire, appartement cosy valloire, décoration moderne, location valloire avec parking sous-sol, séjour ski valloire, vacances montagne été hiver savoie, proche esf et valloire, location non fumeur">
     <meta name="robots" content="index, follow">
 
-    <!-- Balises Open Graph (Aperçu lors du partage du lien sur WhatsApp, Facebook, iMessage) -->
+    <!-- Balises Open Graph (Partage WhatsApp, Facebook, iMessage) -->
     <meta property="og:title" content="Le Rocher Saint Pierre 1H — Location 6 personnes à Valloire">
-    <meta property="og:description" content="Appartement 40 m² au centre de la station de Valloire. Parking sous-sol, local à skis, proche pistes et commerces.">
+    <meta property="og:description" content="Appartement 40 m² au centre de la station de Valloire. Parking sous-sol, local à skis, proche pistes et tous commerces.">
     <meta property="og:image" content="images/couverture.png">
     <meta property="og:type" content="website">
 
-    <!-- Données Structurées JSON-LD pour les IA (ChatGPT, Gemini, Claude) et Google -->
+    <!-- LE CODE JSON-LD POUR LES IA SE TROUVE ICI -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Accommodation",
+      "@type": "VacationRental",
       "name": "Le Rocher Saint Pierre 1H",
-      "description": "Appartement de vacances 2 pièces de 40 m² pour 6 personnes situé au centre de la station de Valloire.",
+      "description": "Appartement de vacances 2 pièces de 40 m² pour 6 personnes au centre de la station de Valloire (Savoie). Décoration soignée et moderne, proche des pistes et commerces.",
       "address": {
         "@type": "PostalAddress",
+        "streetAddress": "Le Rocher Saint Pierre",
         "addressLocality": "Valloire",
         "postalCode": "73450",
         "addressRegion": "Savoie",
         "addressCountry": "FR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 45.1652,
+        "longitude": 6.4281
       },
       "numberOfRooms": 2,
       "floorSize": {
@@ -42,12 +48,20 @@
         "@type": "QuantitativeValue",
         "maxValue": 6
       },
+      "priceRange": "À partir de 400€ / semaine",
+      "checkinTime": "17:00",
+      "checkoutTime": "10:00",
       "amenityFeature": [
+        {"@type": "LocationFeatureSpecification", "name": "Emplacement centre station", "value": true},
+        {"@type": "LocationFeatureSpecification", "name": "Proximité pistes (50m)", "value": true},
         {"@type": "LocationFeatureSpecification", "name": "Parking privé en sous-sol", "value": true},
+        {"@type": "LocationFeatureSpecification", "name": "Décoration soignée et moderne", "value": true},
         {"@type": "LocationFeatureSpecification", "name": "Wi-Fi inclus", "value": true},
         {"@type": "LocationFeatureSpecification", "name": "Local à skis", "value": true},
-        {"@type": "LocationFeatureSpecification", "name": "Balcon", "value": true},
-        {"@type": "LocationFeatureSpecification", "name": "Proximité pistes (50m)", "value": true}
+        {"@type": "LocationFeatureSpecification", "name": "Balcon", "value": true}
+        {"@type": "LocationFeatureSpecification", "name": "proche esf et esi", "value": true}
+        {"@type": "LocationFeatureSpecification", "name": "piste luge a 50m", "value": true}
+        {"@type": "LocationFeatureSpecification", "name": "logement non fumeur", "value": true},
       ]
     }
     </script>
@@ -159,7 +173,7 @@
                         <li><strong>Emplacement :</strong> Centre station, proche de tous commerces</li>
                         <li><strong>Proximité pistes :</strong> À 250 m des remontées mécaniques et 50 m du retour piste</li>
                         <li><strong>Loisirs immédiats :</strong> Cinéma au pied de la résidence</li>
-                        <li><strong>Type de logement :</strong> Appartement 2 pièces (40 m²) pour 6 personnes</li>
+                        <li><strong>Type de logement :</strong> Appartement 2 pièces (40 m²) pour 6 personnes // 1er étage avec ascenseur</li>
                         <li><strong>Extérieur :</strong> 1 balcon de 3 m²</li>
                     </ul>
                 </div>
@@ -167,8 +181,11 @@
                 <!-- Bloc 4 : Tarifs -->
                 <div class="content-box">
                     <h2><span class="icon"></span> Tarifs</h2>
-                    <p style="margin-bottom: 0.3rem;"><strong>À partir de 400 € la semaine</strong> (hors saison)</p>
-                    <p style="margin-bottom: 0;">Tarif en pleine saison sur demande</p>
+                    <ul>
+                        <li><strong>À partir de 400 € la semaine</strong> (hors saison)</li>
+                        <li>Tarif pleine saison sur demande</li>
+                        <li>Taxe de séjour 1,65€/adulte/nuit</li>
+                    </ul>
                 </div>
 
                 <!-- Bloc 2 : Couchages -->
@@ -192,14 +209,16 @@
                     </ul>
                 </div>
 
-                <!-- Bloc 4 : Informations importantes -->
+               <!-- Bloc 4 : Informations importantes -->
                 <div class="content-box warning-box">
                     <h2><span class="icon"></span> Informations Pratiques & Services</h2>
                     <ul>
                         <li><strong>Parking :</strong> Place de parking en sous-sol fermé et privé (inclus)</li>
                         <li><strong>Linge de maison :</strong> Draps et serviettes non fournis</li>
-                        <li><strong>Nettoyage :</strong> Ménage de fin de séjour obligatoire (en supplément)</li>
+                        <li><strong>Nettoyage :</strong> Ménage de fin de séjour obligatoire (en supplément 75 €)</li>
                         <li><strong>Famille :</strong> Kit bébé disponible sur demande</li>
+                        <li><strong>Horaires :</strong> Arrivée à partir de 17 h // Départ avant 10 h</li>
+                        <li><strong>Logement non fumeur</strong> </li>
                     </ul>
                 </div>
 
