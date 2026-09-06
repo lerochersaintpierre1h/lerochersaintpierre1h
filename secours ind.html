@@ -257,7 +257,7 @@
                         <!-- Bloc Bouton 2 : Lien externe Booking d'origine (strictement inchangé) -->
                         <div style="flex: 1; min-width: 200px; text-align: center;">
                             <button type="button" class="btn btn-large" style="width: 100%;" 
-                                    onclick="window.open('https://www.booking.com/hotel/fr/le-rocher-saint-pierre-1h.fr.html?label=gen173nr-10CAEoggI46AdIM1gEaE2IAQGYATO4AQfIAQ3YAQPoAQH4AQGIAgGoAgG4AuK_59QGwAIB0gIkYjUyOGEwMjEtYzM0MS00ZWE2LWJjN2ItNGUxNjA1NWY2ZjA12AIB4AIB&aid=304142&ucfs=1&arphpl=1&checkin=2026-09-04&checkout=2026-09-05&adplat=www-homescreen-recently_viewed_carousel-stays-n_a-n_a', '_blank')">
+                                    onclick="window.open('https://booking.com', '_blank')">
                                 Réserver par Booking
                             </button>
                             <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: #666; font-style: italic;">
@@ -410,75 +410,53 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 </script>
-           <!-- SCRIPT DE SYNCHRONISATION MULTI-ANNÉES ET GÉNÉRATION DU CALENDRIER ANNUEL VIA GOOGLE SHEETS -->
+    <!-- SCRIPT DE SYNCHRONISATION ET GÉNÉRATION DU CALENDRIER ANNUEL -->
     <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Liens d'export CSV propres et stables pour vos deux fichiers Google Sheets
-        const URL_SHEETS_2026 = "https://google.com";
-        const URL_SHEETS_2027 = "https://google.com";
-
-        console.log("Connexion aux tableaux Google Sheets (2026 et 2027)...");
-
-        // Jeton anti-cache en temps réel (millisecondes)
-        const jetonAntiCache = "&nocache=" + new Date().getTime();
+        // 1. LIEN ICAL BRUT (Collez votre lien .ics brut ici sans chiffrement fernet)
+        const urlIcalOriginale = "https://ical.booking.com/v1/export?t=c2e693d7-90d5-4cb8-a2ee-4ee8f2536e2b";
         
-        const urlProxy2026 = "https://corsproxy.io?" + encodeURIComponent(URL_SHEETS_2026 + jetonAntiCache);
-        const urlProxy2027 = "https://corsproxy.io?" + encodeURIComponent(URL_SHEETS_2027 + jetonAntiCache);
+        // Proxy gratuit pour éviter les blocages de sécurité (CORS) sur GitHub Pages
+        const urlAvecProxy = `https://ical.booking.com/v1/export?t=2decd124-b161-4842-ac50-317a8539e1f5`;
 
-        // Chargement simultané des deux fichiers de réservation
-        Promise.all([
-            fetch(urlProxy2026).then(res => { if (!res.ok) throw new Error("Erreur 2026"); return res.text(); }),
-            fetch(urlProxy2027).then(res => { if (!res.ok) throw new Error("Erreur 2027"); return res.text(); })
-        ])
-        .then(([data2026, data2027]) => {
-            console.log("Fichiers récupérés. Extraction des dates occupées...");
-            
-            const datesOccupees2026 = extraireDatesDepuisCSV(data2026);
-            const datesOccupees2027 = extraireDatesDepuisCSV(data2027);
-            
-            // Fusion des sets de dates des deux années
-            const toutesLesDatesOccupees = new Set([...datesOccupees2026, ...datesOccupees2027]);
-            console.log("Total des dates converties en rouge :", toutesLesDatesOccupees.size);
-            
-            // Rendu visuel du calendrier
-            genererCalendrierAnnuel(toutesLesDatesOccupees);
-        })
-        .catch(err => {
-            console.error("Échec de la synchronisation, affichage par défaut disponible :", err);
-            genererCalendrierAnnuel(new Set());
-        });
+        // Lancement de la synchronisation au chargement de la page
+        fetch(urlAvecProxy)
+            .then(response => {
+                if (!response.ok) throw new Error("Erreur réseau");
+                return response.text();
+            })
+            .then(data => {
+                const datesOccupees = extraireDatesIcal(data);
+                genererCalendrierAnnuel(datesOccupees);
+            })
+            .catch(err => {
+                console.error("Erreur de synchronisation iCal, affichage en mode disponible par défaut :", err);
+                genererCalendrierAnnuel(new Set());
+            });
 
-        // Décodage des lignes du fichier CSV
-        function extraireDatesDepuisCSV(texteCSV) {
+        // Fonction d'extraction des plages de dates du fichier .ics
+        function extraireDatesIcal(icalText) {
             const dates = new Set();
-            const lignes = texteCSV.split(/\r?\n/);
+            const lignes = icalText.split(/\r?\n/);
+            let dateDebut = "";
 
-            // Début à la ligne 5 (index 4) pour sauter les en-têtes de colonnes
-            for (let i = 4; i < lignes.length; i++) {
-                const ligne = lignes[i].trim();
-                if (!ligne) continue;
-
-                // Gestion du séparateur de colonnes européen (point-virgule) ou standard (virgule)
-                const separateur = ligne.includes(";") ? ";" : ",";
-                const colonnes = ligne.split(separateur);
+            lignes.forEach(ligne => {
+                // Nettoyage de la ligne
+                const ligneNettoyee = ligne.replace(/\s/g, "");
                 
-                if (colonnes.length < 4) continue;
-
-                // Nettoyage des guillemets éventuels appliqués par l'export CSV
-                const dateDebutBrute = colonnes[1] ? colonnes[1].replace(/"/g, "").trim() : "";
-                const dateFinBrute = colonnes[2] ? colonnes[2].replace(/"/g, "").trim() : "";
-                const client = colonnes[3] ? colonnes[3].replace(/"/g, "").trim() : "";
-
-                // CONDITION : Si la colonne client contient un nom ou un blocage valide
-                if (client && client !== "" && client !== "#N/A" && client !== "CLIENTS") {
-                    let dateDebut = interpreterDateExcel(dateDebutBrute);
-                    let dateFin = interpreterDateExcel(dateFinBrute);
-
-                    if (dateDebut && dateFin) {
-                        let d = new Date(dateDebut);
-                        let fin = new Date(dateFin);
+                if (ligneNettoyee.startsWith("DTSTART")) {
+                    const correspondance = ligneNettoyee.match(/\d{8}/);
+                    if (correspondance) dateDebut = correspondance[0];
+                }
+                if (ligneNettoyee.startsWith("DTEND") && dateDebut) {
+                    const correspondance = ligneNettoyee.match(/\d{8}/);
+                    if (correspondance) {
+                        let dateFin = correspondance[0];
                         
-                        // Ajout de chaque jour de la plage au tableau des dates occupées (jusqu'à la veille du départ)
+                        let d = stringToDate(dateDebut);
+                        let fin = stringToDate(dateFin);
+                        
+                        // Ajoute tous les jours de la plage de réservation au calendrier
                         while (d < fin) {
                             const annee = d.getFullYear();
                             const mois = String(d.getMonth() + 1).padStart(2, '0');
@@ -487,57 +465,21 @@ document.addEventListener("DOMContentLoaded", function() {
                             d.setDate(d.getDate() + 1);
                         }
                     }
+                    dateDebut = "";
                 }
-            }
+            });
             return dates;
         }
 
-        // Convertisseur textuel de dates avec indexation [0], [1], [2] corrigée !
-        function interpreterDateExcel(chaine) {
-            if (!chaine) return null;
-
-            const moisFr = {
-                "janv": 0, "janvier": 0, "févr": 1, "fevr": 1, "février": 1, "mars": 2,
-                "avr": 3, "avril": 3, "mai": 4, "juin": 5, "juil": 6, "juillet": 6,
-                "août": 7, "aout": 7, "sept": 8, "septembre": 8, "oct": 9, "octobre": 9,
-                "nov": 10, "novembre": 10, "déc": 11, "dec": 11, "décembre": 11
-            };
-
-            let jour, mois, annee;
-            let nettoyee = chaine.replace(/\./g, "").toLowerCase().trim();
-
-            // Format texte à tirets : "16-janv-2027"
-            if (nettoyee.includes("-")) {
-                const morceaux = nettoyee.split("-");
-                if (morceaux.length >= 3) {
-                    jour = parseInt(morceaux[0], 10);
-                    let moisTexte = morceaux[1].trim();
-                    mois = moisFr[moisTexte] !== undefined ? moisFr[moisTexte] : -1;
-                    annee = parseInt(morceaux[2], 10);
-                }
-            } 
-            // Format numérique classique : "16/01/2027"
-            else if (nettoyee.includes("/")) {
-                const morceaux = nettoyee.split("/");
-                if (morceaux.length >= 3) {
-                    jour = parseInt(morceaux[0], 10);
-                    mois = parseInt(morceaux[1], 10) - 1;
-                    annee = parseInt(morceaux[2], 10);
-                }
-            }
-
-            if (!isNaN(jour) && mois !== -1 && !isNaN(annee)) {
-                return new Date(annee, mois, jour, 12, 0, 0); // Calage fixe à midi anti-fuseau horaire
-            }
-            return null;
+        // Convertit une chaîne AAAAMMJJ en objet Date JavaScript valide
+        function stringToDate(dateStr) {
+            return new Date(dateStr.substring(0,4), dateStr.substring(4,6) - 1, dateStr.substring(6,8));
         }
 
-        // Moteur graphique d'affichage original (Préservé)
+        // Moteur de rendu graphique du calendrier sur 1 an glissant
         function genererCalendrierAnnuel(datesOccupees) {
             const calendarContainer = document.getElementById("annualCalendarGrid");
             if (!calendarContainer) return;
-
-            calendarContainer.innerHTML = ""; 
 
             const nomsMois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
             const joursSemaine = ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"];
@@ -546,6 +488,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let anneeCourante = dateActuelle.getFullYear();
             let moisCourant = dateActuelle.getMonth();
 
+            // Boucle de construction des 12 prochains mois
             for (let i = 0; i < 12; i++) {
                 let indexMois = (moisCourant + i) % 12;
                 let anneeCible = anneeCourante + Math.floor((moisCourant + i) / 12);
@@ -573,6 +516,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 let premierJourIndex = new Date(anneeCible, indexMois, 1).getDay();
                 let decalageJours = premierJourIndex === 0 ? 6 : premierJourIndex - 1;
                 
+                // Remplissage des jours vides du début de mois
                 for (let d = 0; d < decalageJours; d++) {
                     const emptyCell = document.createElement("div");
                     emptyCell.className = "day-cell empty";
@@ -581,6 +525,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 
                 let nombreJoursMois = new Date(anneeCible, indexMois + 1, 0).getDate();
                 
+                // Remplissage des jours du mois avec leur couleur (vert=libre, rouge=occupé)
                 for (let jour = 1; jour <= nombreJoursMois; jour++) {
                     const dayCell = document.createElement("div");
                     dayCell.innerText = jour;
@@ -590,9 +535,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     const cleDate = `${anneeCible}-${moisFormatte}-${jourFormatte}`;
                     
                     if (datesOccupees.has(cleDate)) {
-                        dayCell.className = "day-cell occupe"; // ROUGE
+                        dayCell.className = "day-cell occupe";
                     } else {
-                        dayCell.className = "day-cell libre";  // VERT
+                        dayCell.className = "day-cell libre";
                     }
                     
                     daysGrid.appendChild(dayCell);
@@ -603,7 +548,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     </script>
-
 
 </body>
 </html>

@@ -1,0 +1,796 @@
+/* Reset et styles de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'verdana', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+/* Navigation Bar */
+.navbar {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3rem 2rem;
+}
+
+/* Réduire la taille du logo PNG */
+.logo img, 
+.navbar-brand img, 
+nav img {
+    height: 100px;       /* 👈 Ajustez cette valeur (ex: 40px, 50px) pour changer la taille */
+    width: auto;        /* 👈 Conserve les proportions de l'image pour éviter de la déformer */
+    max-height: 100%;   /* 👈 Empêche le logo de dépasser de son conteneur parent */
+    object-fit: contain;
+    /* Rogne exactement 5px en haut, 0px à droite, 5px en bas, 0px à gauche */
+    clip-path: inset(10px 5px 9px 5px);
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 800;
+    padding: 0.6rem 2rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.nav-link.active {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-bottom: 3px solid white;
+}
+
+/* Pages Container */
+.pages-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    min-height: calc(100vh - 200px);
+}
+
+.page {
+    display: none;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ==========================================================================
+   HERO SECTION - TEXTE ET IMAGE DE FOND
+   ========================================================================== */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                url('images/couverture.png') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center; /* 👈 Force tout le texte à se centrer horizontalement */
+    color: #ffffff !important; /* 👈 Force la couleur blanche pour tout le bloc */
+    margin-top: 0;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(107, 107, 107, 0.4);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%; /* Permet au centrage de s'appliquer sur toute la largeur */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre les éléments enfants verticalement */
+    justify-content: center;
+    animation: slideUp 0.8s ease-out;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #ffffff !important; /* 👈 Assure que le titre principal reste blanc */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+    font-weight: bold;
+    text-align: center;
+}
+
+.hero-subtitle {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #ffffff !important; /* 👈 Assure que le sous-titre reste blanc */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   BARRE DE NAVIGATION / LOGO (Isolé pour ne pas casser le Hero)
+   ========================================================================== */
+.logo img, 
+.navbar-brand img, 
+nav img,
+.site-logo {
+    height: 80px !important;       
+    width: auto !important;        
+    max-height: 100%;   
+    object-fit: contain;
+}
+
+/* Gallery Styles */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover img {
+    opacity: 0.7;
+}
+
+.gallery-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+}
+
+.gallery-overlay p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Page Content */
+.page-content {
+    background: white;
+    padding: 3rem;
+    margin: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.page-content h1 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+}
+
+.page-content h2 {
+    color: #3498db;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.page-content p {
+    margin-bottom: 1rem;
+    color: #555;
+    font-size: 1.1rem;
+}
+
+.page-content ul {
+    margin: 1rem 0 1rem 2rem;
+}
+
+.page-content li {
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-size: 1.1rem;
+}
+
+/* Content Box */
+.content-box {
+    background: #f9f9f9;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-left: 4px solid #3498db;
+    border-radius: 4px;
+   font-size: 1.1rem;
+}
+    /* Footer */
+.footer {
+    background: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+}
+/* ==========================================================================
+   RESERVATION & CONTACT - STRUCTURATION DE BOÎTE IDENTIQUE
+   ========================================================================== */
+.reservation-form,
+.contact-info {
+    margin-top: 2rem;
+    padding: 2rem;                      /* Même espace intérieur exact */
+    border-radius: 8px;                 /* Mêmes arrondis de coins */
+    box-sizing: border-box;             /* Force le calcul horizontal identique */
+    width: 100%;                        /* S'étirent de la même manière sur la page */
+}
+
+/* --- COULEURS SPÉCIFIQUES : RÉSERVATION (Fond clair) --- */
+.reservation-form {
+    background: #f9f9f9;                
+    border-left: 4px solid #3498db;     /* Bordure bleue à gauche */
+}
+
+/* --- COULEURS SPÉCIFIQUES : CONTACT (Fond bleu, écriture blanche) --- */
+.contact-info {
+    background: #3498db;                /* Fond bleu identique à votre couleur principale */
+    border-left: 4px solid #f7f7f8;     /* Bordure blanche à gauche pour le style */
+}
+
+/* ==========================================================================
+   FORMULAIRE DE RESERVATION (CHAMPS INTERNES)
+   ========================================================================== */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+/* Harmonisation de la hauteur et largeur de TOUS les champs */
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    height: 40px;                       /* Force la même hauteur pour select, date, etc. */
+    padding: 6px 12px;                  /* Ajuste l'espace intérieur du texte */
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;                    /* Aligne la taille de l'écriture */
+    line-height: 1.5;
+    font-family: inherit;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease;
+}
+
+.form-group textarea {
+    height: auto;
+    min-height: 100px;
+}
+
+/* États au clic / focus */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.2);
+}
+
+/* Case à cocher */
+.form-group.checkbox {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.form-group.checkbox input {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+.form-group.checkbox label {
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   BOUTONS
+   ========================================================================== */
+.btn {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    color: white;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-large {
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* ==========================================================================
+   INFORMATIONS DE CONTACT (TEXTES INTERNES EN BLANC)
+   ========================================================================== */
+.contact-info h3 {
+    color: #f7f7f8;                     /* Titre blanc/hors-blanc */
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.contact-info p {
+    color: #f7f7f8;                     /* Texte blanc pour le fond bleu */
+    font-size: 1rem;                    /* Même taille de police pour respecter les proportions */
+    line-height: 1.6;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .nav-menu {
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+    }
+
+    .nav-link {
+        display: block;
+        padding: 0.75rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .page-content {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .page-content h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.3rem;
+    }
+
+    .hero-section {
+        height: 60vh;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .gallery-item img {
+        height: 200px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .reservation-form {
+        padding: 1rem;
+    }
+}
+/* --- SECTION GALERIE --- */
+.gallery-section {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: sans-serif;
+}
+
+/* --- NAVIGATION DES ONGLETS --- */
+.gallery-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap; /* Évite de casser la mise en page sur mobile */
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: 2px solid #075192df;
+    background-color: transparent;
+    color: #075192df;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 25px; /* Onglets arrondis style pilule */
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover, .tab-btn.active {
+    background-color: #075192df;
+    color: #fff;
+}
+
+/* --- GRILLE DE PHOTOS (3 PAR RANG) --- */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 👈 Exactement 3 colonnes de taille égale */
+    gap: 20px; /* Espace entre les photos */
+}
+
+/* --- ADAPTATION MOBILE (1 seule colonne sur petit écran) --- */
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(1, 1fr); 
+    }
+}
+
+/* --- STYLE DES IMAGES ET DES BORDS --- */
+.gallery-item {
+    display: none; /* Caché par défaut, géré par le script */
+    overflow: hidden;
+    border-radius: 15px; /* 👈 Bords arrondis sur le conteneur */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    aspect-ratio: 4 / 3; /* Force toutes les photos à garder les mêmes proportions */
+}
+
+.gallery-item.active {
+    display: block; /* Affiche uniquement la catégorie active */
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Recadre proprement les images de tailles différentes */
+    border-radius: 15px; /* 👈 Bords arrondis sur l'image elle-même */
+    transition: transform 0.4s ease;
+}
+
+/* Petit effet de zoom élégant au survol */
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+/* Force uniquement la première lettre des boutons à être en majuscule */
+.tab-btn {
+    text-transform: capitalize;
+}
+/* Style de la Lightbox */
+.lightbox {
+    display: none; /* Caché par défaut */
+    position: fixed;
+    z-index: 9999; /* Toujours au premier plan */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Fond noir transparent */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Devient visible quand on ajoute la classe 'active' en JS */
+.lightbox.active {
+    display: flex;
+}
+
+/* Conteneur de l'image pour la centrer */
+.lightbox-content-wrapper {
+    max-width: 80%;
+    max-height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox-content-wrapper img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+
+}
+/* ==========================================================================
+   STYLE COMPLET DES BOUTONS DE LA LIGHTBOX (RONDS BLEUS TRANSPARENTS)
+   ========================================================================== */
+
+/* 1. Base commune pour tous les boutons (Forme de rond bleu à 50% d'opacité) */
+.lightbox-close, .lightbox-arrow {
+    position: absolute;
+    color: white !important; /* Les flèches et la croix restent bien blanches */
+    background-color: rgba(0, 123, 255, 0.5) !important; /* Bleu avec 50% d'opacité */
+    border: none !important;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    user-select: none;
+    z-index: 10000; /* Force l'affichage au-dessus de l'image */
+    
+    /* Crée le petit rond parfait */
+    width: 45px !important;
+    height: 45px !important;
+    border-radius: 50% !important;
+    
+    /* Active le centrage automatique */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+/* 2. Effet au survol de la souris */
+.lightbox-close:hover, .lightbox-arrow:hover {
+    background-color: rgba(0, 86, 179, 0.75) !important; /* Devient plus opaque */
+    transform: scale(1.05); /* Grossit légèrement */
+}
+
+/* 3. Position et ajustement de la CROIX (En haut à droite) */
+.lightbox-close {
+    top: 20px;
+    right: 20px;
+    font-size: 2.2rem !important;
+    font-weight: 300 !important;
+    line-height: 0 !important;
+    padding: 0 0 6px 0 !important; /* Ajustement précis pour la descendre au centre */
+}
+
+/* 4. Position et ajustement de la FLÈCHE GAUCHE */
+.lightbox-prev {
+    left: 20px;
+    font-size: 1.2rem !important;
+    padding: 0 3px 0 0 !important; /* Ajustement pour la centrer visuellement */
+}
+
+/* 5. Position et ajustement de la FLÈCHE DROITE */
+.lightbox-next {
+    right: 20px;
+    font-size: 1.2rem !important;
+    padding: 0 0 0 3px !important; /* Ajustement pour la centrer visuellement */
+}
+/* ==========================================================================
+   INFORMATIONS DE CONTACT (TEXTES INTERNES EN BLANC ET CENTRÉS)
+   ========================================================================== */
+.contact-info {
+    text-align: center;                 /* Centre le titre et le mail au milieu de la boîte */
+}
+
+.contact-info h3 {
+    color: #f7f7f8;                     
+    margin-bottom: 0.8rem;              /* Espace léger sous le titre */
+    font-size: 1.3rem;
+}
+
+.contact-info p {
+    color: #f7f7f8;                     
+    font-size: 1rem;                    
+    line-height: 1.6;
+}
+
+/* Style spécifique pour le lien e-mail cliquable */
+.contact-info a {
+    color: #ffffff;
+    text-decoration: none;              /* Enlève le soulignement par défaut */
+    font-weight: bold;
+    transition: opacity 0.3s ease;      /* Transition douce pour l'effet au survol */
+}
+
+/* Effet visuel élégant quand on passe la souris sur le mail */
+.contact-info a:hover {
+    opacity: 0.8;                       /* Le mail s'atténue légèrement au survol */
+    text-decoration: underline;         /* Le soulignement apparaît uniquement au survol */
+}
+/* ==========================================================================
+   DESIGN DU CALENDRIER ANNUEL
+   ========================================================================== */
+.dispo-calendar-container {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+    font-family: inherit;
+}
+
+.calendar-main-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.calendar-legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 2.5rem;
+    font-weight: 600;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.legend-box {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}
+
+.legend-box.libre { background-color: #2ecc71; }
+.legend-box.occupe { background-color: #e74c3c; }
+
+/* Grille responsive : s'adapte à la taille de l'écran */
+.annual-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+/* Style d'une boîte mensuelle */
+.month-box {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eef2f5;
+}
+
+.month-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.15rem;
+    text-transform: capitalize; /* Force la majuscule sur le mois */
+    font-weight: bold;
+}
+
+/* Grilles des jours */
+.week-days-labels, .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.week-days-labels {
+    font-weight: bold;
+    color: #7f8c8d;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.3rem;
+}
+
+.days-grid div {
+    padding: 8px 0;
+    margin: 2px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+/* États des jours */
+.day-cell.empty {
+    background: transparent !important;
+}
+
+.day-cell.libre {
+    background-color: rgba(46, 204, 113, 0.15);
+    color: #27ae60;
+}
+
+.day-cell.occupe {
+    background-color: rgba(231, 76, 60, 0.15);
+    color: #c0392b;
+    text-decoration: line-through;
+}

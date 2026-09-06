@@ -158,11 +158,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 // ==========================================================================
-// CONFIGURATION DU CALENDRIER VIA GOOGLE SHEETS
+// CONFIGURATION DU CALENDRIER & LIEN ICS
 // ==========================================================================
 
-// Lien d'export CSV direct de votre Google Sheets "RESA VALLOIRE 2027"
-const URL_SHEETS_CSV = "https://google.com";
+// 1. Définissez ici votre lien de calendrier (.ics)
+const URL_ICS_BRUT = "https://ical.booking.com/v1/export?t=c2e693d7-90d5-4cb8-a2ee-4ee8f2536e2b";
+
+// Utilisation du proxy AllOrigins pour contourner le blocage CORS du navigateur
+const URL_ICS_PROXIFIEE = "https://allorigins.win" + encodeURIComponent(URL_ICS_BRUT);
 
 const NOMS_MOIS = [
     "janvier", "février", "mars", "avril", "mai", "juin", 
@@ -173,110 +176,76 @@ document.addEventListener("DOMContentLoaded", initCalendrier);
 
 async function initCalendrier() {
     let datesOccupees = [];
-    console.log("Connexion au tableau Google Sheets de réservation...");
+    console.log("Tentative de chargement du calendrier...");
 
     try {
-        // Ajout d'une clé unique (timestamp) mise à jour instantanément pour forcer le rafraîchissement des données (anti-cache)
-        const urlAvecAntiCache = URL_SHEETS_CSV + "&nocache=" + new Date().getTime();
+        const response = await fetch(URL_ICS_PROXIFIEE);
+        if (!response.ok) throw new Error("Erreur réseau ou proxy indisponible");
         
-        // Utilisation d'un proxy pour éviter les blocages de sécurité CORS sur certains navigateurs
-        const urlProxifiee = "https://corsproxy.io?" + encodeURIComponent(urlAvecAntiCache);
-
-        const response = await fetch(urlProxifiee);
-        if (!response.ok) throw new Error("Impossible de joindre le serveur du tableau Excel");
-        
-        const texteCSV = await response.text();
-        console.log("Données du tableau récupérées. Analyse des lignes occupées...");
-        datesOccupees = extraireDatesDepuisCSV(texteCSV);
-        console.log("Total des jours bloqués trouvés :", datesOccupees.length);
+        const texteICS = await response.text();
+        console.log("Fichier ICS récupéré avec succès. Analyse en cours...");
+        datesOccupees = extraireDatesDepuisICS(texteICS);
+        console.log("Dates occupées trouvées :", datesOccupees);
     } catch (error) {
-        console.error("Erreur lors de la synchronisation avec le fichier Excel :", error);
+        console.error("Erreur lors du chargement du fichier ICS :", error);
     }
 
-    // Génération du calendrier visuel (les cases passent au rouge ou vert)
+    // On génère le calendrier (même s'il est vide suite à une erreur, pour afficher les mois)
     generer12MoisGlissants(datesOccupees);
 }
 
 // ==========================================================================
-// DECODAGE DU TABLEAU EXCEL (CSV) & RECHERCHE DES PERIODES OCCUPEES
+// DECODAGE ET ANALYSE ROBUSTE DU FICHIER ICS
 // ==========================================================================
-function extraireDatesDepuisCSV(texte) {
-    const datesBloquees = [];
-    // Découpage du fichier par lignes
-    const lignes = texte.split(/\r?\n/);
+function extraireDatesDepuisICS(texte) {
+    const dates = [];
+    // Découpage propre des lignes pour éviter les retours chariots Windows/Mac
+    const lignes = texte.replace(/\r/g, "").split("\n");
+    
+    let dateDebut = null;
+    let dateFin = null;
 
     for (let i = 0; i < lignes.length; i++) {
-        const ligne = lignes[i];
-        if (!ligne) continue;
-
-        // Découpage des colonnes (séparateur virgule standard des exports Google Sheets)
-        const colonnes = ligne.split(",");
-
-        // Sécurité : On s'assure d'avoir au moins les colonnes de dates (A et B) et la colonne Client (C)
-        if (colonnes.length < 3) continue;
-
-        const dateDebutBrute = colonnes[1] ? colonnes[1].trim() : ""; // Colonne B (DATE DEBUT)
-        const dateFinBrute = colonnes[2] ? colonnes[2].trim() : "";   // Colonne C (DATE DE FIN)
-        const client = colonnes[3] ? colonnes[3].trim() : "";         // Colonne D (CLIENTS)
-
-        // Si la colonne Client contient un vrai nom ou "INDISPO PERSO" (et pas du vide ou #N/A)
-        if (client && client !== "" && client !== "#N/A" && !client.includes("CLIENTS")) {
-            
-            let dateDebut = interpreterDateExcel(dateDebutBrute);
-            let dateFin = interpreterDateExcel(dateFinBrute);
-
+        const ligne = lignes[i].trim();
+        
+        // Détection du début de réservation (DTSTART)
+        if (ligne.startsWith("DTSTART")) {
+            const parties = ligne.split(":");
+            if (parties.length > 1) dateDebut = interpreterDateICS(parties[1]);
+        } 
+        // Détection de la fin de réservation (DTEND)
+        else if (ligne.startsWith("DTEND")) {
+            const parties = ligne.split(":");
+            if (parties.length > 1) dateFin = interpreterDateICS(parties[1]);
+        } 
+        // Fin de l'événement : on enregistre les jours
+        else if (ligne.startsWith("END:VEVENT")) {
             if (dateDebut && dateFin) {
                 let courant = new Date(dateDebut);
-                // On remplit le calendrier du jour du début à la veille du départ
+                // Boucle du jour d'arrivée jusqu'à la veille du départ
                 while (courant < dateFin) {
-                    datesBloquees.push(formaterDateCle(courant));
+                    dates.push(formaterDateCle(courant));
                     courant.setDate(courant.getDate() + 1);
                 }
             }
+            dateDebut = null;
+            dateFin = null;
         }
     }
-    return datesBloquees;
+    return dates;
 }
 
-// Convertisseur de texte Excel vers Date JavaScript standard (Gère les formats JJ-mm-AAAA et JJ/mm/AAAA)
-function interpreterDateExcel(chaine) {
-    if (!chaine) return null;
-
-    // Table de correspondance pour traduire les mois textuels générés par Google Sheets en Français (ex: "janv.")
-    const moisFr = {
-        "janv": 0, "févr": 1, "mars": 2, "avr": 3, "mai": 4, "juin": 5,
-        "juil": 6, "août": 7, "sept": 8, "oct": 9, "nov": 10, "déc": 11
-    };
-
-    let jour, mois, annee;
-
-    // Format 1 : "02-janv.-2027" ou "06-févr.-2027"
-    if (chaine.includes("-")) {
-        const morceaux = chaine.split("-");
-        if (morceaux.length >= 3) {
-            jour = parseInt(morceaux[0], 10);
-            annee = parseInt(morceaux[2], 10);
-            
-            // Nettoyage du texte du mois (ex: "janv." -> "janv")
-            let moisTexte = morceaux[1].toLowerCase().replace(".", "").trim();
-            mois = moisFr[moisTexte] !== undefined ? moisFr[moisTexte] : 0;
-        }
-    } 
-    // Format 2 classique numérique : "02/01/2027"
-    else if (chaine.includes("/")) {
-        const morceaux = chaine.split("/");
-        if (morceaux.length >= 3) {
-            jour = parseInt(morceaux[0], 10);
-            mois = parseInt(morceaux[1], 10) - 1;
-            annee = parseInt(morceaux[2], 10);
-        }
-    }
-
-    if (!isNaN(jour) && !isNaN(mois) && !isNaN(annee)) {
-        // Calage à midi fixe pour neutraliser les décalages horaires
-        return new Date(annee, mois, jour, 12, 0, 0);
-    }
-    return null;
+// Convertisseur ICS -> Date JavaScript (Prend en compte les formats AAAAMMJJ et AAAAMMJJTHHMMSSZ)
+function interpreterDateICS(valeur) {
+    if (!valeur || valeur.length < 8) return null;
+    
+    // On extrait l'année, le mois (0-11 en JS) et le jour depuis la chaîne
+    const annee = parseInt(valeur.substring(0, 4), 10);
+    const mois = parseInt(valeur.substring(4, 6), 10) - 1;
+    const jour = parseInt(valeur.substring(6, 8), 10);
+    
+    // On crée la date calée à midi pour éviter les bugs de fuseaux horaires
+    return new Date(annee, mois, jour, 12, 0, 0);
 }
 
 function formaterDateCle(date) {
@@ -284,4 +253,83 @@ function formaterDateCle(date) {
     const m = String(date.getMonth() + 1).padStart(2, '0');
     const j = String(date.getDate()).padStart(2, '0');
     return `${a}-${m}-${j}`;
+}
+
+// ==========================================================================
+// GENERATION DYNAMIQUE DU HTML DES 12 MOIS
+// ==========================================================================
+function generer12MoisGlissants(datesOccupees) {
+    const grillePrincipale = document.getElementById("annualCalendarGrid");
+    if (!grillePrincipale) {
+        console.error("Élément #annualCalendarGrid introuvable dans le HTML !");
+        return;
+    }
+    
+    grillePrincipale.innerHTML = ""; 
+
+    const aujourdhui = new Date();
+    let anneeCourante = aujourdhui.getFullYear();
+    let moisCourant = aujourdhui.getMonth();
+
+    for (let m = 0; m < 12; m++) {
+        const boiteMois = document.createElement("div");
+        boiteMois.className = "month-box";
+
+        const titre = document.createElement("div");
+        titre.className = "month-title";
+        titre.textContent = `${NOMS_MOIS[moisCourant]} ${anneeCourante}`;
+        boiteMois.appendChild(titre);
+
+        const labelsSemaine = document.createElement("div");
+        labelsSemaine.className = "week-days-labels";
+        ["L", "M", "M", "J", "V", "S", "D"].forEach(lettre => {
+            const divLettre = document.createElement("div");
+            divLettre.textContent = lettre;
+            labelsSemaine.appendChild(divLettre);
+        });
+        boiteMois.appendChild(labelsSemaine);
+
+        const grilleJours = document.createElement("div");
+        grilleJours.className = "days-grid";
+
+        let premierJourIndex = new Date(anneeCourante, moisCourant, 1).getDay();
+        // Ajustement pour commencer la semaine le Lundi en France
+        premierJourIndex = premierJourIndex === 0 ? 6 : premierJourIndex - 1;
+
+        const totalJoursMois = new Date(anneeCourante, moisCourant + 1, 0).getDate();
+
+        // 1. Cases vides
+        for (let vide = 0; vide < premierJourIndex; vide++) {
+            const caseVide = document.createElement("div");
+            caseVide.className = "day-cell empty";
+            grilleJours.appendChild(caseVide);
+        }
+
+        // 2. Vrais jours
+        for (let jour = 1; jour <= totalJoursMois; jour++) {
+            const dateActuelle = new Date(anneeCourante, moisCourant, jour);
+            const dateCle = formaterDateCle(dateActuelle);
+
+            const caseJour = document.createElement("div");
+            caseJour.className = "day-cell";
+            caseJour.textContent = jour;
+
+            if (datesOccupees.includes(dateCle)) {
+                caseJour.classList.add("occupe"); // Applique le rouge transparent du CSS
+            } else {
+                caseJour.classList.add("libre");  // Applique le vert transparent du CSS
+            }
+
+            grilleJours.appendChild(caseJour);
+        }
+
+        boiteMois.appendChild(grilleJours);
+        grillePrincipale.appendChild(boiteMois);
+
+        moisCourant++;
+        if (moisCourant > 11) {
+            moisCourant = 0;
+            anneeCourante++;
+        }
+    }
 }
