@@ -25,16 +25,34 @@
     <!-- Pages Container -->
     <div class="pages-container">
         
-        <!-- Page 1: Accueil -->
-        <div id="accueil" class="page active">
-            <div class="hero-section">
-                <div class="hero-overlay"></div>
-                <div class="hero-content">
-                    <h1>Le Rocher Saint Pierre 1H</h1>
-                    <p class="hero-subtitle">Location 6 personnes • 40 m²</p>
-                </div>
-            </div>
+      <!-- Page 1: Accueil -->
+<div id="accueil" class="page active">
+    
+    <!-- Section Hero (Titre et Image de couverture) -->
+    <div class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Le Rocher Saint Pierre 1H</h1>
+            <p class="hero-subtitle">Location 6 personnes • 40 m²</p>
         </div>
+    </div>
+
+    <!-- Section unique du Calendrier de Disponibilités -->
+    <div class="dispo-calendar-container">
+        <h2 class="calendar-main-title">Disponibilités &amp; Calendrier</h2>
+        
+        <!-- Légende explicative -->
+        <div class="calendar-legend">
+            <div class="legend-item"><span class="legend-box libre"></span> Disponible</div>
+            <div class="legend-item"><span class="legend-box occupe"></span> Occupé / Réservé</div>
+        </div>
+
+        <!-- Zone où JavaScript va générer les 12 mois glissants -->
+        <div id="annualCalendarGrid" class="annual-calendar-grid"></div>
+    </div>
+
+</div> <!-- Fermeture propre de la page Accueil -->
+
 
         <!-- Page 2: Galerie -->
         <div id="galerie" class="page">
@@ -152,14 +170,14 @@
             </div>
         </div>
 
-        <!-- Page 4: Réservation/Contact -->
+       <!-- Page 4: Réservation/Contact -->
         <div id="reservation" class="page">
             <div class="page-content">
                 <h1>Réservation & Contact</h1>
                 <p>Remplissez le formulaire ci-dessous pour faire une réservation ou nous poser une question.</p>
                 
-                <!-- ATTENTION : Remplacez VOTRE_ID_FORMSPREE par l'identifiant fourni par Formspree pour recevoir les mails -->
-                <form class="reservation-form" id="reservationForm" method="POST" action="https://formspree.io">
+                <!-- Déclenchement du script mailto gratuit lors de la soumission -->
+                <form class="reservation-form" id="reservationForm" method="POST" onsubmit="genererMailto(event)">
                     
                     <!-- Ligne 1 : Nom et Email -->
                     <div class="form-row">
@@ -178,7 +196,7 @@
                         <div class="form-group">
                             <label for="nombreAdultes">Nombre d'adultes :</label>
                             <select id="nombreAdultes" name="nombreAdultes" required>
-                                <option value="">Sélectionnez...</option>
+                                <option value="0">0 adulte</option>
                                 <option value="1">1 adulte</option>
                                 <option value="2">2 adultes</option>
                                 <option value="3">3 adultes</option>
@@ -228,58 +246,308 @@
                         <textarea id="message" name="message" rows="6" placeholder="Laissez votre message, vos questions ou demandes spéciales..." required></textarea>
                     </div>
 
-                    <!-- Les deux boutons 100% identiques côte à côte -->
+                    <!-- Les deux boutons côte à côte -->
                     <div class="form-buttons-row" style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; align-items: flex-start;">
                         
-                        <!-- Bloc Bouton 1 : Formulaire classique -->
+                        <!-- Bloc Bouton 1 : Génère le mail pré-rempli au clic -->
                         <div style="flex: 1; min-width: 200px;">
-                            <button type="submit" class="btn btn-large" style="width: 100%;">Envoyer ma réservation</button>
+                            <button type="submit" class="btn btn-large" style="width: 100%;">Envoyer ma demande</button>
                         </div>
                         
-                        <!-- Bloc Bouton 2 : VRAI bouton avec redirection Booking -->
+                        <!-- Bloc Bouton 2 : Lien externe Booking d'origine (strictement inchangé) -->
                         <div style="flex: 1; min-width: 200px; text-align: center;">
                             <button type="button" class="btn btn-large" style="width: 100%;" 
-                                    onclick="window.open('https://www.booking.com/hotel/fr/le-rocher-saint-pierre-1h.fr.html?label=gen173nr-10CAEoggI46AdIM1gEaE2IAQGYATO4AQfIAQ3YAQPoAQH4AQGIAgGoAgG4AuK_59QGwAIB0gIkYjUyOGEwMjEtYzM0MS00ZWE2LWJjN2ItNGUxNjA1NWY2ZjA12AIB4AIB&aid=304142&ucfs=1&arphpl=1&checkin=2026-09-04&checkout=2026-09-05&adplat=www-homescreen-recently_viewed_carousel-stays-n_a-n_a', '_blank')">
+                                    onclick="window.open('https://booking.com', '_blank')">
                                 Réserver par Booking
                             </button>
-                            <!-- Petit texte sous le bouton -->
                             <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: #666; font-style: italic;">
                                 (frais supplémentaires via Booking)
                             </p>
                         </div>
-
-                    
-                        </div>
-
                     </div>
+                </form> <!-- Fermeture propre du formulaire -->
 
-
+                <!-- Boîte d'informations de contact sur fond bleu -->
                 <div class="contact-info">
                     <h3>Informations de contact</h3>
-                    <p><strong>Email :</strong> lerochersaintpierre1h@gmail.com</p>
+                    <p><strong>Email :</strong> <a href="mailto:lerochersaintpierre1h@gmail.com">lerochersaintpierre1h@gmail.com</a></p>
                 </div>
+
+            </div> <!-- Fermeture .page-content -->
+        </div> <!-- Fermeture .page (Id reservation) -->
     </div> <!-- Fermeture finale du conteneur des pages -->
 
-    <!-- Footer -->
+    <!-- Footer extérieur (Bandeau bleu foncé préservé) -->
     <footer class="footer">
-        <p>&copy; 2024 Le Rocher Saint Pierre 1H. Tous droits réservés.</p>
+        <p>&copy; 2026 Le Rocher Saint Pierre 1H - Tous droits réservés.</p>
     </footer>
 
     <!-- La Lightbox (Boîte de zoom pour la galerie) -->
     <div id="lightbox" class="lightbox">
         <span class="lightbox-close">&times;</span>
-        <button class="lightbox-arrow lightbox-prev">&#10094;</button>
+        <button class="lightbox-arrow lightbox-prev">❮</button>
         <div class="lightbox-content-wrapper">
             <img id="lightbox-img" src="" alt="Zoom">
         </div>
-        <button class="lightbox-arrow lightbox-next">&#10095;</button>
+        <button class="lightbox-arrow lightbox-next">❯</button>
     </div>
 
+    <!-- Script de gestion de la galerie et des pages -->
     <script src="script.js"></script>
+
+        <!-- SCRIPT DU FORMULAIRE : GESTION DU MAILTO PRÉ-REMPLI -->
+    <script>
+    function genererMailto(event) {
+        // 1. Bloque le rechargement immédiat de la page
+        event.preventDefault();
+
+        // 2. Extraction des valeurs saisies par le client
+        const nom = document.getElementById('nom').value;
+        const emailClient = document.getElementById('email').value;
+        const adulte = document.getElementById('nombreAdultes').value;
+        const enfant = document.getElementById('nombreEnfants').value;
+        const telephone = document.getElementById('telephone').value;
+        const arrivee = document.getElementById('dateArrivee').value;
+        const depart = document.getElementById('dateDepart').value;
+        const message = document.getElementById('message').value;
+
+        // 3. Configuration de l'adresse et de l'objet
+        const emailDestinataire = "lerochersaintpierre1h@gmail.com";
+        const sujet = encodeURIComponent(`Demande de réservation - ${nom}`);
+
+        // 4. Structuration textuelle propre du mail (Remplacement du & par "et")
+        let corps = `Bonjour,%0D%0A%0D%0A`;
+        corps += `Vous avez reçu une nouvelle demande de réservation pour le Rocher Saint Pierre :%0D%0A`;
+        corps += `==================================================%0D%0A`;
+        corps += `RECAPITULATIF DE LA DEMANDE%0D%0A`;
+        corps += `==================================================%0D%0A`;
+        corps += `• Nom complet        : ${nom}%0D%0A`;
+        corps += `• Email du client    : ${emailClient}%0D%0A`;
+        corps += `• Téléphone          : ${telephone}%0D%0A`;
+        corps += `• Voyageurs          : ${adulte} adulte(s) et ${enfant} enfant(s)%0D%0A`;
+        corps += `• Période du séjour  : du ${arrivee} au ${depart}%0D%0A`;
+        corps += `==================================================%0D%0A%0D%0A`;
+        corps += `MESSAGE :%0D%0A`; // 👈 Le "&" a été remplacé par "ET" ici
+        corps += `${message}%0D%0A`;
+
+        // 5. Déclenche l'outil de messagerie de l'appareil
+        window.location.href = `mailto:${emailDestinataire}?subject=${sujet}&body=${corps}`;
+    }
+    </script>
+
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const calendarContainer = document.getElementById("annualCalendarGrid");
+    
+    // Noms des mois et étiquettes des jours
+    const nomsMois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+    const joursSemaine = ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"];
+    
+    // Date de consultation actuelle
+    const dateActuelle = new Date();
+    let anneeCourante = dateActuelle.getFullYear();
+    let moisCourant = dateActuelle.getMonth(); // 0 = Janvier, 11 = Décembre
+
+    // Boucle pour générer les 12 prochains mois glissants
+    for (let i = 0; i < 12; i++) {
+        let indexMois = (moisCourant + i) % 12;
+        let anneeCible = anneeCourante + Math.floor((moisCourant + i) / 12);
+        
+        // Création du bloc conteneur du mois
+        const monthBox = document.createElement("div");
+        monthBox.className = "month-box";
+        
+        // Titre du mois (ex: "Septembre 2026")
+        const title = document.createElement("div");
+        title.className = "month-title";
+        title.innerText = `${nomsMois[indexMois]} ${anneeCible}`;
+        monthBox.appendChild(title);
+        
+        // Ajout des en-têtes de jours (Lu, Ma, Me...)
+        const labelsGrid = document.createElement("div");
+        labelsGrid.className = "week-days-labels";
+        joursSemaine.forEach(jour => {
+            const dayLabel = document.createElement("div");
+            dayLabel.innerText = jour;
+            labelsGrid.appendChild(dayLabel);
+        });
+        monthBox.appendChild(labelsGrid);
+        
+        // Grille pour les chiffres des jours
+        const daysGrid = document.createElement("div");
+        daysGrid.className = "days-grid";
+        
+        // Calcul du premier jour du mois (0 = Dimanche, 1 = Lundi...)
+        let premierJourIndex = new Date(anneeCible, indexMois, 1).getDay();
+        // Convertir pour que le Lundi soit le premier index (0) au lieu du Dimanche
+        let decalageJours = premierJourIndex === 0 ? 6 : premierJourIndex - 1;
+        
+        // Insérer des cases vides pour les jours du mois précédent
+        for (let d = 0; d < decalageJours; d++) {
+            const emptyCell = document.createElement("div");
+            emptyCell.className = "day-cell empty";
+            daysGrid.appendChild(emptyCell);
+        }
+        
+        // Nombre total de jours dans ce mois
+        let nombreJoursMois = new Date(anneeCible, indexMois + 1, 0).getDate();
+        
+        // Génération des jours du mois
+        for (let jour = 1; jour <= nombreJoursMois; jour++) {
+            const dayCell = document.createElement("div");
+            dayCell.className = "day-cell libre"; // Par défaut mis en LIBRE
+            dayCell.innerText = jour;
+            
+            // 💡 Zone de personnalisation future pour votre iCal :
+            // Si le jour actuel correspond à une date occupée dans le iCal,
+            // on changera sa classe en : dayCell.className = "day-cell occupe";
+            
+            daysGrid.appendChild(dayCell);
+        }
+        
+        monthBox.appendChild(daysGrid);
+        calendarContainer.appendChild(monthBox);
+    }
+});
+</script>
+    <!-- SCRIPT DE SYNCHRONISATION ET GÉNÉRATION DU CALENDRIER ANNUEL -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 1. LIEN ICAL BRUT (Collez votre lien .ics brut ici sans chiffrement fernet)
+        const urlIcalOriginale = "https://ical.booking.com/v1/export?t=c2e693d7-90d5-4cb8-a2ee-4ee8f2536e2b";
+        
+        // Proxy gratuit pour éviter les blocages de sécurité (CORS) sur GitHub Pages
+        const urlAvecProxy = `https://ical.booking.com/v1/export?t=2decd124-b161-4842-ac50-317a8539e1f5`;
+
+        // Lancement de la synchronisation au chargement de la page
+        fetch(urlAvecProxy)
+            .then(response => {
+                if (!response.ok) throw new Error("Erreur réseau");
+                return response.text();
+            })
+            .then(data => {
+                const datesOccupees = extraireDatesIcal(data);
+                genererCalendrierAnnuel(datesOccupees);
+            })
+            .catch(err => {
+                console.error("Erreur de synchronisation iCal, affichage en mode disponible par défaut :", err);
+                genererCalendrierAnnuel(new Set());
+            });
+
+        // Fonction d'extraction des plages de dates du fichier .ics
+        function extraireDatesIcal(icalText) {
+            const dates = new Set();
+            const lignes = icalText.split(/\r?\n/);
+            let dateDebut = "";
+
+            lignes.forEach(ligne => {
+                // Nettoyage de la ligne
+                const ligneNettoyee = ligne.replace(/\s/g, "");
+                
+                if (ligneNettoyee.startsWith("DTSTART")) {
+                    const correspondance = ligneNettoyee.match(/\d{8}/);
+                    if (correspondance) dateDebut = correspondance[0];
+                }
+                if (ligneNettoyee.startsWith("DTEND") && dateDebut) {
+                    const correspondance = ligneNettoyee.match(/\d{8}/);
+                    if (correspondance) {
+                        let dateFin = correspondance[0];
+                        
+                        let d = stringToDate(dateDebut);
+                        let fin = stringToDate(dateFin);
+                        
+                        // Ajoute tous les jours de la plage de réservation au calendrier
+                        while (d < fin) {
+                            const annee = d.getFullYear();
+                            const mois = String(d.getMonth() + 1).padStart(2, '0');
+                            const jour = String(d.getDate()).padStart(2, '0');
+                            dates.add(`${annee}-${mois}-${jour}`);
+                            d.setDate(d.getDate() + 1);
+                        }
+                    }
+                    dateDebut = "";
+                }
+            });
+            return dates;
+        }
+
+        // Convertit une chaîne AAAAMMJJ en objet Date JavaScript valide
+        function stringToDate(dateStr) {
+            return new Date(dateStr.substring(0,4), dateStr.substring(4,6) - 1, dateStr.substring(6,8));
+        }
+
+        // Moteur de rendu graphique du calendrier sur 1 an glissant
+        function genererCalendrierAnnuel(datesOccupees) {
+            const calendarContainer = document.getElementById("annualCalendarGrid");
+            if (!calendarContainer) return;
+
+            const nomsMois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+            const joursSemaine = ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"];
+            
+            const dateActuelle = new Date();
+            let anneeCourante = dateActuelle.getFullYear();
+            let moisCourant = dateActuelle.getMonth();
+
+            // Boucle de construction des 12 prochains mois
+            for (let i = 0; i < 12; i++) {
+                let indexMois = (moisCourant + i) % 12;
+                let anneeCible = anneeCourante + Math.floor((moisCourant + i) / 12);
+                
+                const monthBox = document.createElement("div");
+                monthBox.className = "month-box";
+                
+                const title = document.createElement("div");
+                title.className = "month-title";
+                title.innerText = `${nomsMois[indexMois]} ${anneeCible}`;
+                monthBox.appendChild(title);
+                
+                const labelsGrid = document.createElement("div");
+                labelsGrid.className = "week-days-labels";
+                joursSemaine.forEach(jour => {
+                    const dayLabel = document.createElement("div");
+                    dayLabel.innerText = jour;
+                    labelsGrid.appendChild(dayLabel);
+                });
+                monthBox.appendChild(labelsGrid);
+                
+                const daysGrid = document.createElement("div");
+                daysGrid.className = "days-grid";
+                
+                let premierJourIndex = new Date(anneeCible, indexMois, 1).getDay();
+                let decalageJours = premierJourIndex === 0 ? 6 : premierJourIndex - 1;
+                
+                // Remplissage des jours vides du début de mois
+                for (let d = 0; d < decalageJours; d++) {
+                    const emptyCell = document.createElement("div");
+                    emptyCell.className = "day-cell empty";
+                    daysGrid.appendChild(emptyCell);
+                }
+                
+                let nombreJoursMois = new Date(anneeCible, indexMois + 1, 0).getDate();
+                
+                // Remplissage des jours du mois avec leur couleur (vert=libre, rouge=occupé)
+                for (let jour = 1; jour <= nombreJoursMois; jour++) {
+                    const dayCell = document.createElement("div");
+                    dayCell.innerText = jour;
+                    
+                    const moisFormatte = String(indexMois + 1).padStart(2, '0');
+                    const jourFormatte = String(jour).padStart(2, '0');
+                    const cleDate = `${anneeCible}-${moisFormatte}-${jourFormatte}`;
+                    
+                    if (datesOccupees.has(cleDate)) {
+                        dayCell.className = "day-cell occupe";
+                    } else {
+                        dayCell.className = "day-cell libre";
+                    }
+                    
+                    daysGrid.appendChild(dayCell);
+                }
+                monthBox.appendChild(daysGrid);
+                calendarContainer.appendChild(monthBox);
+            }
+        }
+    });
+    </script>
+
 </body>
 </html>
-
-
-
-"https://www.booking.com/hotel/fr/le-rocher-saint-pierre-1h.fr.html?label=gen173nr-10CAEoggI46AdIM1gEaE2IAQGYATO4AQfIAQ3YAQPoAQH4AQGIAgGoAgG4AuK_59QGwAIB0gIkYjUyOGEwMjEtYzM0MS00ZWE2LWJjN2ItNGUxNjA1NWY2ZjA12AIB4AIB&aid=304142&ucfs=1&arphpl=1&checkin=2026-09-04&checkout=2026-09-05&adplat=www-homescreen-recently_viewed_carousel-stays-n_a-n_a"
-                           target="_blank" 
