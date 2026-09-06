@@ -1,0 +1,24 @@
+name: Synchronisation iCal Booking
+
+on:
+  schedule:
+    - cron: '0 */2 * * *' # S'exécute automatiquement toutes les 2 heures
+  workflow_dispatch: # Permet de lancer le téléchargement à la main si besoin
+
+jobs:
+  sync-calendar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      - name: Téléchargement de l'iCal Booking
+        run: |
+          curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" "https://ical.booking.com/v1/export?t=c2e693d7-90d5-4cb8-a2ee-4ee8f2536e2b" -o booking.ics
+
+      - name: Sauvegarde du fichier sur le dépôt
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add booking.ics
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Mise à jour automatique iCal Booking" && git push)

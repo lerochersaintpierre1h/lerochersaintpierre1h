@@ -790,7 +790,9 @@ nav img,
 }
 
 .day-cell.occupe {
-    background-color: rgba(231, 76, 60, 0.15);
-    color: #c0392b;
+    background-color: rgba(231, 76, 60, 0.35) !important; /* Rouge à 35 % d'opacité */
+    color: #a2453b !important;                             /* Rouge foncé pour garder le chiffre bien lisible */
+    font-weight: normal;
     text-decoration: line-through;
 }
+

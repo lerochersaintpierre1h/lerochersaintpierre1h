@@ -1,18 +1,15 @@
-// Fonction pour afficher une page spécifique
+// ==========================================================================
+// 1. NAVIGATION ENTRE LES PAGES
+// ==========================================================================
 function showPage(pageId) {
-    // Masquer toutes les pages
     const pages = document.querySelectorAll('.page');
-    pages.forEach(page => {
-        page.classList.remove('active');
-    });
+    pages.forEach(page => page.classList.remove('active'));
 
-    // Afficher la page sélectionnée
     const selectedPage = document.getElementById(pageId);
     if (selectedPage) {
         selectedPage.classList.add('active');
     }
 
-    // Mettre à jour le menu actif
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
         link.classList.remove('active');
@@ -21,61 +18,33 @@ function showPage(pageId) {
         }
     });
 
-    // Scroll vers le haut de la page
     window.scrollTo(0, 0);
 }
 
-// Gérer la soumission du formulaire de réservation
-document.addEventListener('DOMContentLoaded', function() {
-    const reservationForm = document.getElementById('reservationForm');
-    
-    if (reservationForm) {
-        reservationForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Récupérer les valeurs du formulaire
-            const nom = document.getElementById('nom').value;
-            const email = document.getElementById('email').value;
-            const telephone = document.getElementById('telephone').value;
-            const nombrePersonnes = document.getElementById('nombrePersonnes').value;
-            const dateArrivee = document.getElementById('dateArrivee').value;
-            const dateDepart = document.getElementById('dateDepart').value;
-            const message = document.getElementById('message').value;
-
-            // Afficher un message de confirmation
-            alert(`Merci ${nom}!\n\nVotre réservation a été reçue.\n\nNous vous répondrons rapidement à l'adresse: ${email}\n\nEmail de destination: lerochersaintpierre1h@gmail.com`);
-            
-            // Réinitialiser le formulaire
-            reservationForm.reset();
-        });
-    }
-});
-
-// Activer les liens de navigation
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
-    
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            
-            // Récupérer l'ID de la page depuis l'attribut href
             const pageId = this.getAttribute('href').substring(1);
             showPage(pageId);
         });
     });
 });
+
+// ==========================================================================
+// 2. GALERIE DE PHOTOS ET LIGHTBOX
+// ==========================================================================
 function filterGallery(category) {
-    // 1. Mettre à jour l'état actif des boutons d'onglets
     const buttons = document.querySelectorAll('.tab-btn');
     buttons.forEach(btn => btn.classList.remove('active'));
+    
     if (window.event && window.event.currentTarget) {
         window.event.currentTarget.classList.add('active');
     }
 
-    // 2. Filtrer et afficher uniquement les images de l'onglet sélectionné
     const items = document.querySelectorAll('.gallery-item');
-    const lowerCategory = category.toLowerCase(); // Force la catégorie en minuscules
+    const lowerCategory = category.toLowerCase();
 
     items.forEach(item => {
         if (item.classList.contains(lowerCategory)) {
@@ -85,6 +54,7 @@ function filterGallery(category) {
         }
     });
 }
+
 document.addEventListener('DOMContentLoaded', function() {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
@@ -92,81 +62,103 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevBtn = document.querySelector('.lightbox-prev');
     const nextBtn = document.querySelector('.lightbox-next');
     
-    let currentActiveItems = []; // Stocke les images de l'onglet actif
-    let currentIndex = 0;        // Index de l'image ouverte
+    let currentActiveItems = [];
+    let currentIndex = 0;
 
-    // Événement : Clic sur une image de la galerie
-    document.querySelector('.gallery-section').addEventListener('click', function(e) {
-        // On vérifie qu'on a cliqué sur une image dans un item de galerie
-        const clickedItem = e.target.closest('.gallery-item');
-        if (!clickedItem) return;
+    const gallerySection = document.querySelector('.gallery-section');
+    if (gallerySection) {
+        gallerySection.addEventListener('click', function(e) {
+            const clickedItem = e.target.closest('.gallery-item');
+            if (!clickedItem) return;
 
-        // On récupère TOUTES les images actuellement visibles dans l'onglet actif
-        currentActiveItems = Array.from(document.querySelectorAll('.gallery-item.active'));
-        
-        // On cherche la position de l'image cliquée dans cette liste
-        currentIndex = currentActiveItems.indexOf(clickedItem);
+            currentActiveItems = Array.from(document.querySelectorAll('.gallery-item.active'));
+            currentIndex = currentActiveItems.indexOf(clickedItem);
 
-        if (currentIndex !== -1) {
-            openLightbox();
-        }
-    });
+            if (currentIndex !== -1) {
+                openLightbox();
+            }
+        });
+    }
 
-    // Fonction pour ouvrir et afficher l'image
     function openLightbox() {
+        if (!currentActiveItems[currentIndex]) return;
         const targetImg = currentActiveItems[currentIndex].querySelector('img');
         lightboxImg.src = targetImg.src;
         lightboxImg.alt = targetImg.alt;
         lightbox.classList.add('active');
     }
 
-    // Image suivante
     function nextImage() {
+        if (currentActiveItems.length === 0) return;
         currentIndex = (currentIndex + 1) % currentActiveItems.length;
         openLightbox();
     }
 
-    // Image précédente
     function prevImage() {
+        if (currentActiveItems.length === 0) return;
         currentIndex = (currentIndex - 1 + currentActiveItems.length) % currentActiveItems.length;
         openLightbox();
     }
 
-    // Fermer la lightbox
     function closeLightbox() {
         lightbox.classList.remove('active');
     }
 
-    // Liens vers les boutons
-    nextBtn.addEventListener('click', nextImage);
-    prevBtn.addEventListener('click', prevImage);
-    closeBtn.addEventListener('click', closeLightbox);
+    if (nextBtn) nextBtn.addEventListener('click', nextImage);
+    if (prevBtn) prevBtn.addEventListener('click', prevImage);
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
 
-    // Fermer si on clique sur le fond noir en dehors de l'image
-    lightbox.addEventListener('click', function(e) {
-        if (e.target === lightbox || e.target.classList.contains('lightbox-content-wrapper')) {
-            closeLightbox();
-        }
-    });
+    if (lightbox) {
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox || e.target.classList.contains('lightbox-content-wrapper')) {
+                closeLightbox();
+            }
+        });
+    }
 
-    // Optionnel : Permettre de naviguer avec le clavier (flèches gauche/droite et Échap)
     document.addEventListener('keydown', function(e) {
-        if (!lightbox.classList.contains('active')) return;
+        if (!lightbox || !lightbox.classList.contains('active')) return;
         if (e.key === 'ArrowRight') nextImage();
         if (e.key === 'ArrowLeft') prevImage();
         if (e.key === 'Escape') closeLightbox();
     });
 });
+
 // ==========================================================================
-// CONFIGURATION DU CALENDRIER & LIEN ICS
+// 3. FORMULAIRE DE RÉSERVATION (GÉNÉRATION DU MAILTO)
 // ==========================================================================
+function genererMailto(event) {
+    event.preventDefault();
 
-// 1. Définissez ici votre lien de calendrier (.ics)
-const URL_ICS_BRUT = "https://ical.booking.com/v1/export?t=c2e693d7-90d5-4cb8-a2ee-4ee8f2536e2b";
+    const nom = document.getElementById('nom').value;
+    const emailClient = document.getElementById('email').value;
+    const adulte = document.getElementById('nombreAdultes').value;
+    const enfant = document.getElementById('nombreEnfants').value;
+    const telephone = document.getElementById('telephone').value;
+    const arrivee = document.getElementById('dateArrivee').value;
+    const depart = document.getElementById('dateDepart').value;
+    const message = document.getElementById('message').value;
 
-// Utilisation du proxy AllOrigins pour contourner le blocage CORS du navigateur
-const URL_ICS_PROXIFIEE = "https://allorigins.win" + encodeURIComponent(URL_ICS_BRUT);
+    const emailDestinataire = "lerochersaintpierre1h@gmail.com";
+    const sujet = encodeURIComponent(`Demande de réservation - ${nom}`);
 
+    let corps = `Bonjour,%0D%0A%0D%0A`;
+    corps += `Vous avez reçu une nouvelle demande de réservation :%0D%0A`;
+    corps += `==================================================%0D%0A`;
+    corps += `• Nom complet        : ${nom}%0D%0A`;
+    corps += `• Email du client    : ${emailClient}%0D%0A`;
+    corps += `• Téléphone          : ${telephone}%0D%0A`;
+    corps += `• Voyageurs          : ${adulte} adulte(s) et ${enfant} enfant(s)%0D%0A`;
+    corps += `• Période du séjour  : du ${arrivee} au ${depart}%0D%0A`;
+    corps += `==================================================%0D%0A%0D%0A`;
+    corps += `MESSAGE :%0D%0A${encodeURIComponent(message)}%0D%0A`;
+
+    window.location.href = `mailto:${emailDestinataire}?subject=${sujet}&body=${corps}`;
+}
+
+// ==========================================================================
+// 4. CALENDRIER DE DISPONIBILITÉS (FICHIER LOCAL GITHUB)
+// ==========================================================================
 const NOMS_MOIS = [
     "janvier", "février", "mars", "avril", "mai", "juin", 
     "juillet", "août", "septembre", "octobre", "novembre", "décembre"
@@ -175,54 +167,53 @@ const NOMS_MOIS = [
 document.addEventListener("DOMContentLoaded", initCalendrier);
 
 async function initCalendrier() {
-    let datesOccupees = [];
-    console.log("Tentative de chargement du calendrier...");
+    const grillePrincipale = document.getElementById("annualCalendarGrid");
+    if (!grillePrincipale) return;
+
+    // 1. Calendrier neutre par défaut
+    generer12MoisGlissants([]);
 
     try {
-        const response = await fetch(URL_ICS_PROXIFIEE);
-        if (!response.ok) throw new Error("Erreur réseau ou proxy indisponible");
-        
-        const texteICS = await response.text();
-        console.log("Fichier ICS récupéré avec succès. Analyse en cours...");
-        datesOccupees = extraireDatesDepuisICS(texteICS);
-        console.log("Dates occupées trouvées :", datesOccupees);
-    } catch (error) {
-        console.error("Erreur lors du chargement du fichier ICS :", error);
-    }
+        // Lecture directe du fichier local booking.ics
+        const response = await fetch("./booking.ics?v=" + Date.now());
+        if (!response.ok) throw new Error("Fichier booking.ics introuvable");
 
-    // On génère le calendrier (même s'il est vide suite à une erreur, pour afficher les mois)
-    generer12MoisGlissants(datesOccupees);
+        const texteICS = await response.text();
+
+        if (texteICS && texteICS.includes("BEGIN:VCALENDAR")) {
+            const datesOccupees = extraireDatesDepuisICS(texteICS);
+            console.log("Dates chargées depuis booking.ics :", datesOccupees.length);
+            generer12MoisGlissants(datesOccupees);
+        } else {
+            console.error("Le fichier booking.ics est vide ou invalide.");
+        }
+    } catch (err) {
+        console.error("Erreur de lecture du calendrier local :", err);
+    }
 }
 
-// ==========================================================================
-// DECODAGE ET ANALYSE ROBUSTE DU FICHIER ICS
-// ==========================================================================
 function extraireDatesDepuisICS(texte) {
     const dates = [];
-    // Découpage propre des lignes pour éviter les retours chariots Windows/Mac
-    const lignes = texte.replace(/\r/g, "").split("\n");
-    
+    const texteDeplie = texte.replace(/\r?\n[ \t]/g, "");
+    const lignes = texteDeplie.split(/\r?\n/);
+
     let dateDebut = null;
     let dateFin = null;
 
-    for (let i = 0; i < lignes.length; i++) {
-        const ligne = lignes[i].trim();
-        
-        // Détection du début de réservation (DTSTART)
-        if (ligne.startsWith("DTSTART")) {
-            const parties = ligne.split(":");
-            if (parties.length > 1) dateDebut = interpreterDateICS(parties[1]);
+    lignes.forEach(ligne => {
+        const l = ligne.trim();
+
+        if (l.startsWith("DTSTART")) {
+            const match = l.match(/\d{8}/);
+            if (match) dateDebut = parseYYYYMMDD(match[0]);
         } 
-        // Détection de la fin de réservation (DTEND)
-        else if (ligne.startsWith("DTEND")) {
-            const parties = ligne.split(":");
-            if (parties.length > 1) dateFin = interpreterDateICS(parties[1]);
+        else if (l.startsWith("DTEND")) {
+            const match = l.match(/\d{8}/);
+            if (match) dateFin = parseYYYYMMDD(match[0]);
         } 
-        // Fin de l'événement : on enregistre les jours
-        else if (ligne.startsWith("END:VEVENT")) {
+        else if (l.startsWith("END:VEVENT")) {
             if (dateDebut && dateFin) {
                 let courant = new Date(dateDebut);
-                // Boucle du jour d'arrivée jusqu'à la veille du départ
                 while (courant < dateFin) {
                     dates.push(formaterDateCle(courant));
                     courant.setDate(courant.getDate() + 1);
@@ -231,20 +222,15 @@ function extraireDatesDepuisICS(texte) {
             dateDebut = null;
             dateFin = null;
         }
-    }
-    return dates;
+    });
+
+    return Array.from(new Set(dates));
 }
 
-// Convertisseur ICS -> Date JavaScript (Prend en compte les formats AAAAMMJJ et AAAAMMJJTHHMMSSZ)
-function interpreterDateICS(valeur) {
-    if (!valeur || valeur.length < 8) return null;
-    
-    // On extrait l'année, le mois (0-11 en JS) et le jour depuis la chaîne
-    const annee = parseInt(valeur.substring(0, 4), 10);
-    const mois = parseInt(valeur.substring(4, 6), 10) - 1;
-    const jour = parseInt(valeur.substring(6, 8), 10);
-    
-    // On crée la date calée à midi pour éviter les bugs de fuseaux horaires
+function parseYYYYMMDD(str) {
+    const annee = parseInt(str.substring(0, 4), 10);
+    const mois = parseInt(str.substring(4, 6), 10) - 1;
+    const jour = parseInt(str.substring(6, 8), 10);
     return new Date(annee, mois, jour, 12, 0, 0);
 }
 
@@ -255,17 +241,11 @@ function formaterDateCle(date) {
     return `${a}-${m}-${j}`;
 }
 
-// ==========================================================================
-// GENERATION DYNAMIQUE DU HTML DES 12 MOIS
-// ==========================================================================
 function generer12MoisGlissants(datesOccupees) {
     const grillePrincipale = document.getElementById("annualCalendarGrid");
-    if (!grillePrincipale) {
-        console.error("Élément #annualCalendarGrid introuvable dans le HTML !");
-        return;
-    }
+    if (!grillePrincipale) return;
     
-    grillePrincipale.innerHTML = ""; 
+    grillePrincipale.innerHTML = "";
 
     const aujourdhui = new Date();
     let anneeCourante = aujourdhui.getFullYear();
@@ -282,7 +262,7 @@ function generer12MoisGlissants(datesOccupees) {
 
         const labelsSemaine = document.createElement("div");
         labelsSemaine.className = "week-days-labels";
-        ["L", "M", "M", "J", "V", "S", "D"].forEach(lettre => {
+        ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"].forEach(lettre => {
             const divLettre = document.createElement("div");
             divLettre.textContent = lettre;
             labelsSemaine.appendChild(divLettre);
@@ -293,31 +273,27 @@ function generer12MoisGlissants(datesOccupees) {
         grilleJours.className = "days-grid";
 
         let premierJourIndex = new Date(anneeCourante, moisCourant, 1).getDay();
-        // Ajustement pour commencer la semaine le Lundi en France
         premierJourIndex = premierJourIndex === 0 ? 6 : premierJourIndex - 1;
 
         const totalJoursMois = new Date(anneeCourante, moisCourant + 1, 0).getDate();
 
-        // 1. Cases vides
         for (let vide = 0; vide < premierJourIndex; vide++) {
             const caseVide = document.createElement("div");
             caseVide.className = "day-cell empty";
             grilleJours.appendChild(caseVide);
         }
 
-        // 2. Vrais jours
         for (let jour = 1; jour <= totalJoursMois; jour++) {
             const dateActuelle = new Date(anneeCourante, moisCourant, jour);
             const dateCle = formaterDateCle(dateActuelle);
 
             const caseJour = document.createElement("div");
-            caseJour.className = "day-cell";
             caseJour.textContent = jour;
 
             if (datesOccupees.includes(dateCle)) {
-                caseJour.classList.add("occupe"); // Applique le rouge transparent du CSS
+                caseJour.className = "day-cell occupe"; 
             } else {
-                caseJour.classList.add("libre");  // Applique le vert transparent du CSS
+                caseJour.className = "day-cell libre";
             }
 
             grilleJours.appendChild(caseJour);
