@@ -1,32 +1,51 @@
-// ==========================================================================
-// 1. NAVIGATION, GALERIE ET FORMULAIRES GENERAL
-// ==========================================================================
-
 // Fonction pour afficher une page spécifique
 function showPage(pageId) {
+    // Masquer toutes les pages
     const pages = document.querySelectorAll('.page');
-    pages.forEach(page => page.classList.remove('active'));
+    pages.forEach(page => {
+        page.classList.remove('active');
+    });
 
+    // Afficher la page sélectionnée
     const selectedPage = document.getElementById(pageId);
-    if (selectedPage) selectedPage.classList.add('active');
+    if (selectedPage) {
+        selectedPage.classList.add('active');
+    }
 
+    // Mettre à jour le menu actif
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('href') === '#' + pageId) link.classList.add('active');
+        if (link.getAttribute('href') === '#' + pageId) {
+            link.classList.add('active');
+        }
     });
+
+    // Scroll vers le haut de la page
     window.scrollTo(0, 0);
 }
 
 // Gérer la soumission du formulaire de réservation
 document.addEventListener('DOMContentLoaded', function() {
     const reservationForm = document.getElementById('reservationForm');
+    
     if (reservationForm) {
         reservationForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Récupérer les valeurs du formulaire
             const nom = document.getElementById('nom').value;
             const email = document.getElementById('email').value;
+            const telephone = document.getElementById('telephone').value;
+            const nombrePersonnes = document.getElementById('nombrePersonnes').value;
+            const dateArrivee = document.getElementById('dateArrivee').value;
+            const dateDepart = document.getElementById('dateDepart').value;
+            const message = document.getElementById('message').value;
+
+            // Afficher un message de confirmation
             alert(`Merci ${nom}!\n\nVotre réservation a été reçue.\n\nNous vous répondrons rapidement à l'adresse: ${email}\n\nEmail de destination: lerochersaintpierre1h@gmail.com`);
+            
+            // Réinitialiser le formulaire
             reservationForm.reset();
         });
     }
@@ -35,30 +54,37 @@ document.addEventListener('DOMContentLoaded', function() {
 // Activer les liens de navigation
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
+    
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
+            
+            // Récupérer l'ID de la page depuis l'attribut href
             const pageId = this.getAttribute('href').substring(1);
             showPage(pageId);
         });
     });
 });
-
-// Filtrer la galerie d'images
 function filterGallery(category) {
+    // 1. Mettre à jour l'état actif des boutons d'onglets
     const buttons = document.querySelectorAll('.tab-btn');
     buttons.forEach(btn => btn.classList.remove('active'));
-    if (window.event && window.event.currentTarget) window.event.currentTarget.classList.add('active');
+    if (window.event && window.event.currentTarget) {
+        window.event.currentTarget.classList.add('active');
+    }
 
+    // 2. Filtrer et afficher uniquement les images de l'onglet sélectionné
     const items = document.querySelectorAll('.gallery-item');
-    const lowerCategory = category.toLowerCase();
+    const lowerCategory = category.toLowerCase(); // Force la catégorie en minuscules
+
     items.forEach(item => {
-        if (item.classList.contains(lowerCategory)) item.classList.add('active');
-        else item.classList.remove('active');
+        if (item.classList.contains(lowerCategory)) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
     });
 }
-
-// Lightbox pour visionner les photos
 document.addEventListener('DOMContentLoaded', function() {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
@@ -66,20 +92,27 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevBtn = document.querySelector('.lightbox-prev');
     const nextBtn = document.querySelector('.lightbox-next');
     
-    let currentActiveItems = [];
-    let currentIndex = 0;
+    let currentActiveItems = []; // Stocke les images de l'onglet actif
+    let currentIndex = 0;        // Index de l'image ouverte
 
-    const gallerySection = document.querySelector('.gallery-section');
-    if (gallerySection) {
-        gallerySection.addEventListener('click', function(e) {
-            const clickedItem = e.target.closest('.gallery-item');
-            if (!clickedItem) return;
-            currentActiveItems = Array.from(document.querySelectorAll('.gallery-item.active'));
-            currentIndex = currentActiveItems.indexOf(clickedItem);
-            if (currentIndex !== -1) openLightbox();
-        });
-    }
+    // Événement : Clic sur une image de la galerie
+    document.querySelector('.gallery-section').addEventListener('click', function(e) {
+        // On vérifie qu'on a cliqué sur une image dans un item de galerie
+        const clickedItem = e.target.closest('.gallery-item');
+        if (!clickedItem) return;
 
+        // On récupère TOUTES les images actuellement visibles dans l'onglet actif
+        currentActiveItems = Array.from(document.querySelectorAll('.gallery-item.active'));
+        
+        // On cherche la position de l'image cliquée dans cette liste
+        currentIndex = currentActiveItems.indexOf(clickedItem);
+
+        if (currentIndex !== -1) {
+            openLightbox();
+        }
+    });
+
+    // Fonction pour ouvrir et afficher l'image
     function openLightbox() {
         const targetImg = currentActiveItems[currentIndex].querySelector('img');
         lightboxImg.src = targetImg.src;
@@ -87,112 +120,111 @@ document.addEventListener('DOMContentLoaded', function() {
         lightbox.classList.add('active');
     }
 
+    // Image suivante
     function nextImage() {
         currentIndex = (currentIndex + 1) % currentActiveItems.length;
         openLightbox();
     }
 
+    // Image précédente
     function prevImage() {
         currentIndex = (currentIndex - 1 + currentActiveItems.length) % currentActiveItems.length;
         openLightbox();
     }
 
-    if (nextBtn) nextBtn.addEventListener('click', nextImage);
-    if (prevBtn) prevBtn.addEventListener('click', prevImage);
-    if (closeBtn) closeBtn.addEventListener('click', () => lightbox.classList.remove('active'));
-
-    if (lightbox) {
-        lightbox.addEventListener('click', function(e) {
-            if (e.target === lightbox || e.target.classList.contains('lightbox-content-wrapper')) lightbox.classList.remove('active');
-        });
+    // Fermer la lightbox
+    function closeLightbox() {
+        lightbox.classList.remove('active');
     }
 
+    // Liens vers les boutons
+    nextBtn.addEventListener('click', nextImage);
+    prevBtn.addEventListener('click', prevImage);
+    closeBtn.addEventListener('click', closeLightbox);
+
+    // Fermer si on clique sur le fond noir en dehors de l'image
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox || e.target.classList.contains('lightbox-content-wrapper')) {
+            closeLightbox();
+        }
+    });
+
+    // Optionnel : Permettre de naviguer avec le clavier (flèches gauche/droite et Échap)
     document.addEventListener('keydown', function(e) {
-        if (!lightbox || !lightbox.classList.contains('active')) return;
+        if (!lightbox.classList.contains('active')) return;
         if (e.key === 'ArrowRight') nextImage();
         if (e.key === 'ArrowLeft') prevImage();
-        if (e.key === 'Escape') lightbox.classList.remove('active');
+        if (e.key === 'Escape') closeLightbox();
     });
 });
 // ==========================================================================
-// CONFIGURATION DU CALENDRIER VIA GENS DE CONFIANCE (ICAL)
+// CONFIGURATION DU CALENDRIER & LIEN ICS
 // ==========================================================================
 
-// Votre lien de calendrier Gens de Confiance officiel
-const URL_ICAL_GDC = "https://static.gensdeconfiance.com/calendars/91f96a3d-cf71-4903-bc29-161a9b58e509.calendar.ics";
+// 1. Définissez ici votre lien de calendrier (.ics)
+const URL_ICS_BRUT = "https://ical.booking.com/v1/export?t=c2e693d7-90d5-4cb8-a2ee-4ee8f2536e2b";
 
-const occupiedDates = new Set();
-const monthNames = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
-const weekDays = ["L", "M", "M", "J", "V", "S", "D"];
+// Utilisation du proxy AllOrigins pour contourner le blocage CORS du navigateur
+const URL_ICS_PROXIFIEE = "https://allorigins.win" + encodeURIComponent(URL_ICS_BRUT);
+
+const NOMS_MOIS = [
+    "janvier", "février", "mars", "avril", "mai", "juin", 
+    "juillet", "août", "septembre", "octobre", "novembre", "décembre"
+];
 
 document.addEventListener("DOMContentLoaded", initCalendrier);
 
 async function initCalendrier() {
-    console.log("Connexion au calendrier Gens de Confiance...");
-
-    // Jeton anti-cache en temps réel pour forcer la mise à jour à chaque seconde
-    const jetonAntiCache = "&nocache=" + new Date().getTime();
-    const urlProxy = "https://allorigins.win" + encodeURIComponent(URL_ICAL_GDC + jetonAntiCache);
+    let datesOccupees = [];
+    console.log("Tentative de chargement du calendrier...");
 
     try {
-        const response = await fetch(urlProxy);
-        if (!response.ok) throw new Error("Le serveur proxy n'a pas répondu");
+        const response = await fetch(URL_ICS_PROXIFIEE);
+        if (!response.ok) throw new Error("Erreur réseau ou proxy indisponible");
         
         const texteICS = await response.text();
-        console.log("Fichier iCal GdC récupéré. Extraction des dates occupées...");
-        
-        extraireDatesDepuisICS(texteICS);
-        console.log("Synchronisation réussie. Nombre de jours bloqués en rouge :", occupiedDates.size);
-
+        console.log("Fichier ICS récupéré avec succès. Analyse en cours...");
+        datesOccupees = extraireDatesDepuisICS(texteICS);
+        console.log("Dates occupées trouvées :", datesOccupees);
     } catch (error) {
-        console.error("Erreur lors de la synchronisation iCal :", error);
+        console.error("Erreur lors du chargement du fichier ICS :", error);
     }
 
-    // Lance le tracé du calendrier (on utilise l'année en cours : 2026)
-    renderCalendar(2026);
+    // On génère le calendrier (même s'il est vide suite à une erreur, pour afficher les mois)
+    generer12MoisGlissants(datesOccupees);
 }
 
 // ==========================================================================
-// DECODER ULTRA-ROBUSTE POUR FICHIER .ICS
+// DECODAGE ET ANALYSE ROBUSTE DU FICHIER ICS
 // ==========================================================================
-function extraireDatesDepuisCSV(texteICS) { // Nom conservé pour éviter tout conflit interne
-    extraireDatesDepuisICS(texteICS);
-}
-
-function extraireDatesDepuisICS(texteICS) {
-    const lignes = texteICS.replace(/\r/g, "").split("\n");
+function extraireDatesDepuisICS(texte) {
+    const dates = [];
+    // Découpage propre des lignes pour éviter les retours chariots Windows/Mac
+    const lignes = texte.replace(/\r/g, "").split("\n");
+    
     let dateDebut = null;
     let dateFin = null;
 
     for (let i = 0; i < lignes.length; i++) {
         const ligne = lignes[i].trim();
-        if (!ligne) continue;
-
-        // Détection de DTSTART (gère aussi DTSTART;VALUE=DATE:...)
+        
+        // Détection du début de réservation (DTSTART)
         if (ligne.startsWith("DTSTART")) {
-            const indexDeuxPoints = ligne.indexOf(":");
-            if (indexDeuxPoints !== -1) {
-                dateDebut = interpreterDateICS(ligne.substring(indexDeuxPoints + 1));
-            }
+            const parties = ligne.split(":");
+            if (parties.length > 1) dateDebut = interpreterDateICS(parties[1]);
         } 
-        // Détection de DTEND
+        // Détection de la fin de réservation (DTEND)
         else if (ligne.startsWith("DTEND")) {
-            const indexDeuxPoints = ligne.indexOf(":");
-            if (indexDeuxPoints !== -1) {
-                dateFin = interpreterDateICS(ligne.substring(indexDeuxPoints + 1));
-            }
+            const parties = ligne.split(":");
+            if (parties.length > 1) dateFin = interpreterDateICS(parties[1]);
         } 
-        // Fin de l'événement de réservation : on marque les jours en rouge
+        // Fin de l'événement : on enregistre les jours
         else if (ligne.startsWith("END:VEVENT")) {
             if (dateDebut && dateFin) {
                 let courant = new Date(dateDebut);
-                // On remplit le Set du jour de l'arrivée jusqu'à la veille du départ
+                // Boucle du jour d'arrivée jusqu'à la veille du départ
                 while (courant < dateFin) {
-                    const annee = courant.getFullYear();
-                    const mois = String(courant.getMonth() + 1).padStart(2, '0');
-                    const jour = String(courant.getDate()).padStart(2, '0');
-                    
-                    occupiedDates.add(`${annee}-${mois}-${jour}`);
+                    dates.push(formaterDateCle(courant));
                     courant.setDate(courant.getDate() + 1);
                 }
             }
@@ -200,87 +232,104 @@ function extraireDatesDepuisICS(texteICS) {
             dateFin = null;
         }
     }
+    return dates;
 }
 
-// Convertit les formats iCal (ex: "20260906" ou "20260906T120000Z") en objet Date
+// Convertisseur ICS -> Date JavaScript (Prend en compte les formats AAAAMMJJ et AAAAMMJJTHHMMSSZ)
 function interpreterDateICS(valeur) {
     if (!valeur || valeur.length < 8) return null;
-    const propre = valeur.replace(/[^0-9]/g, ""); // Ne garde que les chiffres
     
-    const annee = parseInt(propre.substring(0, 4), 10);
-    const mois = parseInt(propre.substring(4, 6), 10) - 1;
-    const jour = parseInt(propre.substring(6, 8), 10);
+    // On extrait l'année, le mois (0-11 en JS) et le jour depuis la chaîne
+    const annee = parseInt(valeur.substring(0, 4), 10);
+    const mois = parseInt(valeur.substring(4, 6), 10) - 1;
+    const jour = parseInt(valeur.substring(6, 8), 10);
     
-    return new Date(annee, mois, jour, 12, 0, 0); // Calage fixe à midi anti-décalage horaire
+    // On crée la date calée à midi pour éviter les bugs de fuseaux horaires
+    return new Date(annee, mois, jour, 12, 0, 0);
+}
+
+function formaterDateCle(date) {
+    const a = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const j = String(date.getDate()).padStart(2, '0');
+    return `${a}-${m}-${j}`;
 }
 
 // ==========================================================================
-// MOTEUR GRAPHIQUE DU CALENDRIER (S'INJECTE DANS annualCalendarGrid)
+// GENERATION DYNAMIQUE DU HTML DES 12 MOIS
 // ==========================================================================
-function renderCalendar(year) {
-    const container = document.getElementById("annualCalendarGrid");
-    if (!container) return;
+function generer12MoisGlissants(datesOccupees) {
+    const grillePrincipale = document.getElementById("annualCalendarGrid");
+    if (!grillePrincipale) {
+        console.error("Élément #annualCalendarGrid introuvable dans le HTML !");
+        return;
+    }
+    
+    grillePrincipale.innerHTML = ""; 
 
-    container.innerHTML = "";
+    const aujourdhui = new Date();
+    let anneeCourante = aujourdhui.getFullYear();
+    let moisCourant = aujourdhui.getMonth();
 
-    const dateActuelle = new Date();
-    let anneeCourante = dateActuelle.getFullYear();
-    let moisCourant = dateActuelle.getMonth();
+    for (let m = 0; m < 12; m++) {
+        const boiteMois = document.createElement("div");
+        boiteMois.className = "month-box";
 
-    // Génération dynamique de votre calendrier sur 12 mois glissants
-    for (let i = 0; i < 12; i++) {
-        let indexMois = (moisCourant + i) % 12;
-        let anneeCible = anneeCourante + Math.floor((moisCourant + i) / 12);
+        const titre = document.createElement("div");
+        titre.className = "month-title";
+        titre.textContent = `${NOMS_MOIS[moisCourant]} ${anneeCourante}`;
+        boiteMois.appendChild(titre);
 
-        const monthBox = document.createElement("div");
-        monthBox.className = "month-box";
-
-        const title = document.createElement("div");
-        title.className = "month-title";
-        title.textContent = `${monthNames[indexMois]} ${anneeCible}`;
-        monthBox.appendChild(title);
-
-        const labels = document.createElement("div");
-        labels.className = "week-days-labels";
-        weekDays.forEach(day => {
-            const cell = document.createElement("div");
-            cell.textContent = day;
-            labels.appendChild(cell);
+        const labelsSemaine = document.createElement("div");
+        labelsSemaine.className = "week-days-labels";
+        ["L", "M", "M", "J", "V", "S", "D"].forEach(lettre => {
+            const divLettre = document.createElement("div");
+            divLettre.textContent = lettre;
+            labelsSemaine.appendChild(divLettre);
         });
-        monthBox.appendChild(labels);
+        boiteMois.appendChild(labelsSemaine);
 
-        const daysGrid = document.createElement("div");
-        daysGrid.className = "days-grid";
+        const grilleJours = document.createElement("div");
+        grilleJours.className = "days-grid";
 
-        let firstDay = new Date(anneeCible, indexMois, 1).getDay();
-        let offset = firstDay === 0 ? 6 : firstDay - 1; // Alignement semaine française (Lundi)
+        let premierJourIndex = new Date(anneeCourante, moisCourant, 1).getDay();
+        // Ajustement pour commencer la semaine le Lundi en France
+        premierJourIndex = premierJourIndex === 0 ? 6 : premierJourIndex - 1;
 
-        for (let j = 0; j < offset; j++) {
-            const emptyCell = document.createElement("div");
-            emptyCell.className = "day-cell empty";
-            daysGrid.appendChild(emptyCell);
+        const totalJoursMois = new Date(anneeCourante, moisCourant + 1, 0).getDate();
+
+        // 1. Cases vides
+        for (let vide = 0; vide < premierJourIndex; vide++) {
+            const caseVide = document.createElement("div");
+            caseVide.className = "day-cell empty";
+            grilleJours.appendChild(caseVide);
         }
 
-        const daysInMonth = new Date(anneeCible, indexMois + 1, 0).getDate();
-        for (let day = 1; day <= daysInMonth; day++) {
-            const date = new Date(anneeCible, indexMois, day);
-            
-            const anneeF = date.getFullYear();
-            const moisF = String(date.getMonth() + 1).padStart(2, '0');
-            const jourF = String(date.getDate()).padStart(2, '0');
-            const cleDate = `${anneeF}-${moisF}-${jourF}`;
+        // 2. Vrais jours
+        for (let jour = 1; jour <= totalJoursMois; jour++) {
+            const dateActuelle = new Date(anneeCourante, moisCourant, jour);
+            const dateCle = formaterDateCle(dateActuelle);
 
-            const cell = document.createElement("div");
-            cell.textContent = day;
+            const caseJour = document.createElement("div");
+            caseJour.className = "day-cell";
+            caseJour.textContent = jour;
 
-            if (occupiedDates.has(cleDate)) {
-                cell.className = "day-cell occupe"; // Applique votre classe rouge CSS
+            if (datesOccupees.includes(dateCle)) {
+                caseJour.classList.add("occupe"); // Applique le rouge transparent du CSS
             } else {
-                cell.className = "day-cell libre";  // Applique votre classe verte CSS
+                caseJour.classList.add("libre");  // Applique le vert transparent du CSS
             }
-            daysGrid.appendChild(cell);
+
+            grilleJours.appendChild(caseJour);
         }
-        monthBox.appendChild(daysGrid);
-        container.appendChild(monthBox);
+
+        boiteMois.appendChild(grilleJours);
+        grillePrincipale.appendChild(boiteMois);
+
+        moisCourant++;
+        if (moisCourant > 11) {
+            moisCourant = 0;
+            anneeCourante++;
+        }
     }
 }
