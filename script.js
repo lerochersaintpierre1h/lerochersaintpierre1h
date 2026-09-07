@@ -1,5 +1,5 @@
 // ==========================================================================
-// 1. NAVIGATION ENTRE LES PAGES
+// 1. NAVIGATION ENTRE LES PAGES & DÉFILEMENT RÉSERVATION
 // ==========================================================================
 function showPage(pageId) {
     const pages = document.querySelectorAll('.page');
@@ -21,6 +21,18 @@ function showPage(pageId) {
     window.scrollTo(0, 0);
 }
 
+function reserverDirectly(event) {
+    if (event) event.preventDefault();
+    showPage('disponibilites');
+    
+    setTimeout(() => {
+        const target = document.getElementById('section-reservation');
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, 100);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
@@ -33,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ==========================================================================
-// 2. GALERIE DE PHOTOS ET LIGHTBOX
+// 2. GALERIE DE PHOTOS ET LIGHTBOX (COMPATIBLE TOUTES PAGES)
 // ==========================================================================
 function filterGallery(category) {
     const buttons = document.querySelectorAll('.tab-btn');
@@ -43,7 +55,7 @@ function filterGallery(category) {
         window.event.currentTarget.classList.add('active');
     }
 
-    const items = document.querySelectorAll('.gallery-item');
+    const items = document.querySelectorAll('#appartement .gallery-item');
     const lowerCategory = category.toLowerCase();
 
     items.forEach(item => {
@@ -65,20 +77,19 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentActiveItems = [];
     let currentIndex = 0;
 
-    const gallerySection = document.querySelector('.gallery-section');
-    if (gallerySection) {
-        gallerySection.addEventListener('click', function(e) {
-            const clickedItem = e.target.closest('.gallery-item');
-            if (!clickedItem) return;
+    // Écoute globale du clic sur les photos de la page active
+    document.addEventListener('click', function(e) {
+        const clickedItem = e.target.closest('.gallery-item');
+        if (!clickedItem) return;
 
-            currentActiveItems = Array.from(document.querySelectorAll('.gallery-item.active'));
-            currentIndex = currentActiveItems.indexOf(clickedItem);
+        // Récupère uniquement les photos actives de la page affichée
+        currentActiveItems = Array.from(document.querySelectorAll('.page.active .gallery-item.active'));
+        currentIndex = currentActiveItems.indexOf(clickedItem);
 
-            if (currentIndex !== -1) {
-                openLightbox();
-            }
-        });
-    }
+        if (currentIndex !== -1) {
+            openLightbox();
+        }
+    });
 
     function openLightbox() {
         if (!currentActiveItems[currentIndex]) return;
@@ -170,11 +181,9 @@ async function initCalendrier() {
     const grillePrincipale = document.getElementById("annualCalendarGrid");
     if (!grillePrincipale) return;
 
-    // 1. Calendrier neutre par défaut
     generer12MoisGlissants([]);
 
     try {
-        // Lecture directe du fichier local booking.ics
         const response = await fetch("./booking.ics?v=" + Date.now());
         if (!response.ok) throw new Error("Fichier booking.ics introuvable");
 
