@@ -154,7 +154,7 @@ function genererMailto(event) {
     const sujet = encodeURIComponent(`Demande de réservation - ${nom}`);
 
     let corps = `Bonjour,%0D%0A%0D%0A`;
-    corps += `Vous avez reçu une nouvelle demande de réservation :%0D%0A`;
+    corps += `Vous avez reçu une nouvelle demande de réservation au rocher saint pierre 1h :%0D%0A`;
     corps += `==================================================%0D%0A`;
     corps += `• Nom complet        : ${nom}%0D%0A`;
     corps += `• Email du client    : ${emailClient}%0D%0A`;
