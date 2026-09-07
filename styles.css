@@ -595,7 +595,7 @@ nav img,
     text-decoration: line-through;
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE TABLETTE */
 @media (max-width: 992px) {
     .nav-container {
         flex-direction: column;
@@ -616,22 +616,57 @@ nav img,
     }
 }
 
+/* RESPONSIVE MOBILE (OPTIMISÉ IPHONE) */
 @media (max-width: 768px) {
+    .navbar {
+        position: relative; /* Libère l'écran en décollant la barre du haut au défilement */
+    }
+
+    .nav-container {
+        flex-direction: column;
+        gap: 0.3rem;
+        padding: 0.4rem 0.5rem;
+    }
+
+    .logo img, 
+    .navbar-brand img, 
+    nav img,
+    .site-logo {
+        height: 40px !important; /* Réduit la taille du logo sur mobile */
+    }
+
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.2rem 0.3rem;
+        width: 100%;
+    }
+
+    .nav-link {
+        padding: 0.25rem 0.45rem;
+        font-size: 0.78rem;
+    }
+
+    .nav-btn-reserve {
+        padding: 0.3rem 0.7rem;
+        font-size: 0.78rem;
+    }
+
     .page-content {
-        padding: 1.5rem;
-        margin: 1rem;
+        padding: 1.2rem;
+        margin: 0.8rem;
     }
 
     .hero-content h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
     }
 
     .hero-subtitle {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
     }
 
     .hero-section {
-        height: 60vh;
+        height: 50vh;
     }
 
     .gallery-grid {
