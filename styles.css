@@ -249,7 +249,7 @@ nav img,
 }
 
 .contact-info {
-    background: #3498db;
+    background: #2c3e50;
     border-left: 4px solid #f7f7f8;
     text-align: center;
 }
@@ -370,9 +370,9 @@ nav img,
 
 .tab-btn {
     padding: 10px 20px;
-    border: 2px solid #075192df;
+    border: 2px solid #2c3e50;
     background-color: transparent;
-    color: #075192df;
+    color: #2c3e50;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
@@ -382,7 +382,7 @@ nav img,
 }
 
 .tab-btn:hover, .tab-btn.active {
-    background-color: #075192df;
+    background-color: #2c3e50;
     color: #fff;
 }
 
