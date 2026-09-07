@@ -116,7 +116,7 @@ nav img,
 /* HERO SECTION */
 .hero-section {
     position: relative;
-    height: 100vh;
+    height: 60vh;
     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
                 url('images/couverture.jpg') center/cover no-repeat;
     display: flex;
@@ -133,7 +133,7 @@ nav img,
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(107, 107, 107, 0.4);
+    background: rgba(78, 77, 77, 0.4);
     z-index: 1;
 }
 
