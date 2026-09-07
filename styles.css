@@ -118,13 +118,15 @@ nav img,
     position: relative;
     height: 60vh;
     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
-                url('images/couverture.jpg') center/cover no-repeat;
+                url('images/couverture.jpg?v=2') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: #ffffff !important;
     margin-top: 0;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
 }
 
 .hero-overlay {
@@ -153,7 +155,8 @@ nav img,
     margin-bottom: 1rem;
     color: #ffffff !important;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
-    font-weight: bold;
+    font-weight: 550;
+    font-style: italic;
     text-align: center;
 }
 
@@ -164,65 +167,7 @@ nav img,
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
     letter-spacing: 2px;
     text-align: center;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Page Content */
-.page-content {
-    background: white;
-    padding: 3rem;
-    margin: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-}
-
-.page-content h1 {
-    color: #2c3e50;
-    margin-bottom: 1rem;
-    font-size: 2.5rem;
-}
-
-.page-content h2 {
-    color: #3498db;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.page-content p {
-    margin-bottom: 1rem;
-    color: #555;
-    font-size: 1.1rem;
-}
-
-.page-content ul {
-    margin: 1rem 0 1rem 2rem;
-}
-
-.page-content li {
-    margin-bottom: 0.5rem;
-    color: #555;
-    font-size: 1.1rem;
-}
-
-/* Content Box */
-.content-box {
-    background: #f9f9f9;
-    padding: 1.5rem;
-    margin: 1.5rem 0;
-    border-left: 4px solid #3498db;
-    border-radius: 4px;
-    font-size: 1.1rem;
-}
+}   
 
 /* Footer */
 .footer {
