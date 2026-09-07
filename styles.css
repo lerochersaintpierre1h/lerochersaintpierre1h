@@ -624,15 +624,16 @@ nav img,
 
     .nav-container {
         flex-direction: column;
-        gap: 0.3rem;
-        padding: 0.4rem 0.5rem;
+        gap: 0.2rem;
+        padding: 0.3rem 0.5rem;
     }
 
     .logo img, 
     .navbar-brand img, 
     nav img,
     .site-logo {
-        height: 25px !important; /* Réduit la taille du logo sur mobile */
+        height: 22px !important; /* Logo réduit à 28px pour libérer le haut de l'écran */
+        clip-path: none !important;
     }
 
     .nav-menu {
