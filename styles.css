@@ -632,7 +632,7 @@ nav img,
     .navbar-brand img, 
     nav img,
     .site-logo {
-        height: 40px !important; /* Réduit la taille du logo sur mobile */
+        height: 30px !important; /* Réduit la taille du logo sur mobile */
     }
 
     .nav-menu {
