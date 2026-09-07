@@ -160,12 +160,49 @@
                 </p>
             </div>
         </div> <!-- La fermeture de la page d'accueil se trouve ici -->
+        
         <!-- PAGE 2: APPARTEMENT -->
         <div id="appartement" class="page">
             <div class="page-content">
-                <h1>L'Appartement</h1>
+                <h1>L'appartement</h1>
                 <p class="page-subtitle">Découvrez notre logement idéalement situé au cœur de la station de Valloire.</p>
                 
+                <!-- Galerie Photos (Placée en haut) -->
+                <h2 style="margin-top: 1.5rem; text-align: center;">Galerie Photos</h2>
+                <section class="gallery-section">
+                    <div class="gallery-tabs">
+                        <button class="tab-btn active" onclick="filterGallery('salon')">salon</button>
+                        <button class="tab-btn" onclick="filterGallery('chambre')">chambre</button>
+                        <button class="tab-btn" onclick="filterGallery('cuisine')">cuisine</button>
+                        <button class="tab-btn" onclick="filterGallery('toilette')">Sdb toilette</button>
+                        <button class="tab-btn" onclick="filterGallery('exterieur')">extérieur</button>
+                    </div>
+
+                    <div class="gallery-grid">
+                        <div class="gallery-item salon active"><img src="images/11.jpg" alt="Salon 1"></div>
+                        <div class="gallery-item salon active"><img src="images/12.jpg" alt="Salon 2"></div>
+                        <div class="gallery-item salon active"><img src="images/13.jpg" alt="Salon 3"></div>
+                        <div class="gallery-item salon active"><img src="images/14.jpg" alt="Salon 4"></div>
+                        <div class="gallery-item salon active"><img src="images/15.jpg" alt="Salon 5"></div>
+
+                        <div class="gallery-item chambre"><img src="images/21.jpg" alt="Chambre 1"></div>
+                        <div class="gallery-item chambre"><img src="images/22.jpg" alt="Chambre 2"></div>
+                        <div class="gallery-item chambre"><img src="images/23.jpg" alt="Chambre 3"></div>
+
+                        <div class="gallery-item cuisine"><img src="images/31.jpg" alt="Cuisine 1"></div>
+                        <div class="gallery-item cuisine"><img src="images/32.jpg" alt="Cuisine 2"></div>
+                        <div class="gallery-item cuisine"><img src="images/33.jpg" alt="Cuisine 3"></div>
+
+                        <div class="gallery-item toilette"><img src="images/41.jpg" alt="Toilette 1"></div>
+                        <div class="gallery-item toilette"><img src="images/42.jpg" alt="Toilette 2"></div>
+                        <div class="gallery-item toilette"><img src="images/43.jpg" alt="Toilette 3"></div>
+                        
+                        <div class="gallery-item exterieur"><img src="images/51.jpg" alt="Extérieur 1"></div>
+                        <div class="gallery-item exterieur"><img src="images/52.jpg" alt="Extérieur 2"></div>
+                        <div class="gallery-item exterieur"><img src="images/53.jpg" alt="Extérieur 3"></div>
+                    </div>
+                </section>
+
                 <!-- Bloc Aperçu -->
                 <div class="content-box">
                     <h2><span class="icon"></span> Aperçu &amp; Situation</h2>
@@ -210,42 +247,6 @@
                         <li><strong>Logement non-fumeur</strong></li>
                     </ul>
                 </div>
-
-                <!-- Galerie Photos -->
-                <h2 style="margin-top: 3rem; text-align: center;">Galerie Photos</h2>
-                <section class="gallery-section">
-                    <div class="gallery-tabs">
-                        <button class="tab-btn active" onclick="filterGallery('salon')">salon</button>
-                        <button class="tab-btn" onclick="filterGallery('chambre')">chambre</button>
-                        <button class="tab-btn" onclick="filterGallery('cuisine')">cuisine</button>
-                        <button class="tab-btn" onclick="filterGallery('toilette')">Sdb toilette</button>
-                        <button class="tab-btn" onclick="filterGallery('exterieur')">extérieur</button>
-                    </div>
-
-                    <div class="gallery-grid">
-                        <div class="gallery-item salon active"><img src="images/11.jpg" alt="Salon 1"></div>
-                        <div class="gallery-item salon active"><img src="images/12.jpg" alt="Salon 2"></div>
-                        <div class="gallery-item salon active"><img src="images/13.jpg" alt="Salon 3"></div>
-                        <div class="gallery-item salon active"><img src="images/14.jpg" alt="Salon 4"></div>
-                        <div class="gallery-item salon active"><img src="images/15.jpg" alt="Salon 5"></div>
-
-                        <div class="gallery-item chambre"><img src="images/21.jpg" alt="Chambre 1"></div>
-                        <div class="gallery-item chambre"><img src="images/22.jpg" alt="Chambre 2"></div>
-                        <div class="gallery-item chambre"><img src="images/23.jpg" alt="Chambre 3"></div>
-
-                        <div class="gallery-item cuisine"><img src="images/31.jpg" alt="Cuisine 1"></div>
-                        <div class="gallery-item cuisine"><img src="images/32.jpg" alt="Cuisine 2"></div>
-                        <div class="gallery-item cuisine"><img src="images/33.jpg" alt="Cuisine 3"></div>
-
-                        <div class="gallery-item toilette"><img src="images/41.jpg" alt="Toilette 1"></div>
-                        <div class="gallery-item toilette"><img src="images/42.jpg" alt="Toilette 2"></div>
-                        <div class="gallery-item toilette"><img src="images/43.jpg" alt="Toilette 3"></div>
-                        
-                        <div class="gallery-item exterieur"><img src="images/51.jpg" alt="Extérieur 1"></div>
-                        <div class="gallery-item exterieur"><img src="images/52.jpg" alt="Extérieur 2"></div>
-                        <div class="gallery-item exterieur"><img src="images/53.jpg" alt="Extérieur 3"></div>
-                    </div>
-                </section>
             </div>
         </div>
 
