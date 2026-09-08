@@ -177,6 +177,30 @@ nav img,
     padding: 2rem;
     margin-top: 3rem;
 }
+/* BLOCS DE CONTENU (Appartement, Valloire, Tarifs) */
+.page-content {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.content-box {
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+}
+/* Ajoute cette ligne ici */
+.content-box h2 {
+    margin-bottom: 1rem;
+}    
+
+/* Variante pour le bloc d'informations pratiques / avertissements */
+.content-box.warning-box {
+    border-left-color: #2c3e50;
+}
 
 /* RESERVATION & CONTACT */
 .reservation-form,
@@ -221,6 +245,12 @@ nav img,
 .contact-info a:hover {
     opacity: 0.8;
     text-decoration: underline;
+}
+.content-subtitle {
+    margin-bottom: 1.2rem; /* Espace après la ligne */
+    font-style: italic;    /* Maintient le texte en italique */
+    color: #555;           /* Couleur légèrement grisée pour l'effet sous-titre */
+    font-size: 0.95rem;    /* Taille ajustée */
 }
 
 /* FORMULAIRE */
@@ -623,4 +653,5 @@ nav img,
         grid-template-columns: 1fr;
         gap: 1rem;
     }
+
 }
