@@ -240,6 +240,7 @@ nav img,
     text-decoration: none;
     font-weight: bold;
     transition: opacity 0.3s ease;
+    overflow-wrap: anywhere; /* Permet de couper l'adresse email sur mobile si nécessaire */
 }
 
 .contact-info a:hover {
