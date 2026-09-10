@@ -77,12 +77,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentActiveItems = [];
     let currentIndex = 0;
 
-    // Écoute globale du clic sur les photos de la page active
     document.addEventListener('click', function(e) {
         const clickedItem = e.target.closest('.gallery-item');
         if (!clickedItem) return;
 
-        // Récupère uniquement les photos actives de la page affichée
         currentActiveItems = Array.from(document.querySelectorAll('.page.active .gallery-item.active'));
         currentIndex = currentActiveItems.indexOf(clickedItem);
 
@@ -318,3 +316,25 @@ function generer12MoisGlissants(datesOccupees) {
         }
     }
 }
+
+// ==========================================================================
+// 5. TRADUCTION DU SITE (FR / EN)
+// ==========================================================================
+function setLanguage(lang) {
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    const activeBtn = document.getElementById('btn-' + lang);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+        el.innerHTML = el.getAttribute('data-' + lang);
+    });
+
+    localStorage.setItem('site_lang', lang);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('site_lang') || 'fr';
+    if (savedLang === 'en') {
+        setLanguage('en');
+    }
+});

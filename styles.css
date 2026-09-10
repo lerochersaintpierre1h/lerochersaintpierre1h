@@ -12,7 +12,7 @@ body {
     background-color: #f4f4f4;
 }
 
-/* Navigation Bar (Mise en page décalée à gauche et responsive) */
+/* Navigation Bar */
 .navbar {
     background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
     padding: 0;
@@ -40,6 +40,42 @@ nav img,
     max-height: 100%;   
     object-fit: contain;
     clip-path: inset(10px 5px 9px 5px);
+}
+
+/* Sélecteur de langue (aligné à droite du logo et agrandi) */
+.logo-container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 15px;
+    flex-wrap: nowrap;
+}
+
+.lang-switch {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+}
+
+.lang-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 6px;
+    transition: transform 0.2s, background-color 0.2s;
+    line-height: 1;
+}
+
+.lang-btn:hover {
+    transform: scale(1.15);
+}
+
+.lang-btn.active {
+    border-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .nav-menu {
@@ -71,7 +107,7 @@ nav img,
     border-bottom: 3px solid white;
 }
 
-/* Bouton Je Réserve complet et non tronqué */
+/* Bouton Je Réserve */
 .nav-btn-reserve {
     background-color: #e74c3c;
     color: white !important;
@@ -177,6 +213,7 @@ nav img,
     padding: 2rem;
     margin-top: 3rem;
 }
+
 /* BLOCS DE CONTENU (Appartement, Valloire, Tarifs) */
 .page-content {
     max-width: 1200px;
@@ -192,12 +229,11 @@ nav img,
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     margin-bottom: 1.5rem;
 }
-/* Ajoute cette ligne ici */
+
 .content-box h2 {
     margin-bottom: 1rem;
 }    
 
-/* Variante pour le bloc d'informations pratiques / avertissements */
 .content-box.warning-box {
     border-left-color: #2c3e50;
 }
@@ -240,18 +276,19 @@ nav img,
     text-decoration: none;
     font-weight: bold;
     transition: opacity 0.3s ease;
-    overflow-wrap: anywhere; /* Permet de couper l'adresse email sur mobile si nécessaire */
+    overflow-wrap: anywhere;
 }
 
 .contact-info a:hover {
     opacity: 0.8;
     text-decoration: underline;
 }
+
 .content-subtitle {
-    margin-bottom: 1.2rem; /* Espace après la ligne */
-    font-style: italic;    /* Maintient le texte en italique */
-    color: #555;           /* Couleur légèrement grisée pour l'effet sous-titre */
-    font-size: 0.95rem;    /* Taille ajustée */
+    margin-bottom: 1.2rem;
+    font-style: italic;
+    color: #555;
+    font-size: 0.95rem;
 }
 
 /* FORMULAIRE */
@@ -595,7 +632,7 @@ nav img,
 /* RESPONSIVE MOBILE (OPTIMISÉ IPHONE) */
 @media (max-width: 768px) {
     .navbar {
-        position: relative; /* Libère l'écran en décollant la barre du haut au défilement */
+        position: relative;
     }
 
     .nav-container {
@@ -608,7 +645,7 @@ nav img,
     .navbar-brand img, 
     nav img,
     .site-logo {
-        height: 22px !important; /* Logo réduit à 28px pour libérer le haut de l'écran */
+        height: 22px !important;
         clip-path: none !important;
     }
 
@@ -654,5 +691,4 @@ nav img,
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-
 }
