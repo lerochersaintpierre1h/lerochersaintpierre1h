@@ -1,0 +1,25 @@
+name: Synchro Calendrier iCloud
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Exécution à la minute 0 de chaque heure (toutes les heures)
+  workflow_dispatch: # Permet de le lancer manuellement depuis l'onglet Actions
+
+jobs:
+  update-calendar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Télécharger le calendrier iCloud
+        run: curl -sL "https://p187-caldav.icloud.com/published/2/MTAyMzg3MTMyMTEwMjM4N3g4ajosgZu2q9IYau8yaejsyQdBg9avVSVaQccExs-XrtlUWT9yWIQOAow4PO0D-1SVX0xBo-DA585ETY76Hrg" -o booking.ics
+        
+      - name: Pousser les modifications sur GitHub
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add booking.ics
+          git commit -m "Mise à jour automatique du calendrier iCloud" || exit 0
+          git push
