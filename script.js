@@ -182,20 +182,23 @@ async function initCalendrier() {
     generer12MoisGlissants([]);
 
     try {
-        const response = await fetch("./booking.ics?v=" + Date.now());
-        if (!response.ok) throw new Error("Fichier booking.ics introuvable");
+        // Lien direct vers le fichier public hébergé sur Firebase Storage
+        const urlFirebase = "https://firebasestorage.googleapis.com/v0/b/rochersaintpierre1h.firebasestorage.app/o/calendrier_rocher.ics?alt=media&v=" + Date.now();
+        
+        const response = await fetch(urlFirebase);
+        if (!response.ok) throw new Error("Fichier calendrier_rocher.ics introuvable sur Firebase Storage");
 
         const texteICS = await response.text();
 
         if (texteICS && texteICS.includes("BEGIN:VCALENDAR")) {
             const datesOccupees = extraireDatesDepuisICS(texteICS);
-            console.log("Dates chargées depuis booking.ics :", datesOccupees.length);
+            console.log("Dates chargées depuis Firebase Storage :", datesOccupees.length);
             generer12MoisGlissants(datesOccupees);
         } else {
-            console.error("Le fichier booking.ics est vide ou invalide.");
+            console.error("Le fichier .ics sur Firebase est vide ou invalide.");
         }
     } catch (err) {
-        console.error("Erreur de lecture du calendrier local :", err);
+        console.error("Erreur de lecture du calendrier Firebase :", err);
     }
 }
 
