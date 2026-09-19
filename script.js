@@ -183,10 +183,10 @@ async function initCalendrier() {
 
     try {
         // Lien direct vers le fichier public hébergé sur Firebase Storage
-        const urlFirebase = "https://firebasestorage.googleapis.com/v0/b/rochersaintpierre1h.firebasestorage.app/o/calendrier_rocher.ics?alt=media&v=" + Date.now();
+       const urlFirebase = "https://firebasestorage.googleapis.com/v0/b/rochersaintpierre1h.firebasestorage.app/o/calendrier_site.ics?alt=media&v=" + Date.now();
         
-        const response = await fetch(urlFirebase);
-        if (!response.ok) throw new Error("Fichier calendrier_rocher.ics introuvable sur Firebase Storage");
+const response = await fetch(urlFirebase);
+if (!response.ok) throw new Error("Fichier calendrier_site.ics introuvable sur Firebase Storage");
 
         const texteICS = await response.text();
 
