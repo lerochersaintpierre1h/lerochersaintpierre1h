@@ -166,7 +166,7 @@ function genererMailto(event) {
 }
 
 // ==========================================================================
-// 4. CALENDRIER DE DISPONIBILITÉS (FICHIER LOCAL GITHUB)
+// 4. CALENDRIER DE DISPONIBILITÉS (FICHIER SITE WEB)
 // ==========================================================================
 const NOMS_MOIS = [
     "janvier", "février", "mars", "avril", "mai", "juin", 
@@ -182,11 +182,11 @@ async function initCalendrier() {
     generer12MoisGlissants([]);
 
     try {
-        // Lien direct vers le fichier public hébergé sur Firebase Storage
-       const urlFirebase = "https://firebasestorage.googleapis.com/v0/b/rochersaintpierre1h.firebasestorage.app/o/calendrier_site.ics?alt=media&v=" + Date.now();
+        // Chargement du fichier complet (contient les résas directes + Booking)
+        const urlFirebase = "https://firebasestorage.googleapis.com/v0/b/rochersaintpierre1h.firebasestorage.app/o/calendrier_site.ics?alt=media&v=" + Date.now();
         
-const response = await fetch(urlFirebase);
-if (!response.ok) throw new Error("Fichier calendrier_site.ics introuvable sur Firebase Storage");
+        const response = await fetch(urlFirebase);
+        if (!response.ok) throw new Error("Fichier calendrier_site.ics introuvable sur Firebase Storage");
 
         const texteICS = await response.text();
 
@@ -319,7 +319,6 @@ function generer12MoisGlissants(datesOccupees) {
         }
     }
 }
-
 // ==========================================================================
 // 5. TRADUCTION DU SITE (FR / EN)
 // ==========================================================================
