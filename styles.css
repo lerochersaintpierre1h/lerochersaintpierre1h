@@ -134,7 +134,7 @@ nav img,
     align-items: center;
     justify-content: center;
     gap: 6px;
-    background-color: rgba(44, 62, 80, 0.5); /* Bleu foncé avec 50% d'opacité */
+    background-color: rgba(44, 62, 80, 0.2); /* Bleu foncé avec 50% d'opacité */
     border: 1px solid rgba(255, 255, 255, 0.2); /* Fin contour blanc transparent */
     color: white !important;
     text-decoration: none !important;
@@ -149,7 +149,7 @@ nav img,
 }
 
 .btn-voyageur:hover {
-    background-color: rgba(44, 62, 80, 0.95); /* Devient presque totalement opaque au survol */
+    background-color: rgba(44, 62, 80, 0.8); /* Devient presque totalement opaque au survol */
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
