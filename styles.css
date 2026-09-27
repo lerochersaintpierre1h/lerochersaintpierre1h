@@ -106,22 +106,20 @@ nav img,
     background-color: rgba(255, 255, 255, 0.3);
     border-bottom: 3px solid white;
 }
-/* Bouton Espace Voyageur */
+/* --- BOUTON ESPACE VOYAGEUR --- */
 .btn-voyageur {
     display: flex;
     align-items: center;
-    gap: 6px;
-    color: white;
-    text-decoration: none;
-    font-weight: 600; /* Aspect discret */
+    justify-content: center;
+    gap: 8px;
+    color: #ffffff !important; /* Force le texte en blanc (contre le violet par défaut) */
+    text-decoration: none !important; /* Enlève le trait de soulignement */
+    font-weight: 800;
     padding: 0.5rem 0.8rem;
     border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
-    cursor: pointer;
     font-size: 0.95rem;
     white-space: nowrap;
+    transition: all 0.3s ease;
 }
 
 .btn-voyageur:hover {
@@ -129,13 +127,26 @@ nav img,
     transform: translateY(-2px);
 }
 
-/* Force l'icône à rester petite malgré la règle globale "nav img" */
-.voyageur-icon {
+/* Force absolue pour contrer la règle "nav img" qui rend le logo géant */
+nav img.voyageur-icon {
     height: 18px !important; 
     width: auto !important;
-    object-fit: contain;
-    clip-path: none !important; /* Annule l'effet de rognage du logo principal */
+    clip-path: none !important; /* Enlève l'effet rogné */
+    margin: 0 !important;
+    padding: 0 !important;
 }
+
+/* Adaptation pour les téléphones (mobile) */
+@media (max-width: 768px) {
+    .btn-voyageur {
+        padding: 0.25rem 0.45rem;
+        font-size: 0.78rem;
+    }
+    nav img.voyageur-icon {
+        height: 15px !important; 
+    }
+}
+
 /* Bouton Je Réserve */
 .nav-btn-reserve {
     background-color: #e74c3c;
