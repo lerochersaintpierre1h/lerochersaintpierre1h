@@ -106,6 +106,25 @@ nav img,
     background-color: rgba(255, 255, 255, 0.3);
     border-bottom: 3px solid white;
 }
+/* Bouton Espace Voyageur */
+.btn-voyageur {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600; /* Un peu moins gras que les autres liens pour rester discret */
+    background-color: rgba(255, 255, 255, 0.1); /* Fond très léger */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-voyageur:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.voyageur-icon {
+    height: 16px; /* Taille discrète adaptée au texte */
+    width: auto;
+    object-fit: contain;
+}
 
 /* Bouton Je Réserve */
 .nav-btn-reserve {
