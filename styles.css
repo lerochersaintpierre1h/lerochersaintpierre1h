@@ -106,46 +106,6 @@ nav img,
     background-color: rgba(255, 255, 255, 0.3);
     border-bottom: 3px solid white;
 }
-/* --- BOUTON ESPACE VOYAGEUR --- */
-.btn-voyageur {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    color: #ffffff !important; /* Force le texte en blanc (contre le violet par défaut) */
-    text-decoration: none !important; /* Enlève le trait de soulignement */
-    font-weight: 800;
-    padding: 0.5rem 0.8rem;
-    border-radius: 4px;
-    font-size: 0.95rem;
-    white-space: nowrap;
-    transition: all 0.3s ease;
-}
-
-.btn-voyageur:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
-}
-
-/* Force absolue pour contrer la règle "nav img" qui rend le logo géant */
-nav img.voyageur-icon {
-    height: 18px !important; 
-    width: auto !important;
-    clip-path: none !important; /* Enlève l'effet rogné */
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-/* Adaptation pour les téléphones (mobile) */
-@media (max-width: 768px) {
-    .btn-voyageur {
-        padding: 0.25rem 0.45rem;
-        font-size: 0.78rem;
-    }
-    nav img.voyageur-icon {
-        height: 15px !important; 
-    }
-}
 
 /* Bouton Je Réserve */
 .nav-btn-reserve {
@@ -166,6 +126,35 @@ nav img.voyageur-icon {
     background-color: #c0392b;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Bouton Espace Voyageur */
+.btn-voyageur {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    font-weight: 800;
+    padding: 0.5rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.btn-voyageur:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+nav img.voyageur-icon {
+    height: 18px !important; 
+    width: auto !important;
+    clip-path: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* Pages Container */
@@ -662,7 +651,7 @@ nav img.voyageur-icon {
         width: 100%;
     }
 
-    .nav-link, .nav-btn-reserve {
+    .nav-link, .nav-btn-reserve, .btn-voyageur {
         display: block;
         padding: 0.5rem 0.8rem;
         text-align: center;
@@ -699,6 +688,15 @@ nav img.voyageur-icon {
     .nav-link {
         padding: 0.25rem 0.45rem;
         font-size: 0.78rem;
+    }
+
+    .btn-voyageur {
+        padding: 0.25rem 0.45rem;
+        font-size: 0.78rem;
+    }
+
+    nav img.voyageur-icon {
+        height: 15px !important; 
     }
 
     .nav-btn-reserve {
