@@ -695,12 +695,12 @@ nav img.voyageur-icon {
     }
 
     .btn-voyageur {
-        padding: 0.25rem 0.45rem;
-        font-size: 0.78rem;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.7rem;
     }
 
     nav img.voyageur-icon {
-        height: 15px !important; 
+        height: 12px !important; 
     }
 
     .nav-btn-reserve {
