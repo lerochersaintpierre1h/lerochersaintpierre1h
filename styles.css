@@ -111,21 +111,31 @@ nav img,
     display: flex;
     align-items: center;
     gap: 6px;
-    font-weight: 600; /* Un peu moins gras que les autres liens pour rester discret */
-    background-color: rgba(255, 255, 255, 0.1); /* Fond très léger */
+    color: white;
+    text-decoration: none;
+    font-weight: 600; /* Aspect discret */
+    padding: 0.5rem 0.8rem;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 0.95rem;
+    white-space: nowrap;
 }
 
 .btn-voyageur:hover {
     background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
 }
 
+/* Force l'icône à rester petite malgré la règle globale "nav img" */
 .voyageur-icon {
-    height: 16px; /* Taille discrète adaptée au texte */
-    width: auto;
+    height: 18px !important; 
+    width: auto !important;
     object-fit: contain;
+    clip-path: none !important; /* Annule l'effet de rognage du logo principal */
 }
-
 /* Bouton Je Réserve */
 .nav-btn-reserve {
     background-color: #e74c3c;
