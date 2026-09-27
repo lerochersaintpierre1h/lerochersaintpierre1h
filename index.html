@@ -71,11 +71,19 @@
     <link rel="apple-touch-icon" href="favicon.ico">
 </head>
 <body>
+
     <!-- Navigation Menu -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo-container">
                 <img src="images/logo valloire-2.png" alt="logo valloire location particulier" class="logo-img">
+                
+                <!-- BOUTON ESPACE VOYAGEUR (POUR MOBILE SEULEMENT) -->
+                <a href="https://lerochersaintpierre1h.github.io/portail-client/" target="_blank" class="btn-voyageur mobile-only">
+                    <img src="images/logo-menu-appli.png" alt="Portail client" class="voyageur-icon">
+                    <span class="voyageur-text" data-fr="Espace<br>Voyageur" data-en="Guest<br>Area">Espace<br>Voyageur</span>
+                </a>
+
                 <div class="lang-switch">
                     <button type="button" onclick="setLanguage('fr')" class="lang-btn active" id="btn-fr" title="Français">🇫🇷</button>
                     <button type="button" onclick="setLanguage('en')" class="lang-btn" id="btn-en" title="English">🇬🇧</button>
@@ -91,17 +99,17 @@
                 
                 <li><a href="#section-reservation" onclick="reserverDirectly(event)" class="nav-btn-reserve" data-fr="Je réserve" data-en="Book now">Je réserve</a></li>
 
-                <!-- BOUTON ESPACE VOYAGEUR DÉPLACÉ À LA FIN -->
-                <li>
+                <!-- BOUTON ESPACE VOYAGEUR (POUR ORDINATEUR SEULEMENT) -->
+                <li class="desktop-only">
                     <a href="https://lerochersaintpierre1h.github.io/portail-client/" target="_blank" class="btn-voyageur">
                         <img src="images/logo-menu-appli.png" alt="Portail client" class="voyageur-icon">
-                        <span data-fr="Espace Voyageur" data-en="Guest Area">Espace voyageur</span>
+                        <span class="voyageur-text" data-fr="Espace<br>Voyageur" data-en="Guest<br>Area">Espace<br>Voyageur</span>
                     </a>
                 </li>
             </ul>
         </div>
     </nav>
-
+    
     <!-- Pages Container -->
     <div class="pages-container">
         
