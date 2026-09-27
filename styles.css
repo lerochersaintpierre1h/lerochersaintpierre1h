@@ -128,34 +128,37 @@ nav img,
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
-/* Bouton Espace Voyageur (Style Pilule Bleu Foncé) */
+/* Bouton Espace Voyageur (Style Pilule Bleu Transparent 0.3) */
 .btn-voyageur {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-    background-color: rgba(44, 62, 80, 0.2); /* Bleu foncé avec 50% d'opacité */
-    border: 1px solid rgba(255, 255, 255, 0.2); /* Fin contour blanc transparent */
+    background-color: rgba(44, 62, 80, 0.3); /* Opacité à 0.3 */
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: white !important;
     text-decoration: none !important;
     font-weight: 700;
-    padding: 0.4rem 0.9rem; /* Plus fin que Je Réserve */
-    border-radius: 25px; /* Effet pilule */
-    font-size: 0.8rem; /* Texte plus petit */
-    white-space: nowrap;
+    padding: 0.3rem 0.8rem;
+    border-radius: 25px;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .btn-voyageur:hover {
-    background-color: rgba(44, 62, 80, 0.8); /* Devient presque totalement opaque au survol */
+    background-color: rgba(44, 62, 80, 0.5); /* Légèrement plus visible au survol */
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.voyageur-text {
+    font-size: 0.65rem; /* Écrit plus petit */
+    line-height: 1.1; /* Rapproche les 2 lignes */
+    text-align: left;
 }
 
 nav img.voyageur-icon {
-    height: 14px !important; /* Logo réduit pour s'adapter au petit texte */
+    height: 16px !important; /* Taille légèrement ajustée pour la double ligne */
     width: auto !important;
     clip-path: none !important;
     margin: 0 !important;
