@@ -690,6 +690,21 @@ nav img.voyageur-icon {
         clip-path: none !important;
     }
 
+    /* Ajustement de l'en-tête pour que le bouton rentre entre le logo et les drapeaux */
+    .logo-container {
+        gap: 6px !important; 
+        justify-content: center;
+    }
+
+    /* --- GESTION DES DEUX BOUTONS VOYAGEUR --- */
+    .desktop-only {
+        display: none !important; /* Cache le bouton du bas */
+    }
+
+    .mobile-only {
+        display: flex !important; /* Affiche le bouton d'en haut */
+    }
+
     .nav-menu {
         flex-wrap: wrap;
         justify-content: center;
@@ -703,12 +718,15 @@ nav img.voyageur-icon {
     }
 
     .btn-voyageur {
-        padding: 0.3rem 0.6rem;
-        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+
+    .voyageur-text {
+        font-size: 0.55rem; /* Réduit pour rentrer sur la ligne du haut */
     }
 
     nav img.voyageur-icon {
-        height: 12px !important; 
+        height: 14px !important; 
     }
 
     .nav-btn-reserve {
