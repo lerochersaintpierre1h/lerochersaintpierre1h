@@ -164,6 +164,10 @@ nav img.voyageur-icon {
     margin: 0 !important;
     padding: 0 !important;
 }
+/* Cache le bouton mobile sur les grands écrans */
+.mobile-only {
+    display: none !important;
+}
 
 /* Pages Container */
 .pages-container {
