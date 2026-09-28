@@ -366,42 +366,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 // ==========================================================================
-// 6. GESTION DES DATES DU FORMULAIRE
+// 6. GESTION DES DATES DU FORMULAIRE (CORRECTION SPÉCIALE iOS)
 // ==========================================================================
 document.addEventListener("DOMContentLoaded", function() {
     const inputArrivee = document.getElementById("dateArrivee");
     const inputDepart = document.getElementById("dateDepart");
 
     if (inputArrivee && inputDepart) {
-        // 1. Calculer aujourd'hui en tenant compte du fuseau horaire local
-        const tzoffset = (new Date()).getTimezoneOffset() * 60000;
-        const aujourdhui = new Date(Date.now() - tzoffset).toISOString().split('T')[0];
+        // Bloquer les dates passées au chargement de la page
+        const dateAujourdhui = new Date().toISOString().split('T')[0];
+        inputArrivee.setAttribute("min", dateAujourdhui);
+        inputDepart.setAttribute("min", dateAujourdhui);
 
-        inputArrivee.setAttribute("min", aujourdhui);
-        inputDepart.setAttribute("min", aujourdhui);
-
-        // 2. Fonction de mise à jour sécurisée pour iOS
-        function majDateDepart() {
+        function actualiserDepart() {
             if (inputArrivee.value) {
-                // Forcer l'heure à midi pour éviter les décalages de fuseau horaire sur iPhone
+                // Forcer l'heure à midi pour éviter les bugs de fuseau horaire
                 const dateChoisie = new Date(inputArrivee.value + 'T12:00:00');
                 dateChoisie.setDate(dateChoisie.getDate() + 1);
+                const lendemain = dateChoisie.toISOString().split('T')[0];
                 
-                // Formater proprement le lendemain en YYYY-MM-DD
-                const tz = dateChoisie.getTimezoneOffset() * 60000;
-                const lendemain = new Date(dateChoisie - tz).toISOString().split('T')[0];
-                
-                inputDepart.setAttribute("min", lendemain);
-                
-                if (inputDepart.value && inputDepart.value < lendemain) {
-                    inputDepart.value = "";
-                }
+                // Le setTimeout force Safari iOS à "re-dessiner" la limite du calendrier
+                setTimeout(() => {
+                    inputDepart.setAttribute("min", lendemain);
+                    if (inputDepart.value && inputDepart.value < lendemain) {
+                        inputDepart.value = "";
+                    }
+                }, 50);
             }
         }
 
-        // 3. Écouter de multiples événements pour contourner les lenteurs d'iOS Safari
-        inputArrivee.addEventListener("change", majDateDepart);
-        inputArrivee.addEventListener("input", majDateDepart);
-        inputArrivee.addEventListener("blur", majDateDepart);
+        // Mettre à jour quand on valide la première date
+        inputArrivee.addEventListener("change", actualiserDepart);
+        inputArrivee.addEventListener("blur", actualiserDepart);
+        
+        // ASTUCE iOS : Forcer la mise à jour juste avant l'ouverture du rouleau de départ
+        inputDepart.addEventListener("focus", actualiserDepart);
+        inputDepart.addEventListener("click", actualiserDepart);
+        inputDepart.addEventListener("touchstart", actualiserDepart);
     }
 });
