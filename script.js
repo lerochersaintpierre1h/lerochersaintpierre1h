@@ -134,35 +134,60 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ==========================================================================
-// 3. FORMULAIRE DE RÉSERVATION (GÉNÉRATION DU MAILTO)
+// 3. FORMULAIRE DE RÉSERVATION (ENVOI VIA FORMSPREE AJAX)
 // ==========================================================================
-function genererMailto(event) {
-    event.preventDefault();
+var form = document.getElementById("reservationForm");
 
-    const nom = document.getElementById('nom').value;
-    const emailClient = document.getElementById('email').value;
-    const adulte = document.getElementById('nombreAdultes').value;
-    const enfant = document.getElementById('nombreEnfants').value;
-    const telephone = document.getElementById('telephone').value;
-    const arrivee = document.getElementById('dateArrivee').value;
-    const depart = document.getElementById('dateDepart').value;
-    const message = document.getElementById('message').value;
+async function handleSubmit(event) {
+  event.preventDefault();
+  var status = document.getElementById("form-status");
+  var data = new FormData(event.target);
+  
+  // Désactiver le bouton pendant l'envoi pour éviter les doubles clics
+  var btnSubmit = form.querySelector('button[type="submit"]');
+  var originalBtnText = btnSubmit.innerHTML;
+  btnSubmit.innerHTML = "Envoi en cours...";
+  btnSubmit.disabled = true;
 
-    const emailDestinataire = "lerochersaintpierre1h@gmail.com";
-    const sujet = encodeURIComponent(`Demande de réservation - ${nom}`);
+  fetch(event.target.action, {
+    method: form.method,
+    body: data,
+    headers: {
+        'Accept': 'application/json'
+    }
+  }).then(response => {
+    if (response.ok) {
+      status.style.display = "block";
+      status.style.backgroundColor = "#d4edda";
+      status.style.color = "#155724";
+      status.innerHTML = "Merci ! Votre demande a bien été envoyée. Nous vous répondrons très vite.";
+      form.reset(); // On vide le formulaire
+    } else {
+      response.json().then(data => {
+        if (Object.hasOwn(data, 'errors')) {
+          status.innerHTML = data["errors"].map(error => error["message"]).join(", ");
+        } else {
+          status.innerHTML = "Oups! Un problème est survenu lors de l'envoi.";
+        }
+        status.style.display = "block";
+        status.style.backgroundColor = "#f8d7da";
+        status.style.color = "#721c24";
+      })
+    }
+  }).catch(error => {
+    status.style.display = "block";
+    status.style.backgroundColor = "#f8d7da";
+    status.style.color = "#721c24";
+    status.innerHTML = "Oups! Un problème de connexion est survenu.";
+  }).finally(() => {
+    // Réactiver le bouton après l'envoi
+    btnSubmit.innerHTML = originalBtnText;
+    btnSubmit.disabled = false;
+  });
+}
 
-    let corps = `Bonjour,%0D%0A%0D%0A`;
-    corps += `Vous avez reçu une nouvelle demande de réservation au rocher saint pierre 1h :%0D%0A`;
-    corps += `==================================================%0D%0A`;
-    corps += `• Nom complet        : ${nom}%0D%0A`;
-    corps += `• Email du client    : ${emailClient}%0D%0A`;
-    corps += `• Téléphone          : ${telephone}%0D%0A`;
-    corps += `• Voyageurs          : ${adulte} adulte(s) et ${enfant} enfant(s)%0D%0A`;
-    corps += `• Période du séjour  : du ${arrivee} au ${depart}%0D%0A`;
-    corps += `==================================================%0D%0A%0D%0A`;
-    corps += `MESSAGE :%0D%0A${encodeURIComponent(message)}%0D%0A`;
-
-    window.location.href = `mailto:${emailDestinataire}?subject=${sujet}&body=${corps}`;
+if (form) {
+    form.addEventListener("submit", handleSubmit);
 }
 
 // ==========================================================================
@@ -338,5 +363,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedLang = localStorage.getItem('site_lang') || 'fr';
     if (savedLang === 'en') {
         setLanguage('en');
+    }
+});
+// ==========================================================================
+// 6. GESTION DES DATES DU FORMULAIRE
+// ==========================================================================
+document.addEventListener("DOMContentLoaded", function() {
+    const inputArrivee = document.getElementById("dateArrivee");
+    const inputDepart = document.getElementById("dateDepart");
+
+    if (inputArrivee && inputDepart) {
+        // 1. Empêcher de choisir une date passée pour aujourd'hui
+        const aujourdhui = new Date().toISOString().split("T")[0];
+        inputArrivee.setAttribute("min", aujourdhui);
+        inputDepart.setAttribute("min", aujourdhui);
+
+        // 2. Mettre à jour la date de départ quand l'arrivée change
+        inputArrivee.addEventListener("change", function() {
+            if (this.value) {
+                // Calculer le lendemain de la date d'arrivée
+                const dateChoisie = new Date(this.value);
+                dateChoisie.setDate(dateChoisie.getDate() + 1);
+                const lendemain = dateChoisie.toISOString().split("T")[0];
+                
+                // Appliquer le lendemain comme date minimum pour le départ
+                inputDepart.setAttribute("min", lendemain);
+                
+                // Si une date de départ était déjà choisie et qu'elle est avant le nouveau minimum, on la vide
+                if (inputDepart.value && inputDepart.value < lendemain) {
+                    inputDepart.value = "";
+                }
+            }
+        });
     }
 });
