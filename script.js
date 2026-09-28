@@ -373,27 +373,35 @@ document.addEventListener("DOMContentLoaded", function() {
     const inputDepart = document.getElementById("dateDepart");
 
     if (inputArrivee && inputDepart) {
-        // 1. Empêcher de choisir une date passée pour aujourd'hui
-        const aujourdhui = new Date().toISOString().split("T")[0];
+        // 1. Calculer aujourd'hui en tenant compte du fuseau horaire local
+        const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+        const aujourdhui = new Date(Date.now() - tzoffset).toISOString().split('T')[0];
+
         inputArrivee.setAttribute("min", aujourdhui);
         inputDepart.setAttribute("min", aujourdhui);
 
-        // 2. Mettre à jour la date de départ quand l'arrivée change
-        inputArrivee.addEventListener("change", function() {
-            if (this.value) {
-                // Calculer le lendemain de la date d'arrivée
-                const dateChoisie = new Date(this.value);
+        // 2. Fonction de mise à jour sécurisée pour iOS
+        function majDateDepart() {
+            if (inputArrivee.value) {
+                // Forcer l'heure à midi pour éviter les décalages de fuseau horaire sur iPhone
+                const dateChoisie = new Date(inputArrivee.value + 'T12:00:00');
                 dateChoisie.setDate(dateChoisie.getDate() + 1);
-                const lendemain = dateChoisie.toISOString().split("T")[0];
                 
-                // Appliquer le lendemain comme date minimum pour le départ
+                // Formater proprement le lendemain en YYYY-MM-DD
+                const tz = dateChoisie.getTimezoneOffset() * 60000;
+                const lendemain = new Date(dateChoisie - tz).toISOString().split('T')[0];
+                
                 inputDepart.setAttribute("min", lendemain);
                 
-                // Si une date de départ était déjà choisie et qu'elle est avant le nouveau minimum, on la vide
                 if (inputDepart.value && inputDepart.value < lendemain) {
                     inputDepart.value = "";
                 }
             }
-        });
+        }
+
+        // 3. Écouter de multiples événements pour contourner les lenteurs d'iOS Safari
+        inputArrivee.addEventListener("change", majDateDepart);
+        inputArrivee.addEventListener("input", majDateDepart);
+        inputArrivee.addEventListener("blur", majDateDepart);
     }
 });
