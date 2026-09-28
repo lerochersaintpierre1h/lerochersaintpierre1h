@@ -79,17 +79,16 @@
                 <img src="images/logo valloire-2.png" alt="logo valloire location particulier" class="logo-img">
                 
                 <!-- SÉLECTEUR DE LANGUE (DÉPLACÉ AVANT LE BOUTON) -->
-    <div class="lang-switch">
-        <button type="button" onclick="setLanguage('fr')" class="lang-btn active" id="btn-fr" title="Français">🇫🇷</button>
-        <button type="button" onclick="setLanguage('en')" class="lang-btn" id="btn-en" title="English">🇬🇧</button>
-    </div>
+                <div class="lang-switch">
+                    <button type="button" onclick="setLanguage('fr')" class="lang-btn active" id="btn-fr" title="Français">🇫🇷</button>
+                    <button type="button" onclick="setLanguage('en')" class="lang-btn" id="btn-en" title="English">🇬🇧</button>
+                </div>
 
-    <!-- BOUTON ESPACE VOYAGEUR (POUR MOBILE SEULEMENT - DÉPLACÉ APRÈS LES DRAPEAUX) -->
-    <a href="https://lerochersaintpierre1h.github.io/portail-client/" target="_blank" class="btn-voyageur mobile-only">
-        <img src="images/logo-menu-appli.png" alt="Portail client" class="voyageur-icon">
-        <span class="voyageur-text" data-fr="Espace<br>Voyageur" data-en="Guest<br>Area">Espace<br>Voyageur</span>
-    </a>
-</div>
+                <!-- BOUTON ESPACE VOYAGEUR (POUR MOBILE SEULEMENT - DÉPLACÉ APRÈS LES DRAPEAUX) -->
+                <a href="https://lerochersaintpierre1h.github.io/portail-client/" target="_blank" class="btn-voyageur mobile-only">
+                    <img src="images/logo-menu-appli.png" alt="Portail client" class="voyageur-icon">
+                    <span class="voyageur-text" data-fr="Espace<br>Voyageur" data-en="Guest<br>Area">Espace<br>Voyageur</span>
+                </a>
             </div>
             <ul class="nav-menu">
                 <li><a href="#accueil" class="nav-link active" data-fr="Accueil" data-en="Home">Accueil</a></li>
@@ -365,7 +364,8 @@
                 <h2 data-fr="Réservation &amp; Demande de Séjour" data-en="Booking &amp; Inquiries">Réservation &amp; Demande de Séjour</h2>
                 <p data-fr="Remplissez le formulaire ci-dessous pour faire une réservation en direct ou nous poser une question." data-en="Fill out the form below to make a direct reservation or ask a question.">Remplissez le formulaire ci-dessous pour faire une réservation en direct ou nous poser une question.</p>
                 
-                <form class="reservation-form" id="reservationForm" method="POST" onsubmit="genererMailto(event)">
+                <form class="reservation-form" id="reservationForm" action="https://formspree.io/f/mwlpavvl" method="POST">
+                    <input type="hidden" name="_subject" value="🚨 Nouvelle demande de réservation - Le Rocher Saint Pierre !">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nom" data-fr="Nom complet :" data-en="Full name:">Nom complet :</label>
@@ -441,6 +441,10 @@
                             <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: #666; font-style: italic;" data-fr="Frais supplémentaires via Booking" data-en="Additional fees on Booking">Frais supplémentaires via Booking</p>
                         </div>
                     </div>
+
+                    <!-- Message de confirmation masqué par défaut -->
+                    <div id="form-status" style="display: none; margin-top: 15px; padding: 10px; border-radius: 4px; text-align: center; font-weight: bold;"></div>
+                    
                 </form>
             </div>
         </div>
