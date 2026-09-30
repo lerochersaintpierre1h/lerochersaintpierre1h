@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ECHT5L914C"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-ECHT5L914C');
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Le Rocher Saint Pierre 1H | Location Appartement 6 pers. à Valloire</title>
@@ -56,28 +47,19 @@
       },
       "priceRange": "À partir de 400€ / semaine",
       "checkinTime": "17:00",
-      "checkoutTime": "10:00",
-      "amenityFeature": [
-        {"@type": "LocationFeatureSpecification", "name": "Emplacement centre station", "value": true},
-        {"@type": "LocationFeatureSpecification", "name": "Proximité pistes (50m)", "value": true},
-        {"@type": "LocationFeatureSpecification", "name": "Parking privé en sous-sol", "value": true},
-        {"@type": "LocationFeatureSpecification", "name": "Décoration soignée et moderne", "value": true},
-        {"@type": "LocationFeatureSpecification", "name": "Wi-Fi inclus", "value": true},
-        {"@type": "LocationFeatureSpecification", "name": "Local à skis", "value": true},
-        {"@type": "LocationFeatureSpecification", "name": "Balcon", "value": true},
-        {"@type": "LocationFeatureSpecification", "name": "Proche ESF et ESI", "value": true},
-        {"@type": "LocationFeatureSpecification", "name": "Piste de luge à 50 m", "value": true},
-        {"@type": "LocationFeatureSpecification", "name": "Logement non-fumeur", "value": true}
-      ]
+      "checkoutTime": "10:00"
     }
     </script>
 
+    <!-- Import de la police moderne Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="styles.css">
     
-    <!-- Favicon pour la barre d'onglets et les favoris -->
     <link rel="apple-touch-icon" href="favicon.ico">
-    <!-- Icône pour les favoris sur écran d'accueil (iOS / Safari) -->
-    <link rel="apple-touch-icon" href="favicon.ico">
+    <link rel="icon" href="favicon.ico">
 </head>
 <body>
 
@@ -87,18 +69,24 @@
             <div class="logo-container">
                 <img src="images/logo valloire-2.png" alt="logo valloire location particulier" class="logo-img">
                 
-                <!-- SÉLECTEUR DE LANGUE (DÉPLACÉ AVANT LE BOUTON) -->
                 <div class="lang-switch">
                     <button type="button" onclick="setLanguage('fr')" class="lang-btn active" id="btn-fr" title="Français">🇫🇷</button>
                     <button type="button" onclick="setLanguage('en')" class="lang-btn" id="btn-en" title="English">🇬🇧</button>
                 </div>
 
-                <!-- BOUTON ESPACE VOYAGEUR (POUR MOBILE SEULEMENT - DÉPLACÉ APRÈS LES DRAPEAUX) -->
                 <a href="https://lerochersaintpierre1h.github.io/portail-client/" target="_blank" class="btn-voyageur mobile-only">
                     <img src="images/logo-menu-appli.png" alt="Portail client" class="voyageur-icon">
                     <span class="voyageur-text" data-fr="Espace<br>Voyageur" data-en="Guest<br>Area">Espace<br>Voyageur</span>
                 </a>
             </div>
+
+            <!-- BOUTON HAMBURGER POUR MOBILE -->
+            <div class="menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
             <ul class="nav-menu">
                 <li><a href="#accueil" class="nav-link active" data-fr="Accueil" data-en="Home">Accueil</a></li>
                 <li><a href="#appartement" class="nav-link" data-fr="Appartement" data-en="Apartment">Appartement</a></li>
@@ -109,7 +97,6 @@
                 
                 <li><a href="#section-reservation" onclick="reserverDirectly(event)" class="nav-btn-reserve" data-fr="Je réserve" data-en="Book now">Je réserve</a></li>
 
-                <!-- BOUTON ESPACE VOYAGEUR (POUR ORDINATEUR SEULEMENT) -->
                 <li class="desktop-only">
                     <a href="https://lerochersaintpierre1h.github.io/portail-client/" target="_blank" class="btn-voyageur">
                         <img src="images/logo-menu-appli.png" alt="Portail client" class="voyageur-icon">
@@ -134,47 +121,47 @@
                 </div>
             </div>
 
-            <div class="page-content" style="text-align: center; margin-top: 2rem;">
+            <div class="page-content" style="text-align: center;">
                 <h1 data-fr="Bienvenue à Valloire" data-en="Welcome to Valloire">Bienvenue à Valloire</h1>
                 <p data-fr="Profitez d'un séjour à la montagne dans un appartement cosy, rénové et parfaitement équipé au cœur de la station." data-en="Enjoy a mountain stay in a cozy, renovated, and fully equipped apartment in the heart of the resort.">Profitez d'un séjour à la montagne dans un appartement cosy, rénové et parfaitement équipé au cœur de la station.</p>
             </div>
 
             <!-- Section Avis Clients -->
-            <div class="page-content" style="margin-top: 2rem; text-align: center;">
+            <div class="page-content" style="text-align: center;">
                 <h2 data-fr="Ce que disent nos voyageurs" data-en="What our guests say">Ce que disent nos voyageurs</h2>
-                <p style="font-size: 1.2rem; font-weight: bold; color: #197c42; margin-bottom: 1.5rem;" data-fr="Note globale Booking.com : 9,4/10 <strong>Fabuleux ★★★★★</strong>" data-en="Overall Booking.com rating: 9.4/10 <strong>Fabulous ★★★★★</strong>">
+                <p class="rating-highlight" data-fr="Note globale Booking.com : 9,4/10 <strong>Fabuleux ★★★★★</strong>" data-en="Overall Booking.com rating: 9.4/10 <strong>Fabulous ★★★★★</strong>">
                     Note globale Booking.com : 9,4/10 <strong>Fabuleux ★★★★★</strong>
                 </p>
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; text-align: left;">
-                    <div style="background: #f9f9f9; padding: 1.2rem; border-radius: 8px; border-left: 4px solid #3498db; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                        <p style="font-style: italic; margin-bottom: 0.8rem; color: #444; text-align: justify;">« Nous avons tout aimé ; le confort, le modernisme et la déco, le balcon avec sa vue montagne, l'excellent emplacement au cœur de Valloire, le parking privé, l'excellent équipement. À recommander sans réserve. »</p>
-                        <p style="font-weight: bold; font-size: 0.9rem; color: #2c3e50; margin: 0; text-align: right;">🇫🇷 — Client vérifié Booking.com</p>
+                <div class="reviews-grid">
+                    <div class="review-card">
+                        <p class="review-text">« Nous avons tout aimé ; le confort, le modernisme et la déco, le balcon avec sa vue montagne, l'excellent emplacement au cœur de Valloire, le parking privé, l'excellent équipement. À recommander sans réserve. »</p>
+                        <p class="review-author">🇫🇷 — Client vérifié Booking.com</p>
                     </div>
-                    <div style="background: #f9f9f9; padding: 1.2rem; border-radius: 8px; border-left: 4px solid #3498db; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                        <p style="font-style: italic; margin-bottom: 0.8rem; color: #444; text-align: justify;">« L'emplacement, le confort, le parking souterrain, les équipements de cuisine, lave-linge, Wi-Fi internet performant, propreté. Location à recommander ! »</p>
-                        <p style="font-weight: bold; font-size: 0.9rem; color: #2c3e50; margin: 0; text-align: right;">🇫🇷 — Client vérifié Booking.com</p>
+                    <div class="review-card">
+                        <p class="review-text">« L'emplacement, le confort, le parking souterrain, les équipements de cuisine, lave-linge, Wi-Fi internet performant, propreté. Location à recommander ! »</p>
+                        <p class="review-author">🇫🇷 — Client vérifié Booking.com</p>
                     </div>
-                    <div style="background: #f9f9f9; padding: 1.2rem; border-radius: 8px; border-left: 4px solid #3498db; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                        <p style="font-style: italic; margin-bottom: 0.8rem; color: #444; text-align: justify;">« L'appartement est suffisant pour passer une semaine, les casiers à skis sont pratiques et le parking est un plus. La personne qui nous a accueillis est aimable et réactive. »</p>
-                        <p style="font-weight: bold; font-size: 0.9rem; color: #2c3e50; margin: 0; text-align: right;">🇫🇷 — Client vérifié Booking.com</p>
+                    <div class="review-card">
+                        <p class="review-text">« L'appartement est suffisant pour passer une semaine, les casiers à skis sont pratiques et le parking est un plus. La personne qui nous a accueillis est aimable et réactive. »</p>
+                        <p class="review-author">🇫🇷 — Client vérifié Booking.com</p>
                     </div>
-                    <div style="background: #f9f9f9; padding: 1.2rem; border-radius: 8px; border-left: 4px solid #3498db; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                        <p style="font-style: italic; margin-bottom: 0.8rem; color: #444; text-align: justify;">« Logement moderne, propre et très confortable pour 6 personnes. Proche des pistes et des commerces à pied. »</p>
-                        <p style="font-weight: bold; font-size: 0.9rem; color: #2c3e50; margin: 0; text-align: right;">🇫🇷 — Client vérifié Booking.com</p>
+                    <div class="review-card">
+                        <p class="review-text">« Logement moderne, propre et très confortable pour 6 personnes. Proche des pistes et des commerces à pied. »</p>
+                        <p class="review-author">🇫🇷 — Client vérifié Booking.com</p>
                     </div>
-                    <div style="background: #f9f9f9; padding: 1.2rem; border-radius: 8px; border-left: 4px solid #3498db; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                        <p style="font-style: italic; margin-bottom: 0.8rem; color: #444; text-align: justify;">« We hebben ontzettend genoten van ons verblijf. Het appartement was zeer comfortabel en netjes ingericht. Alles wat we nodig hadden was voorzien – van keukengerief tot een fijne badkamer – waardoor we ons meteen thuis voelden. De ligging was ook ideaal om het charmante Valloire te verkennen. Het was een heerlijk aangenaam verblijf, en we komen zeker graag nog eens terug! »</p>
-                        <p style="font-weight: bold; font-size: 0.9rem; color: #2c3e50; margin: 0; text-align: right;">🇳🇱 — Client vérifié Booking.com</p>
+                    <div class="review-card">
+                        <p class="review-text">« We hebben ontzettend genoten van ons verblijf. Het appartement was zeer comfortabel en netjes ingericht. Alles wat we nodig hadden was voorzien – van keukengerief tot een fijne badkamer – waardoor we ons meteen thuis voelden... »</p>
+                        <p class="review-author">🇳🇱 — Client vérifié Booking.com</p>
                     </div>
-                    <div style="background: #f9f9f9; padding: 1.2rem; border-radius: 8px; border-left: 4px solid #3498db; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                        <p style="font-style: italic; margin-bottom: 0.8rem; color: #444; text-align: justify;">« Top gelegen in het centrum, met eigen parkeerplaats. Prachtige locatie voor wandelaars en fietsers. En natuurlijk een paradijs voor de skiërs. We hebben genoten van de prachtige ligging. »</p>
-                        <p style="font-weight: bold; font-size: 0.9rem; color: #2c3e50; margin: 0; text-align: right;">🇧🇪 — Client vérifié Booking.com</p>
+                    <div class="review-card">
+                        <p class="review-text">« Top gelegen in het centrum, met eigen parkeerplaats. Prachtige locatie voor wandelaars en fietsers. En natuurlijk een paradijs voor de skiërs. We hebben genoten van de prachtige ligging. »</p>
+                        <p class="review-author">🇧🇪 — Client vérifié Booking.com</p>
                     </div>
                 </div>
 
-                <p style="margin-top: 1.5rem; font-size: 0.95rem;">
-                    <a href="https://www.booking.com/hotel/fr/le-rocher-saint-pierre-1h.fr.html" target="_blank" style="color: #3498db; text-decoration: underline; font-weight: bold;" data-fr="Consulter tous les avis récents sur Booking.com →" data-en="Read all recent reviews on Booking.com →">
+                <p style="margin-top: 2rem;">
+                    <a href="https://www.booking.com/hotel/fr/le-rocher-saint-pierre-1h.fr.html" target="_blank" class="link-bold" data-fr="Consulter tous les avis récents sur Booking.com →" data-en="Read all recent reviews on Booking.com →">
                         Consulter tous les avis récents sur Booking.com →
                     </a>
                 </p>
@@ -185,9 +172,9 @@
         <div id="appartement" class="page">
             <div class="page-content">
                 <h1 data-fr="L'appartement" data-en="The Apartment">L'appartement</h1>
-                <p class="page-subtitle" data-fr="Découvrez notre logement idéalement situé au cœur de la station de Valloire." data-en="Discover our accommodation ideally located in the heart of Valloire resort.">Découvrez notre logement idéalement situé au cœur de la station de Valloire.</p>
+                <p class="page-subtitle text-center" data-fr="Découvrez notre logement idéalement situé au cœur de la station de Valloire." data-en="Discover our accommodation ideally located in the heart of Valloire resort.">Découvrez notre logement idéalement situé au cœur de la station de Valloire.</p>
                 
-                <h2 style="margin-top: 1.5rem; text-align: center;" data-fr="Galerie Photos" data-en="Photo Gallery">Galerie Photos</h2>
+                <h2 style="margin-top: 2rem; text-align: center;" data-fr="Galerie Photos" data-en="Photo Gallery">Galerie Photos</h2>
                 <section class="gallery-section">
                     <div class="gallery-tabs">
                         <button class="tab-btn active" onclick="filterGallery('salon')" data-fr="salon" data-en="living room">salon</button>
@@ -223,8 +210,8 @@
                 </section>
 
                 <div class="content-box">
-                    <h2 data-fr="<span class='icon'></span> Aperçu &amp; Situation" data-en="<span class='icon'></span> Overview &amp; Location"><span class="icon"></span> Aperçu &amp; Situation</h2>
-                    <ul>
+                    <h2 data-fr="Aperçu &amp; Situation" data-en="Overview &amp; Location">Aperçu &amp; Situation</h2>
+                    <ul class="styled-list">
                         <li data-fr="<strong>Emplacement :</strong> Centre station, proche de tous commerces" data-en="<strong>Location:</strong> Resort center, close to all shops"><strong>Emplacement :</strong> Centre station, proche de tous commerces</li>
                         <li data-fr="<strong>Proximité pistes :</strong> À 250 m des remontées mécaniques et 50 m du retour piste" data-en="<strong>Ski slope proximity:</strong> 250m from ski lifts and 50m from slope return"><strong>Proximité pistes :</strong> À 250 m des remontées mécaniques et 50 m du retour piste</li>
                         <li data-fr="<strong>Loisirs immédiats :</strong> Cinéma au pied de la résidence" data-en="<strong>Immediate leisure:</strong> Cinema right below the residence"><strong>Loisirs immédiats :</strong> Cinéma au pied de la résidence</li>
@@ -234,17 +221,17 @@
                 </div>
 
                 <div class="content-box">
-                    <h2 data-fr="<span class='icon'></span> Configuration des Couchages" data-en="<span class='icon'></span> Sleeping Arrangements"><span class="icon"></span> Configuration des Couchages</h2>
+                    <h2 data-fr="Configuration des Couchages" data-en="Sleeping Arrangements">Configuration des Couchages</h2>
                     <p class="content-subtitle" data-fr="Note : Tous les lits sont équipés de couettes et alèses." data-en="Note: All beds are equipped with duvets and mattress protectors.">Note : Tous les lits sont équipés de couettes et alèses.</p>
-                    <ul>
+                    <ul class="styled-list">
                         <li data-fr="<strong>Séjour :</strong> 1 canapé-lit 2 places (140x200 cm)" data-en="<strong>Living room:</strong> 1 double sofa bed (140x200 cm)"><strong>Séjour :</strong> 1 canapé-lit 2 places (140x200 cm)</li>
                         <li data-fr="<strong>Chambre :</strong> 1 lit double (140x190 cm) + lits superposés (90x190 cm)" data-en="<strong>Bedroom:</strong> 1 double bed (140x190 cm) + bunk beds (90x190 cm)"><strong>Chambre :</strong> 1 lit double (140x190 cm) + lits superposés (90x190 cm)</li>
                     </ul>
                 </div>
 
                 <div class="content-box">
-                    <h2 data-fr="<span class='icon'></span> Équipements du Logement" data-en="<span class='icon'></span> Amenities"><span class="icon"></span> Équipements du Logement</h2>
-                    <ul>
+                    <h2 data-fr="Équipements du Logement" data-en="Amenities">Équipements du Logement</h2>
+                    <ul class="styled-list">
                         <li data-fr="<strong>Coin cuisine :</strong> Four, micro-ondes, lave-vaisselle, combiné réfrigérateur-congélateur, plaques à induction, plongeur-mixeur, cafetière Nespresso et filtre, kit pâtisserie" data-en="<strong>Kitchenette:</strong> Oven, microwave, dishwasher, fridge-freezer, induction hob, hand blender, Nespresso &amp; filter coffee makers, baking kit">
                             <strong>Coin cuisine :</strong> Four, micro-ondes, lave-vaisselle, combiné réfrigérateur-congélateur, plaques à induction, plongeur-mixeur, cafetière Nespresso et filtre, kit pâtisserie
                         </li>
@@ -255,9 +242,9 @@
                     </ul>
                 </div>
 
-                <div class="content-box warning-box">
-                    <h2 data-fr="<span class='icon'></span> Informations Pratiques &amp; Services" data-en="<span class='icon'></span> Practical Information &amp; Services"><span class="icon"></span> Informations Pratiques &amp; Services</h2>
-                    <ul>
+                <div class="content-box">
+                    <h2 data-fr="Informations Pratiques &amp; Services" data-en="Practical Information &amp; Services">Informations Pratiques &amp; Services</h2>
+                    <ul class="styled-list">
                         <li data-fr="<strong>Parking :</strong> Place de parking en sous-sol fermé et privé (inclus)" data-en="<strong>Parking:</strong> Private underground parking space included"><strong>Parking :</strong> Place de parking en sous-sol fermé et privé (inclus)</li>
                         <li data-fr="<strong>Linge de maison :</strong> Draps et serviettes non fournis" data-en="<strong>Linen:</strong> Bed sheets and towels not provided"><strong>Linge de maison :</strong> Draps et serviettes non fournis</li>
                         <li data-fr="<strong>Famille :</strong> Kit bébé disponible sur demande" data-en="<strong>Family:</strong> Baby kit available upon request"><strong>Famille :</strong> Kit bébé disponible sur demande</li>
@@ -272,13 +259,13 @@
         <div id="valloire" class="page">
             <div class="page-content">
                 <h1 data-fr="Découvrir Valloire" data-en="Discover Valloire">Découvrir Valloire</h1>
-                <p style="text-align: center; margin-bottom: 1.5rem; font-size: 1.1rem; line-height: 1.6;" data-fr="Un village logé entre le Col du Télégraphe (1556m) et le Col du Galibier (2642m) où l’authenticité est préservée ! Valloire est un village avant même d’être une station, ses habitants en sont l’âme et font tout son charme.<br><br><strong>Valloire, la Vallée d’Or !</strong><br>Vous n’avez pas fini de vous ressourcer et de savourer la beauté des paysages : des sommets d’émotion et du merveilleux plein les yeux vous attendent !" data-en="A village nestled between Col du Télégraphe (1556m) and Col du Galibier (2642m) where authenticity is preserved! Valloire is a village first before being a resort.<br><br><strong>Valloire, the Golden Valley!</strong><br>Breathtaking landscapes and unforgettable mountain experiences await you!">
+                <p style="text-align: center; margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.8;" data-fr="Un village logé entre le Col du Télégraphe (1556m) et le Col du Galibier (2642m) où l’authenticité est préservée ! Valloire est un village avant même d’être une station, ses habitants en sont l’âme et font tout son charme.<br><br><strong>Valloire, la Vallée d’Or !</strong><br>Vous n’avez pas fini de vous ressourcer et de savourer la beauté des paysages : des sommets d’émotion et du merveilleux plein les yeux vous attendent !" data-en="A village nestled between Col du Télégraphe (1556m) and Col du Galibier (2642m) where authenticity is preserved! Valloire is a village first before being a resort.<br><br><strong>Valloire, the Golden Valley!</strong><br>Breathtaking landscapes and unforgettable mountain experiences await you!">
                     Un village logé entre le Col du Télégraphe (1556m) et le Col du Galibier (2642m) où l’authenticité est préservée ! Valloire est un village avant même d’être une station, ses habitants en sont l’âme et font tout son charme.<br><br>
                     <strong>Valloire, la Vallée d’Or !</strong><br>
                     Vous n’avez pas fini de vous ressourcer et de savourer la beauté des paysages : des sommets d’émotion et du merveilleux plein les yeux vous attendent !
                 </p>
                 
-                <section class="gallery-section" style="margin: 0 0 2.5rem 0; padding: 0;">
+                <section class="gallery-section" style="margin: 0 0 3rem 0; padding: 0;">
                     <div class="gallery-grid" style="grid-template-columns: repeat(3, 1fr); gap: 20px;">
                         <div class="gallery-item active"><img src="images/61.jpg" alt="Valloire 1"></div>
                         <div class="gallery-item active"><img src="images/62.jpg" alt="Valloire 2"></div>
@@ -293,36 +280,35 @@
                 </section>
 
                 <div class="content-box">
-                    <h2 data-fr="<span class='icon'></span> L’hiver à Valloire" data-en="<span class='icon'></span> Winter in Valloire"><span class="icon"></span> L’hiver à Valloire</h2>
-                    <p style="margin-bottom: 1rem;" data-fr="C'est le charme d'un vrai village savoyard avec 160 km de pistes à parcourir. On ne se lasse pas de la vue incroyable depuis le Grand Plateau (2 524 m) ni des virages sur la mythique piste Jean-Baptiste Grange. Après une belle journée de ski, on adore flâner dans les ruelles animées avant de retrouver le logement bien au chaud." data-en="Enjoy the charm of an authentic Savoyard village with 160 km of ski slopes. Enjoy incredible views from Grand Plateau (2,524 m) and cozy evenings in the village.">C'est le charme d'un vrai village savoyard avec 160 km de pistes à parcourir. On ne se lasse pas de la vue incroyable depuis le Grand Plateau (2 524 m) ni des virages sur la mythique piste Jean-Baptiste Grange. Après une belle journée de ski, on adore flâner dans les ruelles animées avant de retrouver le logement bien au chaud.</p>
+                    <h2 data-fr="L’hiver à Valloire" data-en="Winter in Valloire">L’hiver à Valloire</h2>
+                    <p data-fr="C'est le charme d'un vrai village savoyard avec 160 km de pistes à parcourir. On ne se lasse pas de la vue incroyable depuis le Grand Plateau (2 524 m) ni des virages sur la mythique piste Jean-Baptiste Grange. Après une belle journée de ski, on adore flâner dans les ruelles animées avant de retrouver le logement bien au chaud." data-en="Enjoy the charm of an authentic Savoyard village with 160 km of ski slopes. Enjoy incredible views from Grand Plateau (2,524 m) and cozy evenings in the village.">C'est le charme d'un vrai village savoyard avec 160 km de pistes à parcourir. On ne se lasse pas de la vue incroyable depuis le Grand Plateau (2 524 m) ni des virages sur la mythique piste Jean-Baptiste Grange. Après une belle journée de ski, on adore flâner dans les ruelles animées avant de retrouver le logement bien au chaud.</p>
                 </div>
 
                 <div class="content-box">
-                    <h2 data-fr="<span class='icon'></span> L’été à Valloire" data-en="<span class='icon'></span> Summer in Valloire"><span class="icon"></span> L’été à Valloire</h2>
-                    <p style="margin-bottom: 1rem;" data-fr="C'est la montagne au grand air et des panoramas à couper le souffle. Des randonnées en altitude, l'ascension à vélo des mythiques cols du Galibier et du Télégraphe, le cadre est exceptionnel. Après une belle journée en plein air, quel plaisir de s'installer en terrasse et de partager de bonnes spécialités savoyardes dans les restaurants du village." data-en="Fresh mountain air and breathtaking panoramas. High-altitude hiking, cycling legendary passes like Galibier and Télégraphe, and enjoying local cuisine on sunny terraces.">C'est la montagne au grand air et des panoramas à couper le souffle. Des randonnées en altitude, l'ascension à vélo des mythiques cols du Galibier et du Télégraphe, le cadre est exceptionnel. Après une belle journée en plein air, quel plaisir de s'installer en terrasse et de partager de bonnes spécialités savoyardes dans les restaurants du village.</p>
+                    <h2 data-fr="L’été à Valloire" data-en="Summer in Valloire">L’été à Valloire</h2>
+                    <p data-fr="C'est la montagne au grand air et des panoramas à couper le souffle. Des randonnées en altitude, l'ascension à vélo des mythiques cols du Galibier et du Télégraphe, le cadre est exceptionnel. Après une belle journée en plein air, quel plaisir de s'installer en terrasse et de partager de bonnes spécialités savoyardes dans les restaurants du village." data-en="Fresh mountain air and breathtaking panoramas. High-altitude hiking, cycling legendary passes like Galibier and Télégraphe, and enjoying local cuisine on sunny terraces.">C'est la montagne au grand air et des panoramas à couper le souffle. Des randonnées en altitude, l'ascension à vélo des mythiques cols du Galibier et du Télégraphe, le cadre est exceptionnel. Après une belle journée en plein air, quel plaisir de s'installer en terrasse et de partager de bonnes spécialités savoyardes dans les restaurants du village.</p>
                 </div>
 
                 <div class="content-box">
-                    <h2 data-fr="<span class='icon'></span> Activités aux alentours" data-en="<span class='icon'></span> Nearby Activities"><span class="icon"></span> Activités aux alentours</h2>
-                    <div class="activities-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; padding-top: 10px; white-space: nowrap;">
-                        <span data-fr="· Ski" data-en="· Skiing">· Ski</span>
-                        <span data-fr="· Patinoire" data-en="· Ice rink">· Patinoire</span>
-                        <span data-fr="· Piscine municipale" data-en="· Swimming pool">· Piscine municipale</span>
-                        <span data-fr="· Golf" data-en="· Golf">· Golf</span>
-                        <span data-fr="· Bowling" data-en="· Bowling">· Bowling</span>
-                        <span data-fr="· Cinéma" data-en="· Cinema">· Cinéma</span>
-                        <span data-fr="· Centre équestre" data-en="· Horse riding">· Centre équestre</span>
-                        <span data-fr="· Randonnées" data-en="· Hiking">· Randonnées</span>
-                        <span data-fr="· Via Ferrata" data-en="· Via Ferrata">· Via Ferrata</span>
-                        <span data-fr="· VTT" data-en="· Mountain biking">· VTT</span>
-                        <span data-fr="· Tennis" data-en="· Tennis">· Tennis</span>
-                        <span data-fr="· Restaurants / Bars" data-en="· Restaurants / Bars">· Restaurants / Bars</span>
+                    <h2 data-fr="Activités aux alentours" data-en="Nearby Activities">Activités aux alentours</h2>
+                    <div class="activities-grid" style="display: flex; flex-wrap: wrap; gap: 15px; padding-top: 10px;">
+                        <span class="activity-badge" data-fr="🎿 Ski" data-en="🎿 Skiing">🎿 Ski</span>
+                        <span class="activity-badge" data-fr="⛸️ Patinoire" data-en="⛸️ Ice rink">⛸️ Patinoire</span>
+                        <span class="activity-badge" data-fr="🏊 Piscine" data-en="🏊 Swimming pool">🏊 Piscine</span>
+                        <span class="activity-badge" data-fr="⛳ Golf" data-en="⛳ Golf">⛳ Golf</span>
+                        <span class="activity-badge" data-fr="🎳 Bowling" data-en="🎳 Bowling">🎳 Bowling</span>
+                        <span class="activity-badge" data-fr="🎬 Cinéma" data-en="🎬 Cinema">🎬 Cinéma</span>
+                        <span class="activity-badge" data-fr="🐎 Centre équestre" data-en="🐎 Horse riding">🐎 Centre équestre</span>
+                        <span class="activity-badge" data-fr="🥾 Randonnées" data-en="🥾 Hiking">🥾 Randonnées</span>
+                        <span class="activity-badge" data-fr="🧗 Via Ferrata" data-en="🧗 Via Ferrata">🧗 Via Ferrata</span>
+                        <span class="activity-badge" data-fr="🚵 VTT" data-en="🚵 Mountain biking">🚵 VTT</span>
+                        <span class="activity-badge" data-fr="🎾 Tennis" data-en="🎾 Tennis">🎾 Tennis</span>
+                        <span class="activity-badge" data-fr="🍻 Restaurants / Bars" data-en="🍻 Restaurants / Bars">🍻 Restaurants / Bars</span>
                     </div>
                 </div>
 
-                <!-- Lien vers le site de Valloire -->
-                <p style="margin-top: 1.5rem; text-align: center; font-size: 0.95rem;">
-                    <a href="https://www.valloire.net/" target="_blank" style="color: #3498db; text-decoration: underline; font-weight: bold;" data-fr="Consulter le site officiel de Valloire →" data-en="Visit the official Valloire website →">
+                <p style="margin-top: 2rem; text-align: center;">
+                    <a href="https://www.valloire.net/" target="_blank" class="link-bold" data-fr="Consulter le site officiel de Valloire →" data-en="Visit the official Valloire website →">
                         Consulter le site officiel de Valloire →
                     </a>
                 </p>
@@ -334,22 +320,22 @@
         <div id="tarifs" class="page">
             <div class="page-content">
                 <h1 data-fr="Tarifs de location" data-en="Rental Rates">Tarifs de location</h1>
-                <p style="text-align: center; margin-bottom: 2rem;" data-fr="Retrouvez nos tarifs selon les saisons pour réserver votre séjour à Valloire." data-en="Check our seasonal rates to book your stay in Valloire.">Retrouvez nos tarifs selon les saisons pour réserver votre séjour à Valloire.</p>
+                <p class="text-center" style="margin-bottom: 2rem;" data-fr="Retrouvez nos tarifs selon les saisons pour réserver votre séjour à Valloire." data-en="Check our seasonal rates to book your stay in Valloire.">Retrouvez nos tarifs selon les saisons pour réserver votre séjour à Valloire.</p>
                
                 <div class="content-box">
-                    <h2 data-fr="<span class='icon'></span> Tarifs &amp; Conditions" data-en="<span class='icon'></span> Rates &amp; Conditions"><span class="icon"></span> Tarifs &amp; Conditions</h2>
-                    <ul>
+                    <h2 data-fr="Tarifs &amp; Conditions" data-en="Rates &amp; Conditions">Tarifs &amp; Conditions</h2>
+                    <ul class="styled-list">
                         <li data-fr="<strong>Tarif hiver :</strong> de 590 € à 1 815 € / semaine" data-en="<strong>Winter rate:</strong> from €590 to €1,815 / week"><strong>Tarif hiver :</strong> de 590 € à 1 815 € / semaine</li>
                         <li data-fr="<strong>Tarif été :</strong> de 410 € à 615 € / semaine" data-en="<strong>Summer rate:</strong> from €410 to €615 / week"><strong>Tarif été :</strong> de 410 € à 615 € / semaine</li>
-                        <li style="margin-bottom: 2rem;" data-fr="<strong>Tarif basse saison :</strong> à partir de 400 € / semaine" data-en="<strong>Low season rate:</strong> from €400 / week"><strong>Tarif basse saison :</strong> à partir de 400 € / semaine</li>
+                        <li style="margin-bottom: 1.5rem;" data-fr="<strong>Tarif basse saison :</strong> à partir de 400 € / semaine" data-en="<strong>Low season rate:</strong> from €400 / week"><strong>Tarif basse saison :</strong> à partir de 400 € / semaine</li>
                         <li data-fr="<strong>Nettoyage :</strong> Ménage de fin de séjour obligatoire (en supplément 75 €)" data-en="<strong>Cleaning:</strong> Mandatory end-of-stay cleaning (€75 extra)"><strong>Nettoyage :</strong> Ménage de fin de séjour obligatoire (en supplément 75 €)</li>
                         <li data-fr="<strong>Taxe de séjour :</strong> 1,65 € / adulte / nuit" data-en="<strong>Tourist tax:</strong> €1.65 / adult / night"><strong>Taxe de séjour :</strong> 1,65 € / adulte / nuit</li>
                     </ul>
                 </div>
 
                 <div class="content-box">
-                    <h2 data-fr="<span class='icon'></span> Court séjour" data-en="<span class='icon'></span> Short Stays"><span class="icon"></span> Court séjour</h2>
-                    <ul>
+                    <h2 data-fr="Court séjour" data-en="Short Stays">Court séjour</h2>
+                    <ul class="styled-list">
                         <li data-fr="<strong>Court séjour :</strong> possible l'été sur demande" data-en="<strong>Short stays:</strong> possible in summer upon request"><strong>Court séjour :</strong> possible l'été sur demande</li>
                     </ul>
                 </div>           
@@ -369,92 +355,80 @@
                 <div id="annualCalendarGrid" class="annual-calendar-grid"></div>
             </div>
 
-            <div id="section-reservation" class="page-content" style="margin-top: 2rem;">
-                <h2 data-fr="Réservation &amp; Demande de Séjour" data-en="Booking &amp; Inquiries">Réservation &amp; Demande de Séjour</h2>
-                <p data-fr="Remplissez le formulaire ci-dessous pour faire une réservation en direct ou nous poser une question." data-en="Fill out the form below to make a direct reservation or ask a question.">Remplissez le formulaire ci-dessous pour faire une réservation en direct ou nous poser une question.</p>
-                
-                <form class="reservation-form" id="reservationForm" action="https://formspree.io/f/mwlpavvl" method="POST">
-                    <input type="hidden" name="_subject" value="🚨 Nouvelle demande de réservation - Le Rocher Saint Pierre !">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="nom" data-fr="Nom complet :" data-en="Full name:">Nom complet :</label>
-                            <input type="text" id="nom" name="nom" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" data-fr="Email :" data-en="Email:">Email :</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="nombreAdultes" data-fr="Nombre d'adultes :" data-en="Number of adults:">Nombre d'adultes :</label>
-                            <select id="nombreAdultes" name="nombreAdultes" required>
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="nombreEnfants" data-fr="Nombre d'enfants :" data-en="Number of children:">Nombre d'enfants :</label>
-                            <select id="nombreEnfants" name="nombreEnfants" required>
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="telephone" data-fr="Téléphone :" data-en="Phone:">Téléphone :</label>
-                            <input type="tel" id="telephone" name="telephone" required>
-                        </div>
-                        <div class="form-group" style="visibility: hidden; opacity: 0; pointer-events: none;"></div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="dateArrivee" data-fr="Date d'arrivée :" data-en="Check-in date:">Date d'arrivée :</label>
-                            <input type="date" id="dateArrivee" name="dateArrivee" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="dateDepart" data-fr="Date de départ :" data-en="Check-out date:">Date de départ :</label>
-                            <input type="date" id="dateDepart" name="dateDepart" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="message" data-fr="Message :" data-en="Message:">Message :</label>
-                        <textarea id="message" name="message" rows="6" placeholder="Laissez votre message..." required></textarea>
-                    </div>
-
-                    <div class="form-buttons-row" style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; align-items: flex-start;">
-                        <div style="flex: 1; min-width: 200px; text-align: center;">
-                            <button type="submit" class="btn btn-large" style="width: 100%;" data-fr="Envoyer ma demande" data-en="Send inquiry">Envoyer ma demande</button>
-                            <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: #666; font-style: italic;" data-fr="Direct propriétaire" data-en="Directly from owner">Direct propriétaire</p>    
-                        </div>
-                        
-                        <div style="flex: 1; min-width: 200px; text-align: center;">
-                            <button type="button" class="btn btn-large" style="width: 100%;" data-fr="Réserver par Booking" data-en="Book via Booking" 
-                                    onclick="window.open('https://www.booking.com/hotel/fr/le-rocher-saint-pierre-1h.fr.html', '_blank')">
-                                Réserver par Booking
-                            </button>
-                            <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: #666; font-style: italic;" data-fr="Frais supplémentaires via Booking" data-en="Additional fees on Booking">Frais supplémentaires via Booking</p>
-                        </div>
-                    </div>
-
-                    <!-- Message de confirmation masqué par défaut -->
-                    <div id="form-status" style="display: none; margin-top: 15px; padding: 10px; border-radius: 4px; text-align: center; font-weight: bold;"></div>
+            <div id="section-reservation" class="page-content" style="margin-top: 3rem;">
+                <div class="content-box">
+                    <h2 style="text-align: center; margin-bottom: 1rem;" data-fr="Réservation &amp; Demande de Séjour" data-en="Booking &amp; Inquiries">Réservation &amp; Demande de Séjour</h2>
+                    <p style="text-align: center; margin-bottom: 2rem; color: #666;" data-fr="Remplissez le formulaire ci-dessous pour faire une réservation en direct ou nous poser une question." data-en="Fill out the form below to make a direct reservation or ask a question.">Remplissez le formulaire ci-dessous pour faire une réservation en direct ou nous poser une question.</p>
                     
-                </form>
+                    <form class="reservation-form" id="reservationForm" action="https://formspree.io/f/mwlpavvl" method="POST">
+                        <input type="hidden" name="_subject" value="🚨 Nouvelle demande de réservation - Le Rocher Saint Pierre !">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nom" data-fr="Nom complet :" data-en="Full name:">Nom complet :</label>
+                                <input type="text" id="nom" name="nom" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" data-fr="Email :" data-en="Email:">Email :</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nombreAdultes" data-fr="Nombre d'adultes :" data-en="Number of adults:">Nombre d'adultes :</label>
+                                <select id="nombreAdultes" name="nombreAdultes" required>
+                                    <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombreEnfants" data-fr="Nombre d'enfants :" data-en="Number of children:">Nombre d'enfants :</label>
+                                <select id="nombreEnfants" name="nombreEnfants" required>
+                                    <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="telephone" data-fr="Téléphone :" data-en="Phone:">Téléphone :</label>
+                                <input type="tel" id="telephone" name="telephone" required>
+                            </div>
+                            <div class="form-group" style="visibility: hidden;"></div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dateArrivee" data-fr="Date d'arrivée :" data-en="Check-in date:">Date d'arrivée :</label>
+                                <input type="date" id="dateArrivee" name="dateArrivee" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="dateDepart" data-fr="Date de départ :" data-en="Check-out date:">Date de départ :</label>
+                                <input type="date" id="dateDepart" name="dateDepart" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label for="message" data-fr="Message :" data-en="Message:">Message :</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Laissez votre message..." required></textarea>
+                        </div>
+
+                        <div class="form-buttons-row" style="display: flex; gap: 20px; margin-top: 30px; flex-wrap: wrap; justify-content: center;">
+                            <div style="flex: 1; min-width: 250px; text-align: center;">
+                                <button type="submit" class="btn btn-large" style="width: 100%;" data-fr="Envoyer ma demande" data-en="Send inquiry">Envoyer ma demande</button>
+                                <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: #888; font-style: italic;" data-fr="Direct propriétaire" data-en="Directly from owner">Direct propriétaire</p>    
+                            </div>
+                            
+                            <div style="flex: 1; min-width: 250px; text-align: center;">
+                                <button type="button" class="btn btn-large btn-outline" style="width: 100%;" data-fr="Réserver par Booking" data-en="Book via Booking" onclick="window.open('https://www.booking.com/hotel/fr/le-rocher-saint-pierre-1h.fr.html', '_blank')">
+                                    Réserver par Booking
+                                </button>
+                                <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: #888; font-style: italic;" data-fr="Frais supplémentaires via Booking" data-en="Additional fees on Booking">Frais supplémentaires via Booking</p>
+                            </div>
+                        </div>
+
+                        <div id="form-status" style="display: none; margin-top: 20px; padding: 15px; border-radius: 8px; text-align: center; font-weight: 500;"></div>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -462,7 +436,7 @@
         <div id="contact" class="page">
             <div class="page-content">
                 <h1 data-fr="Contact" data-en="Contact">Contact</h1>
-                <p style="text-align: center; margin-bottom: 2rem;" data-fr="Pour toute question ou information complémentaire concernant notre location, n'hésitez pas à nous écrire :" data-en="For any questions or additional information regarding our rental, feel free to write to us:">Pour toute question ou information complémentaire concernant notre location, n'hésitez pas à nous écrire :</p>
+                <p style="text-align: center; margin-bottom: 3rem;" data-fr="Pour toute question ou information complémentaire concernant notre location, n'hésitez pas à nous écrire :" data-en="For any questions or additional information regarding our rental, feel free to write to us:">Pour toute question ou information complémentaire concernant notre location, n'hésitez pas à nous écrire :</p>
                 
                 <div class="contact-info">
                     <h3 data-fr="Informations de contact" data-en="Contact Information">Informations de contact</h3>
