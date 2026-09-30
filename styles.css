@@ -585,8 +585,8 @@ nav img.voyageur-icon {
     border-radius: 4px;
 }
 
-.legend-box.libre { background-color: #2ecc71; }
-.legend-box.occupe { background-color: #e74c3c; }
+.legend-box.libre { background-color: #2ecc7170; }
+.legend-box.occupe { background-color: #e74c3c70; }
 
 .annual-calendar-grid {
     display: grid;
