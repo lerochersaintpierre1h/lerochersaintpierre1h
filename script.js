@@ -1,6 +1,13 @@
 // ==========================================================================
-// 1. NAVIGATION ENTRE LES PAGES & DÉFILEMENT RÉSERVATION
+// 1. NAVIGATION ENTRE LES PAGES & MENU MOBILE
 // ==========================================================================
+
+// Gérer l'ouverture/fermeture du menu sur mobile
+function toggleMobileMenu() {
+    const navMenu = document.querySelector('.nav-menu');
+    navMenu.classList.toggle('active');
+}
+
 function showPage(pageId) {
     const pages = document.querySelectorAll('.page');
     pages.forEach(page => page.classList.remove('active'));
@@ -18,7 +25,7 @@ function showPage(pageId) {
         }
     });
 
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function reserverDirectly(event) {
@@ -40,12 +47,18 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const pageId = this.getAttribute('href').substring(1);
             showPage(pageId);
+            
+            // Fermer le menu sur mobile après un clic
+            const navMenu = document.querySelector('.nav-menu');
+            if (navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+            }
         });
     });
 });
 
 // ==========================================================================
-// 2. GALERIE DE PHOTOS ET LIGHTBOX (COMPATIBLE TOUTES PAGES)
+// 2. GALERIE DE PHOTOS ET LIGHTBOX
 // ==========================================================================
 function filterGallery(category) {
     const buttons = document.querySelectorAll('.tab-btn');
@@ -95,6 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
         lightboxImg.src = targetImg.src;
         lightboxImg.alt = targetImg.alt;
         lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Empêcher le défilement de fond
     }
 
     function nextImage() {
@@ -111,6 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function closeLightbox() {
         lightbox.classList.remove('active');
+        document.body.style.overflow = 'auto'; // Rétablir le défilement
     }
 
     if (nextBtn) nextBtn.addEventListener('click', nextImage);
@@ -134,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ==========================================================================
-// 3. FORMULAIRE DE RÉSERVATION (ENVOI VIA FORMSPREE AJAX)
+// 3. FORMULAIRE DE RÉSERVATION (ENVOI VIA FORMSPREE)
 // ==========================================================================
 var form = document.getElementById("reservationForm");
 
@@ -143,7 +158,6 @@ async function handleSubmit(event) {
   var status = document.getElementById("form-status");
   var data = new FormData(event.target);
   
-  // Désactiver le bouton pendant l'envoi pour éviter les doubles clics
   var btnSubmit = form.querySelector('button[type="submit"]');
   var originalBtnText = btnSubmit.innerHTML;
   btnSubmit.innerHTML = "Envoi en cours...";
@@ -158,10 +172,10 @@ async function handleSubmit(event) {
   }).then(response => {
     if (response.ok) {
       status.style.display = "block";
-      status.style.backgroundColor = "#d4edda";
-      status.style.color = "#155724";
+      status.style.backgroundColor = "#eafaf1";
+      status.style.color = "#27ae60";
       status.innerHTML = "Merci ! Votre demande a bien été envoyée. Nous vous répondrons très vite.";
-      form.reset(); // On vide le formulaire
+      form.reset();
     } else {
       response.json().then(data => {
         if (Object.hasOwn(data, 'errors')) {
@@ -170,17 +184,16 @@ async function handleSubmit(event) {
           status.innerHTML = "Oups! Un problème est survenu lors de l'envoi.";
         }
         status.style.display = "block";
-        status.style.backgroundColor = "#f8d7da";
-        status.style.color = "#721c24";
+        status.style.backgroundColor = "#fdf3f2";
+        status.style.color = "#c0392b";
       })
     }
   }).catch(error => {
     status.style.display = "block";
-    status.style.backgroundColor = "#f8d7da";
-    status.style.color = "#721c24";
+    status.style.backgroundColor = "#fdf3f2";
+    status.style.color = "#c0392b";
     status.innerHTML = "Oups! Un problème de connexion est survenu.";
   }).finally(() => {
-    // Réactiver le bouton après l'envoi
     btnSubmit.innerHTML = originalBtnText;
     btnSubmit.disabled = false;
   });
@@ -207,7 +220,6 @@ async function initCalendrier() {
     generer12MoisGlissants([]);
 
     try {
-        // Chargement du fichier complet (contient les résas directes + Booking)
         const urlFirebase = "https://firebasestorage.googleapis.com/v0/b/rochersaintpierre1h.firebasestorage.app/o/calendrier_site.ics?alt=media&v=" + Date.now();
         
         const response = await fetch(urlFirebase);
@@ -217,7 +229,6 @@ async function initCalendrier() {
 
         if (texteICS && texteICS.includes("BEGIN:VCALENDAR")) {
             const datesOccupees = extraireDatesDepuisICS(texteICS);
-            console.log("Dates chargées depuis Firebase Storage :", datesOccupees.length);
             generer12MoisGlissants(datesOccupees);
         } else {
             console.error("Le fichier .ics sur Firebase est vide ou invalide.");
@@ -344,6 +355,7 @@ function generer12MoisGlissants(datesOccupees) {
         }
     }
 }
+
 // ==========================================================================
 // 5. TRADUCTION DU SITE (FR / EN)
 // ==========================================================================
@@ -365,27 +377,25 @@ document.addEventListener('DOMContentLoaded', () => {
         setLanguage('en');
     }
 });
+
 // ==========================================================================
-// 6. GESTION DES DATES DU FORMULAIRE (CORRECTION SPÉCIALE iOS)
+// 6. GESTION DES DATES DU FORMULAIRE
 // ==========================================================================
 document.addEventListener("DOMContentLoaded", function() {
     const inputArrivee = document.getElementById("dateArrivee");
     const inputDepart = document.getElementById("dateDepart");
 
     if (inputArrivee && inputDepart) {
-        // Bloquer les dates passées au chargement de la page
         const dateAujourdhui = new Date().toISOString().split('T')[0];
         inputArrivee.setAttribute("min", dateAujourdhui);
         inputDepart.setAttribute("min", dateAujourdhui);
 
         function actualiserDepart() {
             if (inputArrivee.value) {
-                // Forcer l'heure à midi pour éviter les bugs de fuseau horaire
                 const dateChoisie = new Date(inputArrivee.value + 'T12:00:00');
                 dateChoisie.setDate(dateChoisie.getDate() + 1);
                 const lendemain = dateChoisie.toISOString().split('T')[0];
                 
-                // Le setTimeout force Safari iOS à "re-dessiner" la limite du calendrier
                 setTimeout(() => {
                     inputDepart.setAttribute("min", lendemain);
                     if (inputDepart.value && inputDepart.value < lendemain) {
@@ -395,11 +405,8 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
-        // Mettre à jour quand on valide la première date
         inputArrivee.addEventListener("change", actualiserDepart);
         inputArrivee.addEventListener("blur", actualiserDepart);
-        
-        // ASTUCE iOS : Forcer la mise à jour juste avant l'ouverture du rouleau de départ
         inputDepart.addEventListener("focus", actualiserDepart);
         inputDepart.addEventListener("click", actualiserDepart);
         inputDepart.addEventListener("touchstart", actualiserDepart);
