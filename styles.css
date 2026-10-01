@@ -356,7 +356,7 @@ body {
     /* MODIFICATION : On réduit le grand espace (margin-bottom) pour que ça ne dépasse plus de la photo */
     .hero-content h1 { 
         font-size: 2.2rem; 
-        margin-bottom: 5rem; /* <-- C'est ici que l'espace est réduit pour l'iPhone */
+        margin-bottom: 3rem; /* <-- C'est ici que l'espace est réduit pour l'iPhone */
         margin-top: 0; 
     }
     
