@@ -348,8 +348,8 @@ body {
     .desktop-only { display: none !important; }
     .mobile-only { display: flex !important; }
     
-    .hero-content h1 { font-size: 2.2rem; }
-    .hero-subtitle { font-size: 1.1rem; }
+    .hero-content h1 { font-size: 2rem; }
+    .hero-subtitle { font-size: 1rem; }
     .hero-section { height: 50vh; border-radius: 0 0 12px 12px; }
     
     .page-content { padding: 0 1rem; }
