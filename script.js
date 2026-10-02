@@ -149,58 +149,142 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ==========================================================================
-// 3. FORMULAIRE DE RÉSERVATION (ENVOI VIA FORMSPREE)
+// GESTION DES DEUX POP-UPS ET ENVOIS AJAX (RÉSERVATION & CONTACT)
 // ==========================================================================
-var form = document.getElementById("reservationForm");
 
-async function handleSubmit(event) {
-  event.preventDefault();
-  var status = document.getElementById("form-status");
-  var data = new FormData(event.target);
-  
-  var btnSubmit = form.querySelector('button[type="submit"]');
-  var originalBtnText = btnSubmit.innerHTML;
-  btnSubmit.innerHTML = "Envoi en cours...";
-  btnSubmit.disabled = true;
+// 1. GESTION DE L'OUVERTURE ET FERMETURE DES POP-UPS
+const modalResa = document.getElementById("modalReservation");
+const btnOuvrirResa = document.getElementById("btnOuvrirResa");
+const closeBtnResa = document.querySelector(".close-btn-resa");
 
-  fetch(event.target.action, {
-    method: form.method,
-    body: data,
-    headers: {
-        'Accept': 'application/json'
-    }
-  }).then(response => {
-    if (response.ok) {
-      status.style.display = "block";
-      status.style.backgroundColor = "#eafaf1";
-      status.style.color = "#27ae60";
-      status.innerHTML = "Merci ! Votre demande a bien été envoyée. Nous vous répondrons très vite.";
-      form.reset();
-    } else {
-      response.json().then(data => {
-        if (Object.hasOwn(data, 'errors')) {
-          status.innerHTML = data["errors"].map(error => error["message"]).join(", ");
-        } else {
-          status.innerHTML = "Oups! Un problème est survenu lors de l'envoi.";
-        }
-        status.style.display = "block";
-        status.style.backgroundColor = "#fdf3f2";
-        status.style.color = "#c0392b";
-      })
-    }
-  }).catch(error => {
-    status.style.display = "block";
-    status.style.backgroundColor = "#fdf3f2";
-    status.style.color = "#c0392b";
-    status.innerHTML = "Oups! Un problème de connexion est survenu.";
-  }).finally(() => {
-    btnSubmit.innerHTML = originalBtnText;
-    btnSubmit.disabled = false;
-  });
+if (btnOuvrirResa && modalResa) {
+    btnOuvrirResa.addEventListener("click", () => modalResa.style.display = "block");
+}
+if (closeBtnResa && modalResa) {
+    closeBtnResa.addEventListener("click", () => modalResa.style.display = "none");
 }
 
-if (form) {
-    form.addEventListener("submit", handleSubmit);
+const modalContact = document.getElementById("modalContact");
+const btnContact = document.getElementById("btnContact");
+const closeBtnContact = document.querySelector(".close-btn-contact");
+
+if (btnContact && modalContact) {
+    btnContact.addEventListener("click", () => modalContact.style.display = "block");
+}
+if (closeBtnContact && modalContact) {
+    closeBtnContact.addEventListener("click", () => modalContact.style.display = "none");
+}
+
+// Clic à l'extérieur de la boite blanche pour fermer
+window.addEventListener("click", (e) => {
+    if (e.target === modalResa) modalResa.style.display = "none";
+    if (e.target === modalContact) modalContact.style.display = "none";
+});
+
+// 2. ENVOI AJAX — FORMULAIRE DE RÉSERVATION (SANS REDIRECTION)
+const reservationForm = document.getElementById("reservationForm");
+if (reservationForm) {
+    reservationForm.addEventListener("submit", function(e) {
+        e.preventDefault(); // Bloque la redirection vers Formspree
+        
+        const status = document.getElementById("form-status");
+        const btnSubmit = reservationForm.querySelector('button[type="submit"]');
+        const originalBtnText = btnSubmit.innerHTML;
+        
+        btnSubmit.innerHTML = "Envoi...";
+        btnSubmit.disabled = true;
+
+        fetch(reservationForm.action, {
+            method: "POST",
+            body: new FormData(reservationForm),
+            headers: { 'Accept': 'application/json' }
+        }).then(response => {
+            if (response.ok) {
+                status.style.display = "block";
+                status.style.backgroundColor = "#eafaf1";
+                status.style.color = "#27ae60";
+                
+                const lang = localStorage.getItem('site_lang') || 'fr';
+                status.innerHTML = lang === 'en' 
+                    ? "Booking request sent!" 
+                    : "Demande de réservation envoyée !";
+                
+                reservationForm.reset();
+                
+                // Fermeture automatique du pop-up après 3 secondes
+                setTimeout(() => {
+                    status.style.display = "none";
+                    modalResa.style.display = "none";
+                }, 3000);
+            } else {
+                status.style.display = "block";
+                status.style.backgroundColor = "#fdf3f2";
+                status.style.color = "#c0392b";
+                status.innerHTML = "Oups ! Un problème est survenu.";
+            }
+        }).catch(error => {
+            status.style.display = "block";
+            status.style.backgroundColor = "#fdf3f2";
+            status.style.color = "#c0392b";
+            status.innerHTML = "Problème de connexion internet.";
+        }).finally(() => {
+            btnSubmit.innerHTML = originalBtnText;
+            btnSubmit.disabled = false;
+        });
+    });
+}
+
+// 3. ENVOI AJAX — FORMULAIRE DE CONTACT (SANS REDIRECTION)
+const contactForm = document.getElementById("contactForm");
+if (contactForm) {
+    contactForm.addEventListener("submit", function(e) {
+        e.preventDefault(); // Bloque la redirection vers Formspree
+        
+        const status = document.getElementById("contact-form-status");
+        const btnSubmit = contactForm.querySelector('button[type="submit"]');
+        const originalBtnText = btnSubmit.innerHTML;
+        
+        btnSubmit.innerHTML = "Envoi...";
+        btnSubmit.disabled = true;
+
+        fetch(contactForm.action, {
+            method: "POST",
+            body: new FormData(contactForm),
+            headers: { 'Accept': 'application/json' }
+        }).then(response => {
+            if (response.ok) {
+                status.style.display = "block";
+                status.style.backgroundColor = "#eafaf1";
+                status.style.color = "#27ae60";
+                
+                const lang = localStorage.getItem('site_lang') || 'fr';
+                status.innerHTML = lang === 'en' 
+                    ? "Message sent!" 
+                    : "Message bien envoyé !";
+                
+                contactForm.reset();
+                
+                // Fermeture automatique du pop-up après 3 secondes
+                setTimeout(() => {
+                    status.style.display = "none";
+                    modalContact.style.display = "none";
+                }, 3000);
+            } else {
+                status.style.display = "block";
+                status.style.backgroundColor = "#fdf3f2";
+                status.style.color = "#c0392b";
+                status.innerHTML = "Oups ! Un problème est survenu.";
+            }
+        }).catch(error => {
+            status.style.display = "block";
+            status.style.backgroundColor = "#fdf3f2";
+            status.style.color = "#c0392b";
+            status.innerHTML = "Problème de connexion internet.";
+        }).finally(() => {
+            btnSubmit.innerHTML = originalBtnText;
+            btnSubmit.disabled = false;
+        });
+    });
 }
 
 // ==========================================================================
