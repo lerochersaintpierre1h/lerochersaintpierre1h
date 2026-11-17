@@ -447,3 +447,147 @@ body {
 .close-btn:hover {
   color: #2c3e50;
 }
+/* ==========================================================================
+   INFO-BULLE (TOOLTIP) INSTANTANÉE POUR LE CALENDRIER
+   ========================================================================== */
+.day-cell {
+    position: relative;
+    cursor: pointer; /* Curseur main classique */
+}
+.day-cell.empty {
+    cursor: default;
+}
+
+/* La boîte avec le texte du tarif */
+.day-cell::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 135%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    z-index: 100;
+    pointer-events: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Le petit triangle sous la boîte */
+.day-cell::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #2c3e50 transparent transparent transparent;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    z-index: 100;
+    pointer-events: none;
+}
+
+/* Apparition immédiate au survol de la souris */
+.day-cell:hover::after,
+.day-cell:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Pas d'info-bulle sur les cases vides */
+.day-cell.empty::after,
+.day-cell.empty::before {
+    display: none;
+}
+/* ==========================================================================
+   AFFICHAGE DES TARIFS EN CARTES (GRID)
+   ========================================================================== */
+.tarifs-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    margin-top: 1.5rem;
+}
+
+.tarif-month-title {
+    font-size: 1.3rem;
+    color: #2c3e50;
+    margin-bottom: 1.2rem;
+    border-bottom: 2px solid #f0f4f8;
+    padding-bottom: 0.5rem;
+    text-transform: capitalize;
+    font-weight: 600;
+}
+
+.tarifs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.tarif-card {
+    background: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-radius: 10px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.tarif-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    border-color: #3498db;
+}
+
+.tarif-card.occupe {
+    background-color: #f8fafc;
+    border-color: #f0f0f0;
+    opacity: 0.8;
+}
+
+.tarif-card.occupe:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: #f0f0f0;
+}
+
+.tc-date {
+    font-size: 0.95rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.tc-price {
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
+
+.tc-price strong {
+    color: #27ae60;
+    font-size: 1.3rem;
+}
+
+.tarif-card .badge-occupe {
+    background-color: rgba(231, 76, 60, 0.12);
+    color: #c0392b;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+}
