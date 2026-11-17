@@ -329,7 +329,7 @@
                         <li data-fr="<strong>Tarif été :</strong> de 410 € à 615 € / semaine" data-en="<strong>Summer rate:</strong> from €410 to €615 / week"><strong>Tarif été :</strong> de 410 € à 615 € / semaine</li>
                         <li style="margin-bottom: 1.5rem;" data-fr="<strong>Tarif basse saison :</strong> à partir de 400 € / semaine" data-en="<strong>Low season rate:</strong> from €400 / week"><strong>Tarif basse saison :</strong> à partir de 400 € / semaine</li>
                         <li data-fr="<strong>Nettoyage :</strong> Ménage de fin de séjour obligatoire (en supplément 75 €)" data-en="<strong>Cleaning:</strong> Mandatory end-of-stay cleaning (€75 extra)"><strong>Nettoyage :</strong> Ménage de fin de séjour obligatoire (en supplément 75 €)</li>
-                        <li data-fr="<strong>Taxe de séjour :</strong> 1,87 € / adulte / nuit" data-en="<strong>Tourist tax:</strong> €1.87 / adult / night"><strong>Taxe de séjour :</strong> 1,87 € / adulte / nuit</li>
+                        <li data-fr="<strong>Taxe de séjour :</strong> 1,87 € / adulte / nuit (en supplément)" data-en="<strong>Tourist tax:</strong> €1.87 / adult / night (extra)"><strong>Taxe de séjour :</strong> 1,87 € / adulte / nuit (en supplément)</li>
                     </ul>
                 </div>
 
@@ -338,8 +338,14 @@
                     <ul class="styled-list">
                         <li data-fr="<strong>Court séjour :</strong> possible l'été sur demande" data-en="<strong>Short stays:</strong> possible in summer upon request"><strong>Court séjour :</strong> possible l'été sur demande</li>
                     </ul>
-                </div>           
-            </div>
+                </div> 
+                <!-- À ajouter dans la <div id="tarifs" class="page">, sous la div "Court séjour" -->
+<div class="content-box">
+    <h2 data-fr="Grille des Disponibilités et Tarifs" data-en="Availability & Rates Grid">Grille des Disponibilités et Tarifs</h2>
+    <div id="tarifs-container" class="tarifs-cards-container">
+        <!-- Les cartes seront générées ici par mois -->
+    </div>
+</div>            </div>
         </div>
 
         <!-- PAGE 5: DISPONIBILITÉS -->
@@ -435,7 +441,7 @@
 
                         <div class="form-group" style="margin-top: 1rem;">
                             <label for="message" data-fr="Message :" data-en="Message:">Message :</label>
-                            <textarea id="message" name="message" rows="4" placeholder="Laissez votre message..." required></textarea>
+                           <textarea id="message" name="message" rows="4" placeholder="Laissez votre message..." data-placeholder-fr="Laissez votre message..." data-placeholder-en="Leave your message..." required></textarea>
                         </div>
 
                         <div style="text-align: center; margin-top: 1.5rem;">
@@ -493,7 +499,7 @@
 
                         <div class="form-group" style="margin-top: 1rem;">
                             <label for="contact-message" data-fr="Votre message :" data-en="Your message:">Votre message :</label>
-                            <textarea id="contact-message" name="message" rows="5" placeholder="Écrivez votre message ici..." required></textarea>
+                            <textarea id="contact-message" name="message" rows="5" placeholder="Écrivez votre message ici..." data-placeholder-fr="Écrivez votre message ici..." data-placeholder-en="Write your message here..." required></textarea>
                         </div>
 
                         <div style="text-align: center; margin-top: 1.5rem;">
