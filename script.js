@@ -288,11 +288,15 @@ if (contactForm) {
 }
 
 // ==========================================================================
-// 4. CALENDRIER DE DISPONIBILITÉS (FICHIER SITE WEB)
+// 4. CALENDRIER DE DISPONIBILITÉS ET TARIFS (FIREBASE)
 // ==========================================================================
 const NOMS_MOIS = [
     "janvier", "février", "mars", "avril", "mai", "juin", 
     "juillet", "août", "septembre", "octobre", "novembre", "décembre"
+];
+const NOMS_MOIS_EN = [
+    "January", "February", "March", "April", "May", "June", 
+    "July", "August", "September", "October", "November", "December"
 ];
 
 document.addEventListener("DOMContentLoaded", initCalendrier);
@@ -301,24 +305,40 @@ async function initCalendrier() {
     const grillePrincipale = document.getElementById("annualCalendarGrid");
     if (!grillePrincipale) return;
 
-    generer12MoisGlissants([]);
+    generer12MoisGlissants([], {});
 
     try {
-        const urlFirebase = "https://firebasestorage.googleapis.com/v0/b/rochersaintpierre1h.firebasestorage.app/o/calendrier_site.ics?alt=media&v=" + Date.now();
-        
-        const response = await fetch(urlFirebase);
-        if (!response.ok) throw new Error("Fichier calendrier_site.ics introuvable sur Firebase Storage");
+        const urlIcsFirebase = "https://firebasestorage.googleapis.com/v0/b/rochersaintpierre1h.firebasestorage.app/o/calendrier_site.ics?alt=media&v=" + Date.now();
+        const urlTarifsFirebase = "https://firebasestorage.googleapis.com/v0/b/rochersaintpierre1h.firebasestorage.app/o/tarifs_site.json?alt=media&v=" + Date.now();
 
-        const texteICS = await response.text();
+        const [responseIcs, responseTarifs] = await Promise.all([
+            fetch(urlIcsFirebase),
+            fetch(urlTarifsFirebase).catch(() => ({ ok: false })) 
+        ]);
 
-        if (texteICS && texteICS.includes("BEGIN:VCALENDAR")) {
-            const datesOccupees = extraireDatesDepuisICS(texteICS);
-            generer12MoisGlissants(datesOccupees);
-        } else {
-            console.error("Le fichier .ics sur Firebase est vide ou invalide.");
+        let datesOccupees = [];
+        let grilleTarifs = {};
+
+        if (responseIcs.ok) {
+            const texteICS = await responseIcs.text();
+            if (texteICS.includes("BEGIN:VCALENDAR")) {
+                datesOccupees = extraireDatesDepuisICS(texteICS);
+            }
         }
+
+        if (responseTarifs.ok) {
+            grilleTarifs = await responseTarifs.json(); 
+        }
+
+        generer12MoisGlissants(datesOccupees, grilleTarifs);
+        genererTableauTarifs(datesOccupees, grilleTarifs);
+        
+        // On force l'application de la langue actuelle après avoir généré le contenu dynamique
+        const savedLang = localStorage.getItem('site_lang') || 'fr';
+        setLanguage(savedLang);
+
     } catch (err) {
-        console.error("Erreur de lecture du calendrier Firebase :", err);
+        console.error("Erreur de lecture Firebase :", err);
     }
 }
 
@@ -326,13 +346,10 @@ function extraireDatesDepuisICS(texte) {
     const dates = [];
     const texteDeplie = texte.replace(/\r?\n[ \t]/g, "");
     const lignes = texteDeplie.split(/\r?\n/);
-
-    let dateDebut = null;
-    let dateFin = null;
+    let dateDebut = null; let dateFin = null;
 
     lignes.forEach(ligne => {
         const l = ligne.trim();
-
         if (l.startsWith("DTSTART")) {
             const match = l.match(/\d{8}/);
             if (match) dateDebut = parseYYYYMMDD(match[0]);
@@ -349,11 +366,9 @@ function extraireDatesDepuisICS(texte) {
                     courant.setDate(courant.getDate() + 1);
                 }
             }
-            dateDebut = null;
-            dateFin = null;
+            dateDebut = null; dateFin = null;
         }
     });
-
     return Array.from(new Set(dates));
 }
 
@@ -371,7 +386,30 @@ function formaterDateCle(date) {
     return `${a}-${m}-${j}`;
 }
 
-function generer12MoisGlissants(datesOccupees) {
+function getInfosSemaine(dateCle, datesOccupees, grilleTarifs) {
+    const dateJour = new Date(dateCle + 'T12:00:00');
+    const jourSemaine = dateJour.getDay();
+    const diffSamedi = jourSemaine === 6 ? 0 : (jourSemaine === 0 ? -1 : -(jourSemaine + 1));
+    
+    const samediDebut = new Date(dateJour);
+    samediDebut.setDate(samediDebut.getDate() + diffSamedi);
+    const dateCleSemaine = formaterDateCle(samediDebut);
+
+    let estOccupe = false;
+    for (let i = 0; i < 7; i++) {
+        let testDate = new Date(samediDebut);
+        testDate.setDate(samediDebut.getDate() + i);
+        if (datesOccupees.includes(formaterDateCle(testDate))) {
+            estOccupe = true;
+            break;
+        }
+    }
+
+    const prix = grilleTarifs[dateCleSemaine] || "Sur demande";
+    return { estOccupe, prix, dateCleSemaine, samediDebut };
+}
+
+function generer12MoisGlissants(datesOccupees, grilleTarifs) {
     const grillePrincipale = document.getElementById("annualCalendarGrid");
     if (!grillePrincipale) return;
     
@@ -380,6 +418,7 @@ function generer12MoisGlissants(datesOccupees) {
     const aujourdhui = new Date();
     let anneeCourante = aujourdhui.getFullYear();
     let moisCourant = aujourdhui.getMonth();
+    const currentLang = localStorage.getItem('site_lang') || 'fr';
 
     for (let m = 0; m < 12; m++) {
         const boiteMois = document.createElement("div");
@@ -387,14 +426,19 @@ function generer12MoisGlissants(datesOccupees) {
 
         const titre = document.createElement("div");
         titre.className = "month-title";
-        titre.textContent = `${NOMS_MOIS[moisCourant]} ${anneeCourante}`;
+        // Ajout de la traduction pour le titre des mois
+        titre.innerHTML = `<span data-fr="${NOMS_MOIS[moisCourant]} ${anneeCourante}" data-en="${NOMS_MOIS_EN[moisCourant]} ${anneeCourante}">${NOMS_MOIS[moisCourant]} ${anneeCourante}</span>`;
         boiteMois.appendChild(titre);
 
         const labelsSemaine = document.createElement("div");
         labelsSemaine.className = "week-days-labels";
-        ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"].forEach(lettre => {
+        const labelsFr = ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"];
+        const labelsEn = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+        
+        labelsFr.forEach((lettre, index) => {
             const divLettre = document.createElement("div");
-            divLettre.textContent = lettre;
+            // Ajout de la traduction pour les jours de la semaine
+            divLettre.innerHTML = `<span data-fr="${lettre}" data-en="${labelsEn[index]}">${lettre}</span>`;
             labelsSemaine.appendChild(divLettre);
         });
         boiteMois.appendChild(labelsSemaine);
@@ -420,12 +464,21 @@ function generer12MoisGlissants(datesOccupees) {
             const caseJour = document.createElement("div");
             caseJour.textContent = jour;
 
+            const infosSemaine = getInfosSemaine(dateCle, datesOccupees, grilleTarifs);
+
             if (datesOccupees.includes(dateCle)) {
                 caseJour.className = "day-cell occupe"; 
+                // Stockage des traductions dans des attributs personnalisés pour l'info-bulle
+                caseJour.setAttribute("data-tooltip-fr", "Occupé / Réservé");
+                caseJour.setAttribute("data-tooltip-en", "Booked / Unavailable");
             } else {
                 caseJour.className = "day-cell libre";
+                caseJour.setAttribute("data-tooltip-fr", infosSemaine.estOccupe ? "Semaine partiellement occupée" : `Tarif semaine : ${infosSemaine.prix} €`);
+                caseJour.setAttribute("data-tooltip-en", infosSemaine.estOccupe ? "Partially booked week" : `Weekly rate: €${infosSemaine.prix}`);
             }
 
+            // On applique l'info-bulle dans la bonne langue au chargement
+            caseJour.setAttribute("data-tooltip", caseJour.getAttribute("data-tooltip-" + currentLang));
             grilleJours.appendChild(caseJour);
         }
 
@@ -440,6 +493,72 @@ function generer12MoisGlissants(datesOccupees) {
     }
 }
 
+function genererTableauTarifs(datesOccupees, grilleTarifs) {
+    const container = document.getElementById("tarifs-container");
+    if (!container) return;
+    container.innerHTML = "";
+
+    const aujourdhui = new Date();
+    let dateDebutBoucle = new Date(aujourdhui);
+    while(dateDebutBoucle.getDay() !== 6) {
+        dateDebutBoucle.setDate(dateDebutBoucle.getDate() + 1);
+    }
+
+    let moisCourant = -1;
+    let gridMois = null;
+
+    for (let i = 0; i < 52; i++) {
+        const dateSamediDebut = new Date(dateDebutBoucle);
+        dateSamediDebut.setDate(dateSamediDebut.getDate() + (i * 7));
+        
+        const dateSamediFin = new Date(dateSamediDebut);
+        dateSamediFin.setDate(dateSamediFin.getDate() + 7);
+
+        let moisDeLaSemaine = dateSamediDebut.getMonth();
+        if (moisDeLaSemaine !== moisCourant) {
+            moisCourant = moisDeLaSemaine;
+            
+            const sectionMois = document.createElement("div");
+            sectionMois.className = "tarif-month-section";
+            
+            const titreMois = document.createElement("h3");
+            titreMois.className = "tarif-month-title";
+            // Ajout de la traduction pour le titre des mois dans les cartes
+            titreMois.innerHTML = `<span data-fr="${NOMS_MOIS[moisCourant]} ${dateSamediDebut.getFullYear()}" data-en="${NOMS_MOIS_EN[moisCourant]} ${dateSamediDebut.getFullYear()}">${NOMS_MOIS[moisCourant]} ${dateSamediDebut.getFullYear()}</span>`;
+            
+            gridMois = document.createElement("div");
+            gridMois.className = "tarifs-grid";
+            
+            sectionMois.appendChild(titreMois);
+            sectionMois.appendChild(gridMois);
+            container.appendChild(sectionMois);
+        }
+
+        const dateCle = formaterDateCle(dateSamediDebut);
+        const infosSemaine = getInfosSemaine(dateCle, datesOccupees, grilleTarifs);
+
+        const carte = document.createElement("div");
+        carte.className = `tarif-card ${infosSemaine.estOccupe ? 'occupe' : 'libre'}`;
+
+        // Textes traduits pour les dates
+        const phraseFr = `Du ${dateSamediDebut.getDate()} au ${dateSamediFin.getDate()} ${NOMS_MOIS[dateSamediFin.getMonth()]}`;
+        const phraseEn = `${NOMS_MOIS_EN[dateSamediFin.getMonth()]} ${dateSamediDebut.getDate()} to ${dateSamediFin.getDate()}`;
+        
+        const htmlDates = `<div class="tc-date"><span data-fr="${phraseFr}" data-en="${phraseEn}">${phraseFr}</span></div>`;
+        
+        let htmlPrix = "";
+        if (infosSemaine.estOccupe) {
+            htmlPrix = `<div class="tc-price"><span class="badge-occupe" data-fr="Réservé" data-en="Booked">Réservé</span></div>`;
+        } else {
+            // Affichage Euro avant ou après selon la langue
+            htmlPrix = `<div class="tc-price"><strong data-fr="${infosSemaine.prix} €" data-en="€${infosSemaine.prix}">${infosSemaine.prix} €</strong></div>`;
+        }
+
+        carte.innerHTML = htmlDates + htmlPrix;
+        gridMois.appendChild(carte);
+    }
+}
+
 // ==========================================================================
 // 5. TRADUCTION DU SITE (FR / EN)
 // ==========================================================================
@@ -448,8 +567,21 @@ function setLanguage(lang) {
     const activeBtn = document.getElementById('btn-' + lang);
     if (activeBtn) activeBtn.classList.add('active');
 
+    // Traduction classique des textes
     document.querySelectorAll('[data-' + lang + ']').forEach(el => {
         el.innerHTML = el.getAttribute('data-' + lang);
+    });
+
+    // Traduction dynamique des info-bulles du calendrier
+    document.querySelectorAll('[data-tooltip-' + lang + ']').forEach(el => {
+        el.setAttribute('data-tooltip', el.getAttribute('data-tooltip-' + lang));
+    });
+
+    // NOUVEAU : Traduction des placeholders (textes grisés dans les formulaires)
+    document.querySelectorAll('[placeholder]').forEach(el => {
+        if (el.hasAttribute('data-placeholder-' + lang)) {
+            el.setAttribute('placeholder', el.getAttribute('data-placeholder-' + lang));
+        }
     });
 
     localStorage.setItem('site_lang', lang);
